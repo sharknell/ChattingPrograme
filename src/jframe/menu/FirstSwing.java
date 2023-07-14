@@ -188,7 +188,7 @@ public class FirstSwing extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 final String id = textField.getText();
-                final String password = textField_1.getText();
+                final String password = passwordField.getText();
 
                 Login login = new Login();
                 boolean loginSuccessful = login.login(id, password);

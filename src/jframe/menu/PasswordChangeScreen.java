@@ -177,7 +177,7 @@ public class PasswordChangeScreen extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String id = textField_2.getText();
-                String newPassword = textField.getText();
+                String newPassword = passwordField.getText();
 
                 try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
                     String query = "SELECT * FROM members WHERE id = ?";

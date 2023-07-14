@@ -38,6 +38,7 @@ public class JoinScreen extends JFrame {
     private JTextField textField_3;
     private JTextField textField_4;
     private JTextField textField_5;
+    private JPasswordField passwordField;
 
     /**
      * Launch the application.
@@ -126,7 +127,7 @@ public class JoinScreen extends JFrame {
         textField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField);
         
-        JPasswordField passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setForeground(new Color(255, 255, 255));
         passwordField.setBackground(new Color(155, 174, 176));
         passwordField.setBounds(129, 221, 130, 21);
@@ -243,7 +244,7 @@ public class JoinScreen extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String id = textField.getText();
-                String password = textField_1.getText();
+                String password = new String(passwordField.getPassword());
                 String name = textField_2.getText();
                 String phoneNumber = textField_3.getText();
                 String RRN = textField_4.getText();
@@ -275,7 +276,7 @@ public class JoinScreen extends JFrame {
                     
                     // 필드 내용 초기화
                     textField.setText("");
-                    textField_1.setText("");
+                    passwordField.setText("");
                     textField_2.setText("");
                     textField_3.setText("");
                     textField_4.setText("");
@@ -310,7 +311,7 @@ public class JoinScreen extends JFrame {
                     
                     // 필드 내용 초기화
                     textField.setText("");
-                    textField_1.setText("");
+                    passwordField.setText("");
                     textField_2.setText("");
                     textField_3.setText("");
                     textField_4.setText("");
@@ -324,7 +325,7 @@ public class JoinScreen extends JFrame {
                 MemberDTO memberDTO = new MemberDTO();
                 memberDTO.setId(id);
                 memberDTO.setName(name);
-                memberDTO.setPassword(password);
+                memberDTO.setPassword(new String(passwordField.getPassword()));
                 memberDTO.setPhonenumber(phoneNumber);
                 memberDTO.setRRN(RRN);
 
@@ -396,7 +397,7 @@ public class JoinScreen extends JFrame {
   }
     private boolean registerMember() {
         String id = textField.getText();
-        String password = textField_1.getText();
+        String password = new String(passwordField.getPassword());
         String name = textField_2.getText();
         String phoneNumber = textField_3.getText();
         String RRN = textField_4.getText();
