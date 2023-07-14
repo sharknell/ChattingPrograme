@@ -187,7 +187,7 @@ public class FirstSwing extends JFrame {
         panel_4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                final String id = textField.getText();
+                final String id = textField_1.getText();
                 final String password = passwordField.getText();
 
                 Login login = new Login();
