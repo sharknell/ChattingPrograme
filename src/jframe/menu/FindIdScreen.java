@@ -70,29 +70,29 @@ public class FindIdScreen extends JFrame {
         lblImage.setBounds(0, 0, 280, 160);
         panel.add(lblImage);
         
-        JLabel lblNewLabel = new JLabel("Name");
+        JLabel lblNewLabel = new JLabel("이름");
         lblNewLabel.setForeground(new Color(0, 0, 0));
         lblNewLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel.setBounds(60, 190, 57, 20);
+        lblNewLabel.setBounds(62, 191, 78, 20);
         contentPane.add(lblNewLabel);
         
-        JLabel lblNewLabel_1 = new JLabel("Phone");
+        JLabel lblNewLabel_1 = new JLabel("전화번호");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_1.setBounds(60, 220, 60, 20);
+        lblNewLabel_1.setBounds(62, 221, 78, 20);
         contentPane.add(lblNewLabel_1);
         
-        JLabel lblNewLabel_2 = new JLabel("IDNum");
+        JLabel lblNewLabel_2 = new JLabel("주민번호");
         lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_2.setBounds(60, 250, 68, 20);
+        lblNewLabel_2.setBounds(62, 251, 78, 20);
         contentPane.add(lblNewLabel_2);
 
         textField = new JTextField();
         textField.setForeground(new Color(255, 255, 255));
         textField.setBackground(new Color(155, 174, 176));
         textField.setColumns(10);
-        textField.setBounds(129, 191, 150, 20);
+        textField.setBounds(129, 191, 130, 20);
         textField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField);
         
@@ -100,7 +100,7 @@ public class FindIdScreen extends JFrame {
         textField_1.setForeground(new Color(255, 255, 255));
         textField_1.setBackground(new Color(155, 174, 176));
         textField_1.setColumns(10);
-        textField_1.setBounds(129, 221, 150, 20);
+        textField_1.setBounds(129, 221, 130, 20);
         textField_1.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_1);
         
@@ -108,7 +108,7 @@ public class FindIdScreen extends JFrame {
         textField_2.setForeground(new Color(255, 255, 255));
         textField_2.setBackground(new Color(155, 174, 176));
         textField_2.setColumns(14); // 14자리(6자리 + "-" + 7자리)로 설정
-        textField_2.setBounds(129, 251, 150, 20);
+        textField_2.setBounds(129, 251, 130, 20);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_2);
 

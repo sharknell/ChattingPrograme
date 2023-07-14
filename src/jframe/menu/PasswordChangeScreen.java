@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -71,50 +72,80 @@ public class PasswordChangeScreen extends JFrame {
         lblImage.setBounds(0, 0, 280, 160);
         panel.add(lblImage);
         
-        JLabel lblNewLabel_1 = new JLabel("I D");
+        JLabel lblNewLabel_1 = new JLabel("아이디");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_1.setBounds(32, 190, 80, 20);
+        lblNewLabel_1.setBounds(32, 191, 100, 20);
         contentPane.add(lblNewLabel_1);
         
-        JLabel lblNewLabel_2 = new JLabel("Confirm");
+        JLabel lblNewLabel_2 = new JLabel("비밀번호확인");
         lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_2.setBounds(32, 250, 80, 20);
+        lblNewLabel_2.setBounds(32, 251, 100, 20);
         contentPane.add(lblNewLabel_2);
         
-        JLabel lblNewLabel_3 = new JLabel("NEW PW");
+        JLabel lblNewLabel_3 = new JLabel("비밀번호");
         lblNewLabel_3.setForeground(Color.BLACK);
         lblNewLabel_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_3.setBounds(32, 220, 80, 20);
+        lblNewLabel_3.setBounds(32, 221, 100, 20);
         contentPane.add(lblNewLabel_3);
 
-        textField = new JTextField();
-        textField.setForeground(new Color(255, 255, 255));
-        textField.setBackground(new Color(155, 174, 176));
-        textField.setColumns(10);
-        textField.setBounds(129, 251, 150, 20);
-        textField.setBorder(BorderFactory.createEmptyBorder());
-        contentPane.add(textField);
-        
-        textField_1 = new JTextField();
-        textField_1.setForeground(new Color(255, 255, 255));
-        textField_1.setBackground(new Color(155, 174, 176));
-        textField_1.setColumns(10);
-        textField_1.setBounds(129, 221, 150, 20);
-        textField_1.setBorder(BorderFactory.createEmptyBorder());
-        contentPane.add(textField_1);
-        
-        ImageIcon imageIcon_1 = new ImageIcon("image/success.png");
-        ImageIcon imageIcon_2 = new ImageIcon("image/cancel.png");
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setForeground(new Color(255, 255, 255));
+        passwordField.setBackground(new Color(155, 174, 176));
+        passwordField.setBounds(129, 221, 130, 20);
+        passwordField.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(passwordField);
+
+        JPasswordField passwordConfirmField = new JPasswordField();
+        passwordConfirmField.setForeground(new Color(255, 255, 255));
+        passwordConfirmField.setBackground(new Color(155, 174, 176));
+        passwordConfirmField.setBounds(129, 251, 130, 20);
+        passwordConfirmField.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(passwordConfirmField);
+
+        JPanel passwordPanel = new JPanel();
+        passwordPanel.setBackground(new Color(185, 207, 210));
+        passwordPanel.setBounds(257, 221, 20, 20);
+        passwordPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(passwordPanel);
+
+        ImageIcon showIcon = new ImageIcon("image/unlock.png");
+        ImageIcon hideIcon = new ImageIcon("image/lock.png");
+        passwordPanel.setLayout(null);
+        JLabel passwordLabel = new JLabel(hideIcon);
+        passwordLabel.setBounds(0, 0, 20, 20);
+        passwordPanel.add(passwordLabel);
+
+        passwordPanel.addMouseListener(new MouseAdapter() {
+            boolean passwordVisible = false;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                passwordVisible = !passwordVisible;
+                if (passwordVisible) {
+                    passwordLabel.setIcon(showIcon);
+                    passwordField.setEchoChar((char) 0);
+                    passwordConfirmField.setEchoChar((char) 0);
+                } else {
+                    passwordLabel.setIcon(hideIcon);
+                    passwordField.setEchoChar('*');
+                    passwordConfirmField.setEchoChar('*');
+                }
+            }
+        });
         
         textField_2 = new JTextField();
         textField_2.setForeground(Color.WHITE);
         textField_2.setColumns(10);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         textField_2.setBackground(new Color(155, 174, 176));
-        textField_2.setBounds(129, 191, 150, 20);
+        textField_2.setBounds(129, 191, 130, 20);
         contentPane.add(textField_2);
+
+        ImageIcon imageIcon_1 = new ImageIcon("image/success.png");
+        ImageIcon imageIcon_2 = new ImageIcon("image/cancel.png");
+        
         
         JPanel panel_1 = new JPanel();
         panel_1.setBackground(new Color(185, 207, 210));

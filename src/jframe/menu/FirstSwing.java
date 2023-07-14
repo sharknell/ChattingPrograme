@@ -46,30 +46,58 @@ public class FirstSwing extends JFrame {
 		textField_1.setForeground(new Color(255, 255, 255));
 		textField_1.setBackground(new Color(155, 174, 176));
 		textField_1.setToolTipText("");
-		textField_1.setBounds(127, 220, 130, 20);
+		textField_1.setBounds(129, 180, 130, 20);
 		textField_1.setBorder(BorderFactory.createEmptyBorder()); // 테두리 제거
 		textField_1.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
-		textField = new JTextField();
-		textField.setForeground(new Color(255, 255, 255));
-		textField.setBackground(new Color(155, 174, 176));
-		textField.setToolTipText("");
-		textField.setBounds(127, 180, 130, 20);
-		textField.setBorder(BorderFactory.createEmptyBorder()); // 테두리 제거
-		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		JPasswordField passwordField = new JPasswordField();
+        passwordField.setForeground(new Color(255, 255, 255));
+        passwordField.setBackground(new Color(155, 174, 176));
+        passwordField.setBounds(129, 221, 130, 21);
+        passwordField.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(passwordField);
+        
+        JPanel passwordPanel = new JPanel();
+        passwordPanel.setBackground(new Color(185, 207, 210));
+        passwordPanel.setBounds(259, 221, 20, 20);
+        passwordPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(passwordPanel);
+        
+        ImageIcon lockIcon = new ImageIcon("image/lock.png");
+        ImageIcon unlockIcon = new ImageIcon("image/unlock.png");
+        passwordPanel.setLayout(null);
+        JLabel passwordLabel = new JLabel();
+        passwordLabel.setBackground(new Color(185, 207, 210));
+        passwordLabel.setIcon(lockIcon);
+        passwordLabel.setBounds(0, 0, 20, 20);
+        passwordPanel.add(passwordLabel);
+
+        passwordPanel.addMouseListener(new MouseAdapter() {
+            boolean passwordVisible = false;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                passwordVisible = !passwordVisible;
+                if (passwordVisible) {
+                    passwordLabel.setIcon(unlockIcon);
+                    passwordField.setEchoChar((char) 0);
+                } else {
+                    passwordLabel.setIcon(lockIcon);
+                    passwordField.setEchoChar('*');
+                }
+            }
+        });
 		
-		JLabel lblNewLabel = new JLabel("I D");
+		JLabel lblNewLabel = new JLabel("아이디");
 		lblNewLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
-		lblNewLabel.setBounds(87, 179, 28, 21);
+		lblNewLabel.setBounds(59, 179, 56, 21);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("PW");
+		JLabel lblNewLabel_1 = new JLabel("비밀번호");
 		lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(87, 219, 28, 21);
+		lblNewLabel_1.setBounds(59, 219, 56, 21);
 		contentPane.add(lblNewLabel_1);
 		
 		panel_2 = new JPanel();

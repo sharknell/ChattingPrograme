@@ -1,5 +1,6 @@
 package jframe.menu;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -7,12 +8,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
@@ -20,9 +24,9 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
-import javax.swing.text.DocumentFilter.FilterBypass;
-import chatdb.SignUp;
+
 import chatdb.MemberDTO;
+import chatdb.SignUp;
 
 public class JoinScreen extends JFrame {
 
@@ -33,6 +37,7 @@ public class JoinScreen extends JFrame {
     private JTextField textField_2;
     private JTextField textField_3;
     private JTextField textField_4;
+    private JTextField textField_5;
 
     /**
      * Launch the application.
@@ -77,57 +82,93 @@ public class JoinScreen extends JFrame {
         lblImage.setBounds(0, 0, 280, 160);
         panel.add(lblImage);
         
-        JLabel lblNewLabel = new JLabel("I D");
+        JLabel lblNewLabel = new JLabel("아이디");
         lblNewLabel.setForeground(new Color(0, 0, 0));
         lblNewLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel.setBounds(60, 190, 57, 20);
+        lblNewLabel.setBounds(49, 190, 68, 20);
         contentPane.add(lblNewLabel);
         
-        JLabel lblNewLabel_1 = new JLabel("PW");
+        JLabel lblNewLabel_1 = new JLabel("비밀번호");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_1.setBounds(60, 220, 57, 20);
+        lblNewLabel_1.setBounds(49, 220, 68, 20);
         contentPane.add(lblNewLabel_1);
         
-        JLabel lblNewLabel_2 = new JLabel("Name");
+        JLabel lblNewLabel_2 = new JLabel("이름");
         lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_2.setBounds(60, 250, 57, 20);
+        lblNewLabel_2.setBounds(49, 250, 68, 20);
         contentPane.add(lblNewLabel_2);
         
-        JLabel lblNewLabel_3 = new JLabel("Phone");
+        JLabel lblNewLabel_3 = new JLabel("휴대폰");
         lblNewLabel_3.setForeground(new Color(0, 0, 0));
         lblNewLabel_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_3.setBounds(60, 280, 60, 20);
+        lblNewLabel_3.setBounds(49, 280, 68, 20);
         contentPane.add(lblNewLabel_3);
         
-        JLabel lblNewLabel_4 = new JLabel("IDNum");
+        JLabel lblNewLabel_4 = new JLabel("주민번호");
         lblNewLabel_4.setForeground(new Color(0, 0, 0));
         lblNewLabel_4.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_4.setBounds(60, 310, 68, 20);
+        lblNewLabel_4.setBounds(49, 310, 68, 20);
         contentPane.add(lblNewLabel_4);
+        
+        JLabel lblNewLabel_5 = new JLabel("이메일인증");
+        lblNewLabel_5.setForeground(new Color(0, 0, 0));
+        lblNewLabel_5.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
+        lblNewLabel_5.setBounds(48, 340, 80, 20);
+        contentPane.add(lblNewLabel_5);
         
         textField = new JTextField();
         textField.setForeground(new Color(255, 255, 255));
         textField.setBackground(new Color(155, 174, 176));
         textField.setColumns(10);
-        textField.setBounds(129, 191, 150, 20);
+        textField.setBounds(129, 191, 130, 20);
         textField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField);
         
-        textField_1 = new JTextField();
-        textField_1.setForeground(new Color(255, 255, 255));
-        textField_1.setBackground(new Color(155, 174, 176));
-        textField_1.setColumns(10);
-        textField_1.setBounds(129, 221, 150, 20);
-        textField_1.setBorder(BorderFactory.createEmptyBorder());
-        contentPane.add(textField_1);
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setForeground(new Color(255, 255, 255));
+        passwordField.setBackground(new Color(155, 174, 176));
+        passwordField.setBounds(129, 221, 130, 21);
+        passwordField.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(passwordField);
+
+        JPanel passwordPanel = new JPanel();
+        passwordPanel.setBackground(new Color(185, 207, 210));
+        passwordPanel.setBounds(257, 221, 20, 20);
+        passwordPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(passwordPanel);
+        
+        ImageIcon lockIcon = new ImageIcon("image/lock.png");
+        ImageIcon unlockIcon = new ImageIcon("image/unlock.png");
+        passwordPanel.setLayout(null);
+        JLabel passwordLabel = new JLabel();
+        passwordLabel.setBackground(new Color(185, 207, 210));
+        passwordLabel.setIcon(lockIcon);
+        passwordLabel.setBounds(0, 0, 20, 20);
+        passwordPanel.add(passwordLabel);
+
+        passwordPanel.addMouseListener(new MouseAdapter() {
+            boolean passwordVisible = false;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                passwordVisible = !passwordVisible;
+                if (passwordVisible) {
+                    passwordLabel.setIcon(unlockIcon);
+                    passwordField.setEchoChar((char) 0);
+                } else {
+                    passwordLabel.setIcon(lockIcon);
+                    passwordField.setEchoChar('*');
+                }
+            }
+        });
         
         textField_2 = new JTextField();
         textField_2.setForeground(new Color(255, 255, 255));
         textField_2.setBackground(new Color(155, 174, 176));
         textField_2.setColumns(10);
-        textField_2.setBounds(129, 251, 150, 20);
+        textField_2.setBounds(129, 251, 130, 20);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_2);
         
@@ -135,7 +176,7 @@ public class JoinScreen extends JFrame {
         textField_3.setForeground(new Color(255, 255, 255));
         textField_3.setBackground(new Color(155, 174, 176));
         textField_3.setColumns(10);
-        textField_3.setBounds(129, 281, 150, 20);
+        textField_3.setBounds(129, 281, 130, 20);
         textField_3.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_3);
 
@@ -143,9 +184,16 @@ public class JoinScreen extends JFrame {
         textField_4.setForeground(new Color(255, 255, 255));
         textField_4.setBackground(new Color(155, 174, 176));
         textField_4.setColumns(14); // 14자리(6자리 + "-" + 7자리)로 설정
-        textField_4.setBounds(129, 311, 150, 20);
+        textField_4.setBounds(129, 311, 130, 20);
         textField_4.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_4);
+
+        textField_5 = new JTextField();
+        textField_5.setForeground(new Color(255, 255, 255));
+        textField_5.setBackground(new Color(155, 174, 176));
+        textField_5.setBounds(129, 341, 130, 20);
+        textField_5.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(textField_5);
 
         // DocumentFilter를 생성하여 textField_4에 적용
         ((AbstractDocument) textField_4.getDocument()).setDocumentFilter(new DocumentFilter() {
@@ -301,17 +349,51 @@ public class JoinScreen extends JFrame {
         JLabel lblImage_2 = new JLabel(imageIcon_2);
         lblImage_2.setBounds(106, 270, 38, 20);
         panel_2.add(lblImage_2);
-
+        
         panel_2.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		FirstSwing main = new FirstSwing();
+        		main.setVisible(true);
+        		JoinScreen.this.dispose();
+        	}
+        });
+  
+    
+        JPanel panel_3 = new JPanel();
+        panel_3.setBackground(new Color(185, 207, 210));
+        panel_3.setBounds(189, 361, 70, 25);
+        contentPane.add(panel_3);
+        
+        ImageIcon imageIcon_3 = new ImageIcon("image/email.png");
+        JLabel lblImage_3 = new JLabel(imageIcon_3);
+        lblImage_3.setBounds(106, 270, 38, 20);
+        panel_3.add(lblImage_3);
+        
+        JPanel panel_4 = new JPanel();
+        panel_4.setBackground(new Color(185, 207, 210));
+        panel_4.setBounds(189, 361, 70, 25);
+        contentPane.add(panel_4);
+        panel_4.setLayout(null);
+        panel_4.setVisible(false);
+        
+        panel_4.setLayout(new BorderLayout());
+        ImageIcon imageIcon_4 = new ImageIcon("image/email_success.png");
+        JLabel lblImage_4 = new JLabel(imageIcon_4);
+        lblImage_4.setBounds(106, 270, 38, 20);
+        panel_4.add(lblImage_4, BorderLayout.CENTER);
+        
+        panel_3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                FirstSwing main = new FirstSwing();
-                main.setVisible(true);
-                JoinScreen.this.dispose();
+                // panel_3 클릭 시 panel_4의 가시성을 변경합니다.
+            	panel_3.setVisible(false);
+                panel_4.setVisible(true);
             }
         });
-    }
+        
 
+  }
     private boolean registerMember() {
         String id = textField.getText();
         String password = textField_1.getText();
