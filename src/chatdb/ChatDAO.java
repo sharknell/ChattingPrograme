@@ -12,8 +12,8 @@ import java.util.Collections;
 public class ChatDAO {
     private static final ChatDAO instance = new ChatDAO();
 
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/chatdb";
-    private static final String DB_USER = "gyuho";
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
 
     private ChatDAO() {

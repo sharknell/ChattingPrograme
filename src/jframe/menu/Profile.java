@@ -25,8 +25,8 @@ import javax.swing.border.EmptyBorder;
 public class Profile extends JFrame {
 
     private JPanel contentPane;
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/chatdb";
-    private static final String DB_USER = "gyuho";
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
 
     /**

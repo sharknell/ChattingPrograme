@@ -29,8 +29,8 @@ public class PasswordChangeScreen extends JFrame {
     private JTextField textField_1;
     private JTextField textField_2;
 
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/chatdb";
-    private static final String DB_USER = "gyuho";
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
 
     public static void main(String[] args) {
