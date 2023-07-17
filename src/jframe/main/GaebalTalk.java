@@ -1,8 +1,10 @@
 package jframe.main;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,17 +19,14 @@ import java.net.UnknownHostException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import jframe.menu.EngVerFirstSwing;
-import jframe.menu.FirstSwing;
-import javax.swing.JScrollPane;
-import java.awt.Component;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import java.awt.Font;
+
+import jframe.menu.EngVerFirstSwing;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable{
 
@@ -239,7 +238,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable{
         gaebalVer.add(gaever);
         
         JPanel panel_chat = new JPanel();
-        panel_chat.setLayout(null);
+        panel_chat.setLayout(new BorderLayout());
         panel_chat.setBackground(new Color(187, 207, 210));
         panel_chat.setBounds(60, 60, 284, 501);
         contentPane.add(panel_chat);
@@ -309,6 +308,9 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable{
                 
             	panel.setBounds(0, 0, 60, getHeight());
                 panel_4.setBounds(60, 0, getWidth(), 60);
+                panel_chat.setBounds(60, 60, getWidth(), getHeight());
+                scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
+                scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
                 
                 int x = 10; // x 좌표
                 int y = (int) (panelHeight * 0.8); // y 좌표 (panel 높이의 90% 위치에 설정)
