@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import chatdb.Login;
 import jframe.main.EngVerGaebalTalk;
+//import jframe.main.EngVerGaebalTalk;
 import jframe.main.GaebalTalk;
 
 public class EngVerFirstSwing extends JFrame {
@@ -26,7 +27,7 @@ public class EngVerFirstSwing extends JFrame {
     private JPanel contentPane;
     private JTextField textField;    private JTextField textField_1;
     private JPanel panel_2;
-    private EngVerGaebalTalk gaebalTalk;
+    //private EngVerGaebalTalk gaebalTalk;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -207,7 +208,7 @@ public class EngVerFirstSwing extends JFrame {
                 boolean loginSuccessful = login.login(id, password);
 
                 if (loginSuccessful) {
-                	gaebalTalk = new EngVerGaebalTalk();
+                	EngVerGaebalTalk gaebalTalk = new EngVerGaebalTalk();
                 	gaebalTalk.setVisible(true);
                     EngVerFirstSwing.this.dispose();
                 } else {
