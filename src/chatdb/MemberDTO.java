@@ -16,7 +16,6 @@ public class MemberDTO {
     private int countrycode;
     private Date reg_date;
     private String RRN;
-    private byte[] profile_picture; // 프로필 사진 필드
 
     // Getter and Setter methods for id
     public String getId() {
@@ -81,12 +80,4 @@ public class MemberDTO {
         this.RRN = RRN;
     }
 
-    // Getter and Setter methods for profile_picture
-    public byte[] getProfile_picture() {
-        return profile_picture;
-    }
-
-    public void setProfile_picture(byte[] profile_picture) {
-        this.profile_picture = profile_picture;
-    }
 }
