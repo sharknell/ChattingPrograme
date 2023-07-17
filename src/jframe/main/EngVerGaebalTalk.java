@@ -12,10 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import jframe.menu.EngVerFirstSwing;
 import jframe.menu.FirstSwing;
 
-public class GaebalTalk extends JFrame {
+public class EngVerGaebalTalk extends JFrame {
 
 	private JPanel contentPane;
 	private boolean panelsVisible = false; // 패널들의 가시성 상태를 저장하는 변수
@@ -27,7 +26,7 @@ public class GaebalTalk extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GaebalTalk frame = new GaebalTalk();
+					EngVerGaebalTalk frame = new EngVerGaebalTalk();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +38,7 @@ public class GaebalTalk extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GaebalTalk() {
+	public EngVerGaebalTalk() {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 600);
@@ -137,9 +136,9 @@ public class GaebalTalk extends JFrame {
         font.setBounds(100, 380, 40, 45);
         contentPane.add(font);
         
-        ImageIcon kor_font = new ImageIcon("image/fontSize.png");
+        ImageIcon eng_font = new ImageIcon("image/engFontSize.png");
         font.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        JLabel korFont = new JLabel(kor_font);
+        JLabel korFont = new JLabel(eng_font);
         font.add(korFont);
         
         JPanel language = new JPanel();
@@ -147,17 +146,17 @@ public class GaebalTalk extends JFrame {
         language.setBounds(182, 380, 40, 45);
         contentPane.add(language);
         
-        ImageIcon kor_lang = new ImageIcon("image/korVer.png");
+        ImageIcon eng_lang = new ImageIcon("image/engVer.png");
         language.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        JLabel korVer = new JLabel(kor_lang);
-        language.add(korVer);
+        JLabel engVer = new JLabel(eng_lang);
+        language.add(engVer);
         
         language.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                EngVerFirstSwing engVer = new EngVerFirstSwing();
-                engVer.setVisible(true);
-                GaebalTalk.this.dispose();
+                FirstSwing korVer = new FirstSwing();
+                korVer.setVisible(true);
+                EngVerGaebalTalk.this.dispose();
             }
         });
         
@@ -166,7 +165,7 @@ public class GaebalTalk extends JFrame {
         game.setBounds(264, 380, 40, 45);
         contentPane.add(game);
         
-        ImageIcon gaeGame = new ImageIcon("image/game.png");
+        ImageIcon gaeGame = new ImageIcon("image/engGame.png");
         game.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         JLabel gaeGameIcon = new JLabel(gaeGame);
         game.add(gaeGameIcon);
