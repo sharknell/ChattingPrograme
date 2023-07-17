@@ -4,14 +4,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CustomerServiceGUI extends JFrame {
+public class EngVerCustomerServiceGUI extends JFrame {
 
     private JComboBox<String> inquiryTypeComboBox;
     private JTextArea inquiryTextArea;
     private JButton sendButton;
 
-    public CustomerServiceGUI() {
-        setTitle("고객센터");
+    public EngVerCustomerServiceGUI() {
+        setTitle("customer service center");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 고객센터 패널
@@ -19,7 +19,7 @@ public class CustomerServiceGUI extends JFrame {
         customerServicePanel.setLayout(new BorderLayout());
 
         // 문의 유형 선택
-        String[] inquiryTypes = {"아이디찾기 오류 문의", "비밀번호찾기 오류 문의", "기타 문의"};
+        String[] inquiryTypes = {"ID search error inquiry", "Inquiry about password retrieval error", "Other inquiries"};
         inquiryTypeComboBox = new JComboBox<>(inquiryTypes);
         customerServicePanel.add(inquiryTypeComboBox, BorderLayout.NORTH);
 
@@ -29,18 +29,18 @@ public class CustomerServiceGUI extends JFrame {
         customerServicePanel.add(inquiryScrollPane, BorderLayout.CENTER);
 
         // 전송 버튼
-        sendButton = new JButton("전송");
+        sendButton = new JButton("Send");
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String inquiryType = (String) inquiryTypeComboBox.getSelectedItem();
                 String inquiryContent = inquiryTextArea.getText();
                 // 문의 내용을 처리하는 로직을 추가하세요.
-                JOptionPane.showMessageDialog(null, "문의 유형: " + inquiryType + "\n문의 내용: " + inquiryContent);
+                JOptionPane.showMessageDialog(null, "Inquiry Type: " + inquiryType + "\nInquiry content: " + inquiryContent);
                 inquiryTextArea.setText("");
-                FirstSwing main = new FirstSwing();
+                EngVerFirstSwing main = new EngVerFirstSwing();
                 main.setVisible(true);
-                CustomerServiceGUI.this.dispose(); 
+                EngVerCustomerServiceGUI.this.dispose(); 
             }
         });
         customerServicePanel.add(sendButton, BorderLayout.SOUTH);
@@ -55,7 +55,7 @@ public class CustomerServiceGUI extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new CustomerServiceGUI();
+                new EngVerCustomerServiceGUI();
             }
         });
     }
