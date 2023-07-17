@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -27,18 +28,22 @@ import javax.swing.text.DocumentFilter;
 
 import chatdb.MemberDTO;
 import chatdb.SignUp;
+import chatdb.email.EmailSender;
 
 public class JoinScreen extends JFrame {
 
     private JPanel contentPane;
     private JPanel panel;
     private JTextField textField;
-    private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
     private JTextField textField_4;
-    private JTextField textField_5;
     private JPasswordField passwordField;
+    private JTextField textFieldVerification;
+    
+
+    private boolean isEmailSent = false; // 이메일 발송 여부
+    private String verificationCode; // 랜덤 인증 코드
 
     /**
      * Launch the application.
@@ -60,20 +65,20 @@ public class JoinScreen extends JFrame {
      * Create the frame.
      */
     public JoinScreen() {
-    	setResizable(false);
-		setBackground(Color.WHITE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 360, 540);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(185, 207, 210));
-		contentPane.setForeground(new Color(185, 207, 210));
-		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        setResizable(false);
+        setBackground(Color.WHITE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 360, 540);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(185, 207, 210));
+        contentPane.setForeground(new Color(185, 207, 210));
+        contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		panel = new JPanel();
-		panel.setBackground(new Color(185, 207, 210));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        panel = new JPanel();
+        panel.setBackground(new Color(185, 207, 210));
         panel.setBounds(32, 10, 280, 160);
         contentPane.add(panel);
         panel.setLayout(null);
@@ -82,43 +87,43 @@ public class JoinScreen extends JFrame {
         JLabel lblImage = new JLabel(imageIcon);
         lblImage.setBounds(0, 0, 280, 160);
         panel.add(lblImage);
-        
+
         JLabel lblNewLabel = new JLabel("아이디");
         lblNewLabel.setForeground(new Color(0, 0, 0));
         lblNewLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel.setBounds(49, 190, 68, 20);
         contentPane.add(lblNewLabel);
-        
+
         JLabel lblNewLabel_1 = new JLabel("비밀번호");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_1.setBounds(49, 220, 68, 20);
         contentPane.add(lblNewLabel_1);
-        
+
         JLabel lblNewLabel_2 = new JLabel("이름");
         lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_2.setBounds(49, 250, 68, 20);
         contentPane.add(lblNewLabel_2);
-        
+
         JLabel lblNewLabel_3 = new JLabel("휴대폰");
         lblNewLabel_3.setForeground(new Color(0, 0, 0));
         lblNewLabel_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_3.setBounds(49, 280, 68, 20);
         contentPane.add(lblNewLabel_3);
-        
+
         JLabel lblNewLabel_4 = new JLabel("주민번호");
         lblNewLabel_4.setForeground(new Color(0, 0, 0));
         lblNewLabel_4.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_4.setBounds(49, 310, 68, 20);
         contentPane.add(lblNewLabel_4);
-        
+
         JLabel lblNewLabel_5 = new JLabel("이메일인증");
         lblNewLabel_5.setForeground(new Color(0, 0, 0));
         lblNewLabel_5.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_5.setBounds(48, 340, 80, 20);
         contentPane.add(lblNewLabel_5);
-        
+
         textField = new JTextField();
         textField.setForeground(new Color(255, 255, 255));
         textField.setBackground(new Color(155, 174, 176));
@@ -126,7 +131,7 @@ public class JoinScreen extends JFrame {
         textField.setBounds(129, 191, 130, 20);
         textField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField);
-        
+
         passwordField = new JPasswordField();
         passwordField.setForeground(new Color(255, 255, 255));
         passwordField.setBackground(new Color(155, 174, 176));
@@ -139,11 +144,11 @@ public class JoinScreen extends JFrame {
         passwordPanel.setBounds(257, 221, 20, 20);
         passwordPanel.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordPanel);
-        
-        ImageIcon lockIcon = new ImageIcon("image/lock.png");
-        ImageIcon unlockIcon = new ImageIcon("image/unlock.png");
+
+        final ImageIcon lockIcon = new ImageIcon("image/lock.png");
+        final ImageIcon unlockIcon = new ImageIcon("image/unlock.png");
         passwordPanel.setLayout(null);
-        JLabel passwordLabel = new JLabel();
+        final JLabel passwordLabel = new JLabel();
         passwordLabel.setBackground(new Color(185, 207, 210));
         passwordLabel.setIcon(lockIcon);
         passwordLabel.setBounds(0, 0, 20, 20);
@@ -164,7 +169,7 @@ public class JoinScreen extends JFrame {
                 }
             }
         });
-        
+
         textField_2 = new JTextField();
         textField_2.setForeground(new Color(255, 255, 255));
         textField_2.setBackground(new Color(155, 174, 176));
@@ -172,7 +177,7 @@ public class JoinScreen extends JFrame {
         textField_2.setBounds(129, 251, 130, 20);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_2);
-        
+
         textField_3 = new JTextField();
         textField_3.setForeground(new Color(255, 255, 255));
         textField_3.setBackground(new Color(155, 174, 176));
@@ -188,14 +193,14 @@ public class JoinScreen extends JFrame {
         textField_4.setBounds(129, 311, 130, 20);
         textField_4.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_4);
-
+/*
         textField_5 = new JTextField();
         textField_5.setForeground(new Color(255, 255, 255));
         textField_5.setBackground(new Color(155, 174, 176));
         textField_5.setBounds(129, 341, 130, 20);
         textField_5.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_5);
-
+*/
         // DocumentFilter를 생성하여 textField_4에 적용
         ((AbstractDocument) textField_4.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
@@ -239,7 +244,6 @@ public class JoinScreen extends JFrame {
         lblImage_1.setBounds(106, 270, 38, 20);
         panel_1.add(lblImage_1);
 
-
         panel_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -248,6 +252,7 @@ public class JoinScreen extends JFrame {
                 String name = textField_2.getText();
                 String phoneNumber = textField_3.getText();
                 String RRN = textField_4.getText();
+                String verification = textFieldVerification.getText();
 
                 List<String> errorMessages = new ArrayList<>();
 
@@ -266,61 +271,32 @@ public class JoinScreen extends JFrame {
                 if (RRN.isEmpty()) {
                     errorMessages.add("IDNum");
                 }
+                if (!isEmailSent) {
+                    errorMessages.add("이메일 인증을 진행해주세요.");
+                }
+                if (!verification.equals(verificationCode)) {
+                    errorMessages.add("올바른 인증 코드를 입력해주세요.");
+                }
 
                 if (!errorMessages.isEmpty()) {
-                    StringBuilder errorMessage = new StringBuilder("다음 항목이 입력되지 않았습니다:\n");
+                    StringBuilder errorMessage = new StringBuilder("다음 항목이 입력되지 않았거나 올바르지 않습니다:\n");
                     for (String error : errorMessages) {
                         errorMessage.append("- ").append(error).append("\n");
                     }
                     JOptionPane.showMessageDialog(JoinScreen.this, errorMessage.toString());
-                    
+
                     // 필드 내용 초기화
                     textField.setText("");
                     passwordField.setText("");
                     textField_2.setText("");
                     textField_3.setText("");
                     textField_4.setText("");
+                    textFieldVerification.setText("");
 
                     // 선택된 필드로 포커스 이동
                     textField.requestFocusInWindow();
                     return;
                 }
-
-                if (!SignUp.isValidEmail(id)) {
-                    errorMessages.add("유효한 이메일 형식이 아닙니다.");
-                }
-                if (!SignUp.isValidPassword(password)) {
-                    errorMessages.add("비밀번호는 영문자, 숫자와 특수문자 (!, @)를 최소 1개 이상 포함해야하고 8글자 이상이어야 합니다.");
-                }
-                if (SignUp.isDuplicateId(id)) {
-                    errorMessages.add("중복된 아이디입니다.");
-                }
-                if (SignUp.isDuplicatePhoneNumber(phoneNumber)) {
-                    errorMessages.add("중복된 전화번호입니다.");
-                }
-                if (!SignUp.isValidRRN(RRN)) {
-                    errorMessages.add("유효한 주민등록번호 형식이 아닙니다.");
-                }
-
-                if (!errorMessages.isEmpty()) {
-                    StringBuilder errorMessage = new StringBuilder("다음 항목이 올바르지 않습니다:\n");
-                    for (String error : errorMessages) {
-                        errorMessage.append("- ").append(error).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(JoinScreen.this, errorMessage.toString());
-                    
-                    // 필드 내용 초기화
-                    textField.setText("");
-                    passwordField.setText("");
-                    textField_2.setText("");
-                    textField_3.setText("");
-                    textField_4.setText("");
-
-                    // 선택된 필드로 포커스 이동
-                    textField.requestFocusInWindow();
-                    return;
-                }
-
 
                 MemberDTO memberDTO = new MemberDTO();
                 memberDTO.setId(id);
@@ -338,8 +314,6 @@ public class JoinScreen extends JFrame {
             }
         });
 
-
-
         JPanel panel_2 = new JPanel();
         panel_2.setForeground(new Color(185, 207, 210));
         panel_2.setBackground(new Color(185, 207, 210));
@@ -350,65 +324,100 @@ public class JoinScreen extends JFrame {
         JLabel lblImage_2 = new JLabel(imageIcon_2);
         lblImage_2.setBounds(106, 270, 38, 20);
         panel_2.add(lblImage_2);
-        
+
         panel_2.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		FirstSwing main = new FirstSwing();
-        		main.setVisible(true);
-        		JoinScreen.this.dispose();
-        	}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                FirstSwing main = new FirstSwing();
+                main.setVisible(true);
+                JoinScreen.this.dispose();
+            }
         });
-  
-    
-        JPanel panel_3 = new JPanel();
+
+        final JPanel panel_3 = new JPanel();
         panel_3.setBackground(new Color(185, 207, 210));
-        panel_3.setBounds(189, 361, 70, 25);
+        panel_3.setBounds(189, 371, 70, 25);
         contentPane.add(panel_3);
-        
+
         ImageIcon imageIcon_3 = new ImageIcon("image/email.png");
         JLabel lblImage_3 = new JLabel(imageIcon_3);
         lblImage_3.setBounds(106, 270, 38, 20);
         panel_3.add(lblImage_3);
-        
-        JPanel panel_4 = new JPanel();
+
+        final JPanel panel_4 = new JPanel();
         panel_4.setBackground(new Color(185, 207, 210));
         panel_4.setBounds(189, 361, 70, 25);
         contentPane.add(panel_4);
         panel_4.setLayout(null);
         panel_4.setVisible(false);
-        
+
         panel_4.setLayout(new BorderLayout());
         ImageIcon imageIcon_4 = new ImageIcon("image/email_success.png");
         JLabel lblImage_4 = new JLabel(imageIcon_4);
         lblImage_4.setBounds(106, 270, 38, 20);
         panel_4.add(lblImage_4, BorderLayout.CENTER);
-        
+
         panel_3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // panel_3 클릭 시 panel_4의 가시성을 변경합니다.
-            	panel_3.setVisible(false);
-                panel_4.setVisible(true);
+                if (!isEmailSent) {
+                    String id = textField.getText();
+                    if (SignUp.isValidEmail(id)) {
+                        // 이메일 발송 코드 작성
+                        EmailSender emailSender = new EmailSender();
+                        verificationCode = generateVerificationCode();
+                        emailSender.sendVerificationEmail(id, verificationCode);
+                        JOptionPane.showMessageDialog(JoinScreen.this, "인증 코드가 이메일로 전송되었습니다.");
+
+                        panel_3.setVisible(false);
+                        panel_4.setVisible(true);
+                        isEmailSent = true;
+                    } else {
+                        JOptionPane.showMessageDialog(JoinScreen.this, "유효한 이메일 형식이 아닙니다.");
+                    }
+                }
             }
         });
         
+        panel_4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String enteredCode = textFieldVerification.getText();
+                String generatedCode = generateVerificationCode();
 
-  }
-    private boolean registerMember() {
-        String id = textField.getText();
-        String password = new String(passwordField.getPassword());
-        String name = textField_2.getText();
-        String phoneNumber = textField_3.getText();
-        String RRN = textField_4.getText();
+                String lastSixDigitsGenerated = generatedCode.substring(generatedCode.length() - 6);
+                if (enteredCode.equals(lastSixDigitsGenerated)) {
+                    JOptionPane.showMessageDialog(JoinScreen.this, "인증되었습니다.");
+                    panel_4.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(JoinScreen.this, "인증되지 않았습니다.");
+                    return;
+                }
+            }
+        });
 
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(id);
-        memberDTO.setName(name);
-        memberDTO.setPassword(password);
-        memberDTO.setPhonenumber(phoneNumber);
-        memberDTO.setRRN(RRN);
 
-        return SignUp.registerMember(memberDTO);
+
+        
+        textFieldVerification = new JTextField();
+        textFieldVerification.setForeground(new Color(255, 255, 255));
+        textFieldVerification.setBackground(new Color(155, 174, 176));
+        textFieldVerification.setColumns(10);
+        textFieldVerification.setBounds(129, 342, 130, 20);
+        textFieldVerification.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(textFieldVerification);
     }
+
+    private String generateVerificationCode() {
+        if (verificationCode == null) {
+            Random random = new Random();
+            StringBuilder codeBuilder = new StringBuilder();
+            for (int i = 0; i < 6; i++) {
+                codeBuilder.append(random.nextInt(10));
+            }
+            verificationCode = codeBuilder.toString();
+        }
+        return verificationCode;
+    }
+
 }
