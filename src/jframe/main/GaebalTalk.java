@@ -3,8 +3,16 @@ package jframe.main;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -14,12 +22,32 @@ import javax.swing.border.EmptyBorder;
 
 import jframe.menu.EngVerFirstSwing;
 import jframe.menu.FirstSwing;
+import javax.swing.JScrollPane;
+import java.awt.Component;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.border.TitledBorder;
+import java.awt.Font;
 
-public class GaebalTalk extends JFrame {
+public class GaebalTalk extends JFrame implements ActionListener, Runnable{
 
+	JPanel panel;
+	private JPanel panel_1;
+	private JPanel panel_2;
 	private JPanel contentPane;
 	private boolean panelsVisible = false; // 패널들의 가시성 상태를 저장하는 변수
+	ChatClient client;
+	JPanel panel_chat;
+	
+	 // 소켓 입출력객체
+    BufferedReader in;
+    OutputStream out;
+    String selectedRoom;
 
+    JList<String> roomInfo, roommUser, waitInfo;
+
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -41,6 +69,25 @@ public class GaebalTalk extends JFrame {
 	 */
 	public GaebalTalk() {
 
+		client = new ChatClient();
+		roomInfo = new JList<String>();
+		roomInfo.setBackground(new Color(187, 207, 210));
+		roomInfo.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
+		roomInfo.setBorder(new TitledBorder("방정보"));
+		
+		roomInfo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String str = roomInfo.getSelectedValue(); // "자바방--1"
+                if (str == null)
+                    return;
+                System.out.println("STR=" + str);
+                selectedRoom = str.substring(0, str.indexOf("-")); // "자바방" <---- substring(0,3)
+                // 대화방 내의 인원정보
+                sendMsg("130|" + selectedRoom);
+            }
+        });
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 600);
 		contentPane = new JPanel();
@@ -61,7 +108,7 @@ public class GaebalTalk extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
+		panel_1 = new JPanel();
 		panel_1.setBounds(10, 20, 40, 40);
 		panel_1.setBackground(new Color(27, 35, 42));
 		panel_1.setBorder(null);
@@ -72,7 +119,7 @@ public class GaebalTalk extends JFrame {
         JLabel lblImage = new JLabel(imageIcon);
         panel_1.add(lblImage);
         
-        JPanel panel_2 = new JPanel();
+        panel_2 = new JPanel();
         panel_2.setBackground(new Color(27, 35, 42));
         panel_2.setBounds(10, 90, 40, 40);
         panel.add(panel_2);
@@ -191,6 +238,18 @@ public class GaebalTalk extends JFrame {
         JLabel gaever = new JLabel(ver);
         gaebalVer.add(gaever);
         
+        JPanel panel_chat = new JPanel();
+        panel_chat.setLayout(null);
+        panel_chat.setBackground(new Color(187, 207, 210));
+        panel_chat.setBounds(60, 60, 284, 501);
+        contentPane.add(panel_chat);
+        
+        JScrollPane scrollPane = new JScrollPane(roomInfo);
+        scrollPane.setBounds(10, 10, 266, 478);
+        panel_chat.setLayout(null);
+        panel_chat.add(scrollPane);
+        
+        
      // 초기에 보이지 않도록 설정
         panel_5.setVisible(false);
         myProfile.setVisible(false);
@@ -205,17 +264,40 @@ public class GaebalTalk extends JFrame {
         panel_3.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 panelsVisible = !panelsVisible; // 패널들의 가시성 상태를 토글
-                panel_5.setVisible(panelsVisible);
-                myProfile.setVisible(panelsVisible);
-                display_Icon.setVisible(panelsVisible);
-                service.setVisible(panelsVisible);
-                font.setVisible(panelsVisible);
-                language.setVisible(panelsVisible);
-                game.setVisible(panelsVisible);
-                notification.setVisible(panelsVisible);
-                gaebalVer.setVisible(panelsVisible);
+                
+                if (panelsVisible) {
+                    // 패널들을 보여줍니다.
+                    panel_chat.setVisible(false);
+                    panel_5.setVisible(true);
+                    myProfile.setVisible(true);
+                    display_Icon.setVisible(true);
+                    service.setVisible(true);
+                    font.setVisible(true);
+                    language.setVisible(true);
+                    game.setVisible(true);
+                    notification.setVisible(true);
+                    gaebalVer.setVisible(true);
+                } else {
+                    // 패널들을 가립니다.
+                    panel_chat.setVisible(true);
+                    panel_5.setVisible(false);
+                    myProfile.setVisible(false);
+                    display_Icon.setVisible(false);
+                    service.setVisible(false);
+                    font.setVisible(false);
+                    language.setVisible(false);
+                    game.setVisible(false);
+                    notification.setVisible(false);
+                    gaebalVer.setVisible(false);
+            }
             }
         });
+        
+        connect(); // 서버연결시도 (in,out객체생성)
+        new Thread(this).start(); // 서버메시지 대기
+        sendMsg("100|"); // (대기실)접속 알림
+        String nickName = JOptionPane.showInputDialog(this, "대화명:");
+        sendMsg("150|" + nickName); // 대화명 전달
         
      // 패널 크기를 JFrame 크기에 맞게 설정
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -278,5 +360,125 @@ public class GaebalTalk extends JFrame {
                 gaebalVer.setBounds(gaebalVerX, gaebalVerY, 40, 45);
             }
         });
-	}
+        eventUp();//이벤트 처리 연결
+	}//생성자 끝
+	private void eventUp() { // 이벤트소스-이벤트처리부 연결
+        // 대기실(MainChat)
+        // 대화방(ChatClient)
+        client.sendTF.addActionListener(this);
+        client.bt_change.addActionListener(this);
+        client.bt_exit.addActionListener(this);
+
+        // "방만들기" 이미지 클릭 이벤트
+        panel_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
+
+                // 방제목을 서버에게 전달
+                sendMsg("160|" + title);
+                client.setTitle("채팅방-[" + title + "]");
+                sendMsg("175|"); // 대화방내 인원정보 요청
+                setVisible(false);
+                client.setVisible(true); // 대화방 이동
+            }
+        });
+
+        // "방들어가기" 이미지 클릭 이벤트
+        panel_2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (selectedRoom == null) {
+                    JOptionPane.showMessageDialog(GaebalTalk.this, "방을 선택하세요!");
+                    return;
+                }
+                sendMsg("200|" + selectedRoom);
+                sendMsg("175|"); // 대화방내 인원정보 요청
+                setVisible(false);
+                client.setVisible(true);
+            }
+        });
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        Object ob = e.getSource();
+        if (ob == client.bt_exit) { // 대화방 나가기 요청
+            sendMsg("400|");
+            client.setVisible(false);
+            setVisible(true);
+        } else if (ob == client.sendTF) { // (TextField입력)메시지 보내기 요청
+            String msg = client.sendTF.getText();
+            if (msg.length() > 0) {
+                sendMsg("300|" + msg);
+                client.sendTF.setText("");
+            }
+        } 
+    } // actionPerformed
+
+    public void connect() { // (소켓)서버연결 요청
+        try {
+            // Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
+            Socket s = new Socket("localhost", 5509); // 연결시도
+            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            // in: 서버메시지 읽기객체 서버-----msg------>클라이언트
+            out = s.getOutputStream();
+            // out: 메시지 보내기, 쓰기객체 클라이언트-----msg----->서버
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } // End of connect
+
+    public void sendMsg(String msg) { // 서버에게 메시지 보내기
+        try {
+            out.write((msg + "\n").getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } // End of sendMsg
+
+    public void run() { // 서버가 보낸 메시지 읽기
+        try {
+            while (true) {
+                String msg = in.readLine(); // msg: 서버가 보낸 메시지
+                // msg==> "300|안녕하세요" "120|자바방--1,오라클방--1,JDBC방--1"
+                String msgs[] = msg.split("\\|");
+                String protocol = msgs[0];
+                switch (protocol) {
+                    case "300":
+                        client.ta.append(msgs[1] + "\n");
+                        client.ta.setCaretPosition(client.ta.getText().length());
+                        break;
+                    case "160": // 방만들기
+                        // 방정보를 List에 뿌리기
+                        if (msgs.length > 1) {
+                            // 개설된 방이 한개 이상이었을때 실행
+                            // 개설된 방없음 ----> msg="120|" 였을때 에러
+                            String roomNames[] = msgs[1].split(",");
+                            // "자바방--1,오라클방--1,JDBC방--1"
+                            roomInfo.setListData(roomNames);
+                        }
+                        break;
+                    case "175": // (대화방에서) 대화방 인원정보
+                        String myroommUsers[] = msgs[1].split(",");
+                        client.li_inwon.setListData(myroommUsers);
+                        break;
+                    case "200": // 대화방 입장
+                        client.ta.append("=========[" + msgs[1] + "]님 입장=========\n");
+                        client.ta.setCaretPosition(client.ta.getText().length());
+                        break;
+                    case "400": // 대화방 퇴장
+                        client.ta.append("=========[" + msgs[1] + "]님 퇴장=========\n");
+                        client.ta.setCaretPosition(client.ta.getText().length());
+                        break;
+                    case "202": // 개설된 방의 타이틀 제목 얻기
+                        client.setTitle("채팅방-[" + msgs[1] + "]");
+                        break;
+                } // End of switch-case
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } // End of run
 }
