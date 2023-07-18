@@ -104,7 +104,7 @@ public class Service extends Thread {
 						break;
 
 					case "300":
-						messageRoom("300|[" + nickName + "] ▶▶▶" + msgs[1]);
+						messageRoom("300|[" + nickName + "]  " + msgs[1]);
 						break;
 
 					case "310": // 귓속말 대화
@@ -123,9 +123,9 @@ public class Service extends Thread {
 						}
 						if (targetService != null) {
 					        // Send the whispered message only to the selected user
-					        messageTo(targetService, "320|[귓속말] " + whisperMsg + "\n");
+					        messageTo(targetService, "320|[귓속말 -"+ nickName +"] "+ whisperMsg + "\n");
 					        // Send an acknowledgment to the sender
-					        messageTo(this, "320|[귓속말] " + whisperMsg + "\n");
+					        messageTo(this, "320|[귓속말 -"+ nickName +"] " + whisperMsg + "\n");
 					    } else {
 					        // Send an error message if the selected user is not found
 					        messageTo(this, "320|귓속말 대상 유저를 찾을 수 없습니다.");
@@ -159,7 +159,7 @@ public class Service extends Thread {
 		String str = "";
 		for (int i = 0; i < roomSer.size(); i++) {
 			Room r = roomSer.get(i);
-			str += r.title + "--" + r.count;
+			str += r.title + "- 현재인원  " + r.count+"명";
 			if (i < roomSer.size() - 1)
 				str += ",";
 		}
