@@ -59,7 +59,7 @@ public class ChatClient extends JFrame {
 		sendTF.setBounds(0, 420, 203, 41);
 
 		sp_list.setBounds(207, 3, 74, 183);
-		bt_exit.setBounds(207, 431, 74, 30);
+		bt_exit.setBounds(207, 423, 74, 30);
 		p.setLayout(null);
 		p.setBackground(new Color(64, 128, 128));
 		p.add(sp_ta);
