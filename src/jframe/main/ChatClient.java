@@ -2,6 +2,7 @@ package jframe.main;
 
 import java.awt.Color;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +24,7 @@ import java.net.Socket;
 import javax.swing.SwingConstants;
 
 public class ChatClient extends JFrame {
+	DefaultListModel<String> defaultListModel = new DefaultListModel<>();
 	// 채팅방
 	ImageIcon img = new ImageIcon("./bt_img/cloud.png");
 	JTextField sendTF;
@@ -77,8 +81,8 @@ public class ChatClient extends JFrame {
 		lblNewLabel.setBackground(new Color(255, 255, 255));
 		sp_list.setColumnHeaderView(lblNewLabel);
 		
-				li_inwon = new JList<String>();
-				sp_list.setViewportView(li_inwon);
+		li_inwon = new JList<>(defaultListModel);
+		sp_list.setViewportView(li_inwon);
 		p.add(bt_exit);
 
 		getContentPane().add(p);
