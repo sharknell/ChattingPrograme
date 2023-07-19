@@ -21,6 +21,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.Style;
@@ -45,11 +47,12 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	private boolean panelsVisible = false; // 패널들의 가시성 상태를 저장하는 변수
 	ChatClient client;
 	JPanel panel_chat;
-	String nickName="";
+	String nickName = "";
 	// 소켓 입출력객체
 	BufferedReader in;
 	OutputStream out;
 	String selectedRoom;
+	DefaultListModel<String> listModel;
 
 	JList<String> roomInfo, roommUser, waitInfo;
 
@@ -303,8 +306,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		});
 
 		// this
-		
-		
+
 		// 패널 크기를 JFrame 크기에 맞게 설정
 		addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -369,12 +371,12 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				gaebalVer.setBounds(gaebalVerX, gaebalVerY, 40, 45);
 			}
 		});
-		
+
 		connect(); // 서버연결시도 (in,out객체생성)
 		new Thread(this).start(); // 서버메시지 대기
-		
+
 		sendMsg("100|"); // (대기실)접속 알림
-		 nickName = JOptionPane.showInputDialog(this, "대화명:");
+		nickName = JOptionPane.showInputDialog(this, "대화명:");
 		sendMsg("150|" + nickName); // 대화명 전달
 
 		eventUp();
@@ -382,74 +384,72 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	}// 생성자 끝
 
 	private void eventUp() { // 이벤트소스-이벤트처리부 연결
-        // 대기실(MainChat)
-       
-        // 대화방(ChatClient)
-        client.sendTF.addActionListener(this);
-        client.bt_perChat.addActionListener(this);
-        client.bt_exit.addActionListener(this);
-        
-        panel_1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
+		// 대기실(MainChat)
 
-                // 방제목을 서버에게 전달
-                sendMsg("160|" + title);
-                client.setTitle("채팅방-[" + title + "]");
-                sendMsg("175|"); // 대화방내 인원정보 요청
-                setVisible(false);
-                client.setVisible(true); // 대화방 이동
-            }
-        });
-        
-        // "방들어가기" 이미지 클릭 이벤트
-        panel_2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (selectedRoom == null) {
-                    JOptionPane.showMessageDialog(GaebalTalk.this, "방을 선택하세요!");
-                    return;
-                }
-                sendMsg("200|" + selectedRoom);
-                sendMsg("175|"); // 대화방내 인원정보 요청
-                setVisible(false);
-                client.setVisible(true);
-            }
-        });
-       
-        
-	 client.bt_perChat.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	    	// 선택된 항목 가져오기
-	        String[] userName = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
-	        if (userName.length == 0) {
-	        	JOptionPane.showMessageDialog(GaebalTalk.this, "1:1 대화할 유저를 선택하세요.");
-	        	return;
-	        }
-	        
-	       /* 이거 안됨
-	         if (userName.equals(nickName)) {
-				JOptionPane.showConfirmDialog(GaebalTalk.this, "자신을 선택 할 수 없습니다.");
-			}*/
-	        
-	        String message = JOptionPane.showInputDialog(GaebalTalk.this, "귓속말 메시지");
-	        System.out.println("선택된 항목 : " + userName );
-	        if (message != null && !message.isEmpty()) {
-	            for (String user : userName) {
-	            	System.out.println("310|" + user + "|" + message);
-	                sendMsg("310|" + user + "|" + message);
-	                writeChatLog(client.getTitle(),"[귓속말]" + "[" + user + "]  "  + message);
-	                break;
-	            }
-	        }else {
-				JOptionPane.showMessageDialog(GaebalTalk.this, "메시지를 입력해주세요.");
+		// 대화방(ChatClient)
+		client.sendTF.addActionListener(this);
+		client.bt_perChat.addActionListener(this);
+		client.bt_exit.addActionListener(this);
+
+		panel_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
+
+				// 방제목을 서버에게 전달
+				sendMsg("160|" + title);
+				client.setTitle("채팅방-[" + title + "]");
+				sendMsg("175|"); // 대화방내 인원정보 요청
+				setVisible(false);
+				client.setVisible(true); // 대화방 이동
 			}
-	    }
-	       
-	    
-	 });
+		});
+
+		// "방들어가기" 이미지 클릭 이벤트
+		panel_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (selectedRoom == null) {
+					JOptionPane.showMessageDialog(GaebalTalk.this, "방을 선택하세요!");
+					return;
+				}
+				sendMsg("200|" + selectedRoom);
+				sendMsg("175|"); // 대화방내 인원정보 요청
+				setVisible(false);
+				client.setVisible(true);
+			}
+		});
+
+		client.bt_perChat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 선택된 항목 가져오기
+				String[] userName = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
+				if (userName.length == 0) {
+					JOptionPane.showMessageDialog(GaebalTalk.this, "1:1 대화할 유저를 선택하세요.");
+					return;
+				}
+
+				/*
+				 * 이거 안됨 if (userName.equals(nickName)) {
+				 * JOptionPane.showConfirmDialog(GaebalTalk.this, "자신을 선택 할 수 없습니다."); }
+				 */
+
+				String message = JOptionPane.showInputDialog(GaebalTalk.this, "귓속말 메시지");
+				System.out.println("선택된 항목 : " + userName);
+				if (message != null && !message.isEmpty()) {
+					for (String user : userName) {
+						System.out.println("310|" + user + "|" + message);
+						sendMsg("310|" + user + "|" + message);
+						writeChatLog(client.getTitle(), "[귓속말]" + "[" + user + "]  " + message);
+						break;
+					}
+				} else {
+					JOptionPane.showMessageDialog(GaebalTalk.this, "메시지를 입력해주세요.");
+				}
+			}
+
+		});
 
 	}
 
@@ -474,7 +474,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	public void connect() { // (소켓)서버연결 요청
 		try {
 			// Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
-			Socket s = new Socket("14.42.124.93", 6476); // 연결시도
+			Socket s = new Socket("14.42.124.93", 5535); // 연결시도
 			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			// in: 서버메시지 읽기객체 서버-----msg------>클라이언트
 			out = s.getOutputStream();
@@ -522,18 +522,28 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				 * roommUser.setListData(roommUsers); break;
 				 */
 				case "175": // (대화방에서) 대화방 인원정보
-					String myroommUsers[] = msgs[1].split(",");
-					client.li_inwon.setListData(myroommUsers);
+
+					String myroomUsers[] = msgs[1].split(",");
+					client.defaultListModel.clear(); // 기존 요소 제거
+					for (String user : myroomUsers) {
+						client.defaultListModel.addElement(user);
+					}
 					break;
-				/*
-				 * case "180": // 대기실 인원정보 String waitNames[] = msgs[1].split(",");
-				 * waitInfo.setListData(waitNames); break;
-				 */
+
 				case "200": // 대화방 입장
 					client.ta.append("[" + msgs[1] + "]님이 입장하셨습니다.\n");
 					client.ta.setCaretPosition(client.ta.getText().length());
 					break;
 				case "400": // 대화방 퇴장
+					for (int i = 0; i < client.defaultListModel.getSize(); i++) {
+						String exitUser = client.defaultListModel.getElementAt(i);
+
+						if (exitUser.equals(msgs[1])) {
+							client.defaultListModel.remove(i);
+						}
+
+					}
+
 					client.ta.append("[" + msgs[1] + "]님이 퇴장하셨습니다.\n");
 					client.ta.setCaretPosition(client.ta.getText().length());
 
@@ -560,22 +570,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			e.printStackTrace();
 		}
 	}// End of run
-
-	/*
-	 * 여기 임시 private JTextPane textPane;
-	 * 
-	 * private void highlightText(String searchText, Color color) { textPane = new
-	 * JTextPane(); StyledDocument doc = textPane.getStyledDocument(); Style style =
-	 * textPane.addStyle("Highlight", null); StyleConstants.setForeground(style,
-	 * color);
-	 * 
-	 * String text = textPane.getText(); int pos = 0;
-	 * 
-	 * while ((pos = text.indexOf(searchText, pos)) >= 0) { try {
-	 * doc.setCharacterAttributes(pos, searchText.length(), style, true); pos +=
-	 * searchText.length(); } catch (Exception e) { e.printStackTrace(); } } }// 임시
-	 * 끝
-	 */
 
 	private void createChatLog(String roomTitle) {
 		try {
