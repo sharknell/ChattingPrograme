@@ -57,7 +57,7 @@ public class ChatClient extends JFrame {
 		sp_list = new JScrollPane();
 		
 		bt_exit = new JButton("");
-		bt_exit.setFont(new Font("777별나라달님", Font.PLAIN, 17));
+		bt_exit.setFont(new Font("777별나라달님", Font.PLAIN, 17)); // 글꼴 변경하기
 		bt_exit.setBackground(new Color(255, 255, 255));
 		bt_exit.setLayout(null);
 		bt_exit.setBorderPainted(false);
