@@ -376,10 +376,18 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		new Thread(this).start(); // 서버메시지 대기
 
 		sendMsg("100|"); // (대기실)접속 알림
-		nickName = JOptionPane.showInputDialog(this, "대화명:");
-		sendMsg("150|" + nickName); // 대화명 전달
+		
+		while (true) {
+			nickName = JOptionPane.showInputDialog(this, "닉네임");
+			if (nickName != null && !nickName.isEmpty()) {
+				sendMsg("150|" + nickName); // 대화명 전달
+				eventUp();
+				break;
+			} else {
+				JOptionPane.showMessageDialog(GaebalTalk.this, "닉네임을 입력하세요");
 
-		eventUp();
+			}
+		}
 
 	}// 생성자 끝
 
@@ -395,13 +403,17 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
+				if (title != null && !title.isEmpty()) {
+					// 방제목을 서버에게 전달
+					sendMsg("160|" + title);
+					client.setTitle("채팅방-[" + title + "]");
+					sendMsg("175|"); // 대화방내 인원정보 요청
+					setVisible(false);
+					client.setVisible(true); // 대화방 이동
+				} else {
+					JOptionPane.showMessageDialog(GaebalTalk.this, "방제목을 입력해주세요");
+				}
 
-				// 방제목을 서버에게 전달
-				sendMsg("160|" + title);
-				client.setTitle("채팅방-[" + title + "]");
-				sendMsg("175|"); // 대화방내 인원정보 요청
-				setVisible(false);
-				client.setVisible(true); // 대화방 이동
 			}
 		});
 
