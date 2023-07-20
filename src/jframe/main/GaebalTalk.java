@@ -20,6 +20,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -38,10 +39,11 @@ import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
-    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "gyuho9480!";
-	
+	private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+	private static final String DB_USER = "root";
+	private static final String DB_PASSWORD = "gyuho9480!";
+	Room room;
+	String title;
 	JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
@@ -55,7 +57,8 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	OutputStream out;
 	String selectedRoom;
 	DefaultListModel<String> listModel;
-
+	DefaultListModel<String> listModel2;
+	DefaultListModel<String> roominfoDefault = new DefaultListModel<>();
 	JList<String> roomInfo, roommUser, waitInfo;
 
 	public static JLabel weatherIcon = new JLabel("");
@@ -86,9 +89,9 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	 * @throws IOException
 	 */
 	public GaebalTalk() throws IOException {
-
+		room = new Room();
 		client = new ChatClient();
-		roomInfo = new JList<String>();
+		roomInfo = new JList<String>(roominfoDefault);
 		roomInfo.setBackground(new Color(187, 207, 210));
 		roomInfo.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
 		roomInfo.setBorder(new TitledBorder("방정보"));
@@ -116,28 +119,26 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-
-
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(60, 0, 284, 60);
-		panel_4.setBackground(new Color(255 ,255 ,255));
+		panel_4.setBackground(new Color(255, 255, 255));
 		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER));
-		contentPane.add(panel_4,BorderLayout.NORTH);
-	
+		contentPane.add(panel_4, BorderLayout.NORTH);
+
 		Weather c = new Weather();
 		c.weatherAPI();
-		
-		//온도
-		
+ 
+		// 온도
+
 		temperatureLabel.setText(c.temperature + "C");
-		weatherIcon.setBounds(25,0,50,50);
-		temperatureLabel.setBounds(75,0,50,50);
-	
+		weatherIcon.setBounds(25, 0, 50, 50);
+		temperatureLabel.setBounds(75, 0, 50, 50);
+
 		panel_4.add(weatherIcon);
 		panel_4.add(temperatureLabel);
-		
+
 		temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(27, 35, 42));
 		panel.setBounds(0, 0, 60, 561);
@@ -284,66 +285,66 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		scrollPane.setBounds(10, 10, 266, 478);
 		panel_chat.setLayout(null);
 		panel_chat.add(scrollPane);
-		
+
 		JPanel profileSet = new JPanel();
 		profileSet.setBackground(new Color(185, 207, 210));
 		profileSet.setBounds(60, 280, 284, 281);
 		contentPane.add(profileSet);
 		profileSet.setLayout(null);
-		
+
 		JLabel myName = new JLabel("이름 : ");
 		myName.setHorizontalAlignment(SwingConstants.RIGHT);
 		myName.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myName.setBounds(50, 25, 80, 30);
 		profileSet.add(myName);
-		
+
 		JLabel myPhone = new JLabel("전화번호 : ");
 		myPhone.setHorizontalAlignment(SwingConstants.RIGHT);
 		myPhone.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myPhone.setBounds(50, 55, 80, 30);
 		profileSet.add(myPhone);
-		
+
 		JLabel myID = new JLabel("아이디 : ");
 		myID.setHorizontalAlignment(SwingConstants.RIGHT);
 		myID.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myID.setBounds(50, 85, 80, 30);
 		profileSet.add(myID);
-		
+
 		JPanel changePass = new JPanel();
 		changePass.setBackground(new Color(185, 207, 210));
 		changePass.setBounds(30, 125, 100, 30);
 		profileSet.add(changePass);
-		
+
 		ImageIcon changePW = new ImageIcon("image/비밀번호변경.png");
 		changePass.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel changePs = new JLabel(changePW);
 		changePass.add(changePs);
-		
+
 		changePass.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		ProfliePasswordChangeScreen pwChan = new ProfliePasswordChangeScreen();
-        		pwChan.setVisible(true);
-        	}
-        });
-		
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ProfliePasswordChangeScreen pwChan = new ProfliePasswordChangeScreen();
+				pwChan.setVisible(true);
+			}
+		});
+
 		JPanel withdrawal = new JPanel();
 		withdrawal.setBackground(new Color(185, 207, 210));
 		withdrawal.setBounds(145, 125, 100, 30);
 		profileSet.add(withdrawal);
-		
+
 		ImageIcon withdraw = new ImageIcon("image/회원탈퇴.png");
 		withdrawal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel draw = new JLabel(withdraw);
 		withdrawal.add(draw);
-		
+
 		withdrawal.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		ProfileWithDraw draw = new ProfileWithDraw();
-        		draw.setVisible(true);
-        	}
-        });
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ProfileWithDraw draw = new ProfileWithDraw();
+				draw.setVisible(true);
+			}
+		});
 
 		// 초기에 보이지 않도록 설정
 		panel_5.setVisible(false);
@@ -405,14 +406,14 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				panel_4.setBounds(60, 0, getWidth(), 60);
 				panel_chat.setBounds(60, 60, getWidth(), getHeight());
 				scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
-			
+
 				int x = 10; // x 좌표
 				int y = (int) (panelHeight * 0.8); // y 좌표 (panel 높이의 90% 위치에 설정)
 
 				int profileSetX = (int) (frameWidth * 0.20); // profileSet x 좌표
-	            int profileSetY = (int) (frameHeight * 0.5); // profileSet y 좌표
-	            profileSet.setBounds(profileSetX, profileSetY, 284, 281);
-	            
+				int profileSetY = (int) (frameHeight * 0.5); // profileSet y 좌표
+				profileSet.setBounds(profileSetX, profileSetY, 284, 281);
+
 				panel_3.setBounds(x, y, 40, 42);
 
 				int panel_5X = (int) (frameWidth * 0.20); // panel_5 x 좌표
@@ -425,24 +426,24 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				myProfile.setBounds(myProfileX, myProfileY, 40, 45);
 
 				myProfile.addMouseListener(new MouseAdapter() {
-				    @Override
-				    public void mouseClicked(MouseEvent e) {
-				        // myProfile 패널을 클릭했을 때 다른 패널들을 가립니다.
-				    	panel_5.setVisible(true);
-				        panel_chat.setVisible(false);
-				        display_Icon.setVisible(false);
-				        service.setVisible(false);
-				        font.setVisible(false);
-				        language.setVisible(false);
-				        game.setVisible(false);
-				        notification.setVisible(false);
-				        gaebalVer.setVisible(false);
-				        myProfile.setVisible(false);
-				        // profile 패널만 보이도록 설정
-				        profileSet.setVisible(true);
-				    }
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						// myProfile 패널을 클릭했을 때 다른 패널들을 가립니다.
+						panel_5.setVisible(true);
+						panel_chat.setVisible(false);
+						display_Icon.setVisible(false);
+						service.setVisible(false);
+						font.setVisible(false);
+						language.setVisible(false);
+						game.setVisible(false);
+						notification.setVisible(false);
+						gaebalVer.setVisible(false);
+						myProfile.setVisible(false);
+						// profile 패널만 보이도록 설정
+						profileSet.setVisible(true);
+					}
 				});
-				
+
 				// display_Icon 위치 조정
 				int displayIconX = (int) (frameWidth * 0.52); // display_Icon x 좌표
 				int displayIconY = (int) (frameHeight * 0.5); // display_Icon y 좌표
@@ -484,10 +485,26 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		new Thread(this).start(); // 서버메시지 대기
 
 		sendMsg("100|"); // (대기실)접속 알림
-		nickName = JOptionPane.showInputDialog(this, "대화명:");
-		sendMsg("150|" + nickName); // 대화명 전달
-
-		eventUp();
+		
+		
+		while (true){
+			nickName = JOptionPane.showInputDialog(this, "닉네임");
+			if (nickName != null && !nickName.isEmpty()) {
+				sendMsg("150|" + nickName); // 대화명 전달
+				eventUp();
+				break;
+			}else {
+				int option = JOptionPane.showConfirmDialog(this,"닉네임을 입력해주세요." ,"닉네임",JOptionPane.YES_NO_OPTION);
+				if (option == JOptionPane.YES_OPTION) {
+					continue;
+				}else if (option == JOptionPane.NO_OPTION) {
+					System.exit(0);
+				}
+			}
+			
+		}
+		
+		
 
 	}// 생성자 끝
 
@@ -498,18 +515,25 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		client.sendTF.addActionListener(this);
 		client.bt_perChat.addActionListener(this);
 		client.bt_exit.addActionListener(this);
-
+		client.bt_kick.addActionListener(this);
 		panel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
-
-				// 방제목을 서버에게 전달
-				sendMsg("160|" + title);
-				client.setTitle("채팅방-[" + title + "]");
-				sendMsg("175|"); // 대화방내 인원정보 요청
-				setVisible(false);
-				client.setVisible(true); // 대화방 이동
+				 title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
+				if (title !=null && !title.isEmpty()) {
+					// 방제목을 서버에게 전달
+					sendMsg("160|" + title);
+					client.setTitle("채팅방-[" + title + "]");
+					sendMsg("175|"); // 대화방내 인원정보 요청
+					setVisible(false);
+					client.setVisible(true); // 대화방 이동
+				}
+				else {
+					JOptionPane.showMessageDialog(GaebalTalk.this, "방제목을 입력해주세요.");
+				}
+					
+				
+				
 			}
 		});
 
@@ -528,6 +552,26 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			}
 		});
 
+		client.bt_kick.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] userName = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
+				if (!nickName.equals(client.defaultListModel.get(0))) {
+					JOptionPane.showMessageDialog(GaebalTalk.this, "해당 기능을 이용할 권한이 없습니다.");
+					return;
+				}
+
+				if (userName.length != 0) {
+					System.out.println("선택된 항목 : " + userName);
+					for (String user : userName) {
+						System.out.println("600|" + user + "|" + nickName);
+						sendMsg("600|" + user + "|" + nickName);
+						
+					}
+				}
+			}
+		});
+
 		client.bt_perChat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -538,12 +582,15 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					return;
 				}
 
-				/*
-				 * 이거 안됨 if (userName.equals(nickName)) {
-				 * JOptionPane.showConfirmDialog(GaebalTalk.this, "자신을 선택 할 수 없습니다."); }
-				 */
-
+				for (int i = 0; i < client.defaultListModel.size(); i++) {
+					String user = client.defaultListModel.get(i);
+					if (userName[0].equals(user)) {
+						JOptionPane.showMessageDialog(GaebalTalk.this, "자기 자신을 선택할 수 없습니다."); 
+						break;
+					}
+				}
 				String message = JOptionPane.showInputDialog(GaebalTalk.this, "귓속말 메시지");
+				
 				System.out.println("선택된 항목 : " + userName);
 				if (message != null && !message.isEmpty()) {
 					for (String user : userName) {
@@ -565,7 +612,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
 		if (ob == client.bt_exit) { // 대화방 나가기 요청
-			sendMsg("400|");
+			sendMsg("400|" + title);
 			client.setVisible(false);
 			setVisible(true);
 		} else if (ob == client.sendTF) { // (TextField입력)메시지 보내기 요청
@@ -620,15 +667,46 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					if (msgs.length > 1) {
 						// 개설된 방이 한개 이상이었을때 실행
 						// 개설된 방없음 ----> msg="120|" 였을때 에러
-						String roomNames[] = msgs[1].split(",");
+						//String roomNames[] = msgs[1].split(",");
 						// "자바방--1,오라클방--1,JDBC방--1"
-						roomInfo.setListData(roomNames);
+						//roomInfo.setListData(roomNames);
+
+						String roomNames[] = msgs[1].split(",");
+						roominfoDefault.clear(); // 기존 요소 제거
+						for (String room : roomNames) {
+							roominfoDefault.addElement(room);
+						}
+						break;
 					}
 					break;
 				/*
 				 * case "170": // (대기실에서) 대화방 인원정보 String roommUsers[] = msgs[1].split(",");
 				 * roommUser.setListData(roommUsers); break;
 				 */
+					
+				case "165": // 방삭제
+				    String deleteRoom = msgs[1];
+				    System.out.println(msgs[1]);
+				    for (int i = 0; i < roominfoDefault.size(); i++) {
+				        String room = roominfoDefault.get(i);
+				        String[] splitName = room.split("-");
+				        for (int j = 0; j < splitName.length; j++) {
+				            String ch = splitName[j];
+				            System.out.println(ch);
+				            if (deleteRoom.equals(ch)) {
+				            	
+				                System.out.println(roominfoDefault.get(i));
+				                System.out.println(deleteRoom);
+				                System.out.println(ch);
+				                roominfoDefault.removeElementAt(i);
+				                i--; // 삭제 후 인덱스 조정
+				                break;
+				            }
+				        }
+				    }
+				    break;
+				
+					
 				case "175": // (대화방에서) 대화방 인원정보
 
 					String myroomUsers[] = msgs[1].split(",");
@@ -638,7 +716,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					}
 					break;
 
-				case "200": // 대화방 입장
+				case "200": // 대화 입장
 					client.ta.append("[" + msgs[1] + "]님이 입장하셨습니다.\n");
 					client.ta.setCaretPosition(client.ta.getText().length());
 					break;
@@ -655,9 +733,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					client.ta.append("[" + msgs[1] + "]님이 퇴장하셨습니다.\n");
 					client.ta.setCaretPosition(client.ta.getText().length());
 
-					// 퇴장 시 방장이 퇴장 하면 그 다음 번 유저가 방장상속
-
-					// 방 퇴장 시 남은 인원이 1명도 없다면 방 삭제
+					
 					break;
 
 				case "320": // 귓속말 대화
@@ -672,6 +748,21 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				case "202": // 개설된 방의 타이틀 제목 얻기
 					client.setTitle("채팅방-[" + msgs[1] + "]");
 					break;
+
+				case "610": // 강퇴당한 서버
+
+					client.setVisible(false);
+					setVisible(true);
+
+					// stopClient();
+					break;
+				
+
+				case "701": // 강퇴 알림
+					
+					client.ta.append("[관리자] " + msgs[1] + "님이 강퇴되었습니다.\n");
+					client.ta.setCaretPosition(client.ta.getText().length());
+
 				} // End of switch-case
 			}
 		} catch (IOException e) {
