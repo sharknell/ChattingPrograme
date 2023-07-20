@@ -36,6 +36,7 @@ public class ChatClient extends JFrame {
 	JList<String> li_inwon;
 	JButton bt_exit; // bt_img 파일ㅇ
 	JButton bt_perChat; // bt_img 파일ㅇ
+	JButton bt_kick;
 	JPanel p;
 
 	OutputStream out;
@@ -55,6 +56,11 @@ public class ChatClient extends JFrame {
 
 		sp_ta = new JScrollPane();
 		sp_list = new JScrollPane();
+		
+		
+		
+		
+		
 		
 		bt_exit = new JButton("");
 		bt_exit.setFont(new Font("777별나라달님", Font.PLAIN, 17)); // 글꼴 변경하기
@@ -108,6 +114,10 @@ public class ChatClient extends JFrame {
 		lblNewLabel_1.setFont(new Font("Gadugi", Font.ITALIC, 13));
 		lblNewLabel_1.setBounds(12, 406, 74, 21);
 		p.add(lblNewLabel_1);
+		
+		bt_kick = new JButton("강퇴");
+		bt_kick.setBounds(195, 271, 97, 23);
+		p.add(bt_kick);
 		setBounds(300, 200, 302, 500);
 		sendTF.requestFocus();
 
