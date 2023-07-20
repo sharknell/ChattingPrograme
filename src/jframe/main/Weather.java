@@ -1,31 +1,21 @@
 package jframe.main;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class WeatherPanel extends JPanel {
-    public JLabel weatherLabel;
-    public JLabel temperatureLabel;
+import static jframe.main.GaebalTalk.weatherIcon;
+
+public class Weather  {
 
     public double temperature;
     public String weatherDescription;
-    public WeatherPanel(){
-        setLayout(new FlowLayout());
-
-        weatherLabel = new JLabel("Weather: ");
-        temperatureLabel = new JLabel("Temperature: ");
-
-        add(weatherLabel);
-        add(temperatureLabel);
-
+    public Weather(){
         try {
             String apiKey = "388edff619a8463cbaf74088ced200f4"; // Weatherbit API 키
             String apiUrl = "https://api.weatherbit.io/v2.0/current?city=Seoul&key=" + apiKey;
@@ -59,6 +49,28 @@ public class WeatherPanel extends JPanel {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public void weatherAPI(){
+        if (weatherDescription.equals("Clear sky")) {
+
+           weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/clearsky.png"));
+        } else if (weatherDescription.equals("Mist") || weatherDescription.equals("Fog") ||
+                weatherDescription.equals("Haze") || weatherDescription.equals("Smoke")) {
+            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/mist.png"));
+        } else if (weatherDescription.equals("Cloudy") || weatherDescription.equals("Overcast clouds")) {
+            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/cloudy.png"));
+        } else if (weatherDescription.equals("Few clouds") || weatherDescription.equals("Scattered clouds") ||
+                weatherDescription.equals("Broken clouds")) {
+            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/fewcl.png"));
+        } else if (weatherDescription.equals("Shower rain") || weatherDescription.equals("Rain") ||
+                weatherDescription.equals("Thunderstorm")) {
+            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/sgiw.png"));
+        } else if (weatherDescription.equals("Snow") || weatherDescription.equals("Sleet") ||
+                weatherDescription.equals("Freezing rain")) {
+            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/sbow.png"));
         }
     }
 }
