@@ -123,10 +123,21 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		panel_4.setBackground(new Color(255 ,255 ,255));
 		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER));
 		contentPane.add(panel_4,BorderLayout.NORTH);
-
+	
 		Weather c = new Weather();
 		c.weatherAPI();
-
+		
+		//온도
+		
+		temperatureLabel.setText(c.temperature + "C");
+		weatherIcon.setBounds(25,0,50,50);
+		temperatureLabel.setBounds(75,0,50,50);
+	
+		panel_4.add(weatherIcon);
+		panel_4.add(temperatureLabel);
+		
+		temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(27, 35, 42));
 		panel.setBounds(0, 0, 60, 561);
@@ -393,13 +404,15 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				panel.setBounds(0, 0, 60, getHeight());
 				panel_4.setBounds(60, 0, getWidth(), 60);
 				panel_chat.setBounds(60, 60, getWidth(), getHeight());
-				profileSet.setBounds(60, 280, getWidth(), getHeight());
 				scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
-				scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
-
+			
 				int x = 10; // x 좌표
 				int y = (int) (panelHeight * 0.8); // y 좌표 (panel 높이의 90% 위치에 설정)
 
+				int profileSetX = (int) (frameWidth * 0.20); // profileSet x 좌표
+	            int profileSetY = (int) (frameHeight * 0.5); // profileSet y 좌표
+	            profileSet.setBounds(profileSetX, profileSetY, 284, 281);
+	            
 				panel_3.setBounds(x, y, 40, 42);
 
 				int panel_5X = (int) (frameWidth * 0.20); // panel_5 x 좌표
