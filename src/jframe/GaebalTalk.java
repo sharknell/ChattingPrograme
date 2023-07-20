@@ -26,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import jframe.menu.english.EngVerFirstSwing;
+import org.json.JSONArray;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	JPanel panel;
@@ -43,6 +44,8 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 	JList<String> roomInfo, roommUser, waitInfo;
 
+	public static JLabel weatherIcon = new JLabel("");
+	public static JLabel temperatureLabel = new JLabel("");
 	// 로그 파일 경로
 	private static final String LOG_DIRECTORY = "D:/chat_log";
 
@@ -53,6 +56,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+
 					GaebalTalk frame = new GaebalTalk();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -96,8 +100,8 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-// 날씨정보 api 
-		WeatherPanel c = new WeatherPanel();
+
+
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(60, 0, 284, 60);
 		panel_4.setBackground(new Color(255, 255, 255));
@@ -105,27 +109,9 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		contentPane.add(panel_4 , BorderLayout.NORTH);
 
 
-		JLabel weatherIcon = new JLabel("");
-		JLabel temperatureLabel = new JLabel("");
+		Weather c = new Weather();
+		c.weatherAPI();
 
-// 날씨 상태에 따라 사진 설정
-		if (c.weatherDescription.equals("Clear sky")) {
-			weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/clearsky.png"));
-		} else if (c.weatherDescription.equals("Mist") || c.weatherDescription.equals("Fog") ||
-				c.weatherDescription.equals("Haze") || c.weatherDescription.equals("Smoke")) {
-			weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/mist.png"));
-		} else if (c.weatherDescription.equals("Cloudy") || c.weatherDescription.equals("Overcast clouds")) {
-			weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/cloudy.png"));
-		} else if (c.weatherDescription.equals("Few clouds") || c.weatherDescription.equals("Scattered clouds") ||
-				c.weatherDescription.equals("Broken clouds")) {
-			weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/fewcl.png"));
-		} else if (c.weatherDescription.equals("Shower rain") || c.weatherDescription.equals("Rain") ||
-				c.weatherDescription.equals("Thunderstorm")) {
-			weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/sgiw.png"));
-		} else if (c.weatherDescription.equals("Snow") || c.weatherDescription.equals("Sleet") ||
-				c.weatherDescription.equals("Freezing rain")) {
-			weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/sbow.png"));
-		}
 
 // 온도 출력
 		temperatureLabel.setText(c.temperature + "°C");
