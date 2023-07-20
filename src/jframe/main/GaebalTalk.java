@@ -29,17 +29,19 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.ListModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import jframe.menu.EngVerFirstSwing;
+import jframe.menu.ProfileWithDraw;
+import jframe.menu.ProfliePasswordChangeScreen;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "gyuho9480!";
+	
 	JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
@@ -261,6 +263,66 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		scrollPane.setBounds(10, 10, 266, 478);
 		panel_chat.setLayout(null);
 		panel_chat.add(scrollPane);
+		
+		JPanel profileSet = new JPanel();
+		profileSet.setBackground(new Color(185, 207, 210));
+		profileSet.setBounds(60, 280, 284, 281);
+		contentPane.add(profileSet);
+		profileSet.setLayout(null);
+		
+		JLabel myName = new JLabel("이름 : ");
+		myName.setHorizontalAlignment(SwingConstants.RIGHT);
+		myName.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
+		myName.setBounds(50, 25, 80, 30);
+		profileSet.add(myName);
+		
+		JLabel myPhone = new JLabel("전화번호 : ");
+		myPhone.setHorizontalAlignment(SwingConstants.RIGHT);
+		myPhone.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
+		myPhone.setBounds(50, 55, 80, 30);
+		profileSet.add(myPhone);
+		
+		JLabel myID = new JLabel("아이디 : ");
+		myID.setHorizontalAlignment(SwingConstants.RIGHT);
+		myID.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
+		myID.setBounds(50, 85, 80, 30);
+		profileSet.add(myID);
+		
+		JPanel changePass = new JPanel();
+		changePass.setBackground(new Color(185, 207, 210));
+		changePass.setBounds(30, 125, 100, 30);
+		profileSet.add(changePass);
+		
+		ImageIcon changePW = new ImageIcon("image/비밀번호변경.png");
+		changePass.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JLabel changePs = new JLabel(changePW);
+		changePass.add(changePs);
+		
+		changePass.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		ProfliePasswordChangeScreen pwChan = new ProfliePasswordChangeScreen();
+        		pwChan.setVisible(true);
+        	}
+        });
+		
+		JPanel withdrawal = new JPanel();
+		withdrawal.setBackground(new Color(185, 207, 210));
+		withdrawal.setBounds(145, 125, 100, 30);
+		profileSet.add(withdrawal);
+		
+		ImageIcon withdraw = new ImageIcon("image/회원탈퇴.png");
+		withdrawal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JLabel draw = new JLabel(withdraw);
+		withdrawal.add(draw);
+		
+		withdrawal.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		ProfileWithDraw draw = new ProfileWithDraw();
+        		draw.setVisible(true);
+        	}
+        });
 
 		// 초기에 보이지 않도록 설정
 		panel_5.setVisible(false);
@@ -272,6 +334,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		game.setVisible(false);
 		notification.setVisible(false);
 		gaebalVer.setVisible(false);
+		profileSet.setVisible(false);
 
 		panel_3.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -289,6 +352,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					game.setVisible(true);
 					notification.setVisible(true);
 					gaebalVer.setVisible(true);
+					profileSet.setVisible(false);
 				} else {
 					// 패널들을 가립니다.
 					panel_chat.setVisible(true);
@@ -301,6 +365,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					game.setVisible(false);
 					notification.setVisible(false);
 					gaebalVer.setVisible(false);
+					profileSet.setVisible(false);
 				}
 			}
 		});
@@ -318,6 +383,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				panel.setBounds(0, 0, 60, getHeight());
 				panel_4.setBounds(60, 0, getWidth(), 60);
 				panel_chat.setBounds(60, 60, getWidth(), getHeight());
+				profileSet.setBounds(60, 280, getWidth(), getHeight());
 				scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
 				scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
 
@@ -335,6 +401,25 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				int myProfileY = (int) (frameHeight * 0.5); // myProfile y 좌표
 				myProfile.setBounds(myProfileX, myProfileY, 40, 45);
 
+				myProfile.addMouseListener(new MouseAdapter() {
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // myProfile 패널을 클릭했을 때 다른 패널들을 가립니다.
+				    	panel_5.setVisible(true);
+				        panel_chat.setVisible(false);
+				        display_Icon.setVisible(false);
+				        service.setVisible(false);
+				        font.setVisible(false);
+				        language.setVisible(false);
+				        game.setVisible(false);
+				        notification.setVisible(false);
+				        gaebalVer.setVisible(false);
+				        myProfile.setVisible(false);
+				        // profile 패널만 보이도록 설정
+				        profileSet.setVisible(true);
+				    }
+				});
+				
 				// display_Icon 위치 조정
 				int displayIconX = (int) (frameWidth * 0.52); // display_Icon x 좌표
 				int displayIconY = (int) (frameHeight * 0.5); // display_Icon y 좌표
@@ -376,18 +461,10 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		new Thread(this).start(); // 서버메시지 대기
 
 		sendMsg("100|"); // (대기실)접속 알림
-		
-		while (true) {
-			nickName = JOptionPane.showInputDialog(this, "닉네임");
-			if (nickName != null && !nickName.isEmpty()) {
-				sendMsg("150|" + nickName); // 대화명 전달
-				eventUp();
-				break;
-			} else {
-				JOptionPane.showMessageDialog(GaebalTalk.this, "닉네임을 입력하세요");
+		nickName = JOptionPane.showInputDialog(this, "대화명:");
+		sendMsg("150|" + nickName); // 대화명 전달
 
-			}
-		}
+		eventUp();
 
 	}// 생성자 끝
 
@@ -403,17 +480,13 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
-				if (title != null && !title.isEmpty()) {
-					// 방제목을 서버에게 전달
-					sendMsg("160|" + title);
-					client.setTitle("채팅방-[" + title + "]");
-					sendMsg("175|"); // 대화방내 인원정보 요청
-					setVisible(false);
-					client.setVisible(true); // 대화방 이동
-				} else {
-					JOptionPane.showMessageDialog(GaebalTalk.this, "방제목을 입력해주세요");
-				}
 
+				// 방제목을 서버에게 전달
+				sendMsg("160|" + title);
+				client.setTitle("채팅방-[" + title + "]");
+				sendMsg("175|"); // 대화방내 인원정보 요청
+				setVisible(false);
+				client.setVisible(true); // 대화방 이동
 			}
 		});
 
@@ -486,7 +559,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	public void connect() { // (소켓)서버연결 요청
 		try {
 			// Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
-			Socket s = new Socket("14.42.124.93", 5535); // 연결시도
+			Socket s = new Socket("localHost", 5509); // 연결시도
 			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			// in: 서버메시지 읽기객체 서버-----msg------>클라이언트
 			out = s.getOutputStream();
