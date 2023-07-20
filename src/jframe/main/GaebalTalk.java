@@ -58,6 +58,9 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 	JList<String> roomInfo, roommUser, waitInfo;
 
+	public static JLabel weatherIcon = new JLabel("");
+	public static JLabel temperatureLabel = new JLabel("");
+
 	// 로그 파일 경로
 	private static final String LOG_DIRECTORY = "D:/chat_log";
 
@@ -113,9 +116,16 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+
+
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(60, 0, 284, 60);
-		contentPane.add(panel_4);
+		panel_4.setBackground(new Color(255 ,255 ,255));
+		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER));
+		contentPane.add(panel_4,BorderLayout.NORTH);
+
+		Weather c = new Weather();
+		c.weatherAPI();
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(27, 35, 42));
