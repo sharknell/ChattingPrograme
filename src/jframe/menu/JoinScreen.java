@@ -1,14 +1,17 @@
 package jframe.menu;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -39,10 +42,27 @@ public class JoinScreen extends JFrame {
     private JTextField textField_3;
     private JTextField textField_4;
     private JPasswordField passwordField;
-    
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "gyuho9480!";
+
+    private boolean isAuthenticationCompleted = false;
+
+    // 인증이 완료되었는지 여부를 반환하는 메서드
+    public boolean isAuthenticationCompleted() {
+        return isAuthenticationCompleted;
+    }
+
+    // 인증이 완료되었다고 설정하는 메서드
+    public void setAuthenticationCompleted(boolean completed) {
+        isAuthenticationCompleted = completed;
+    }
 
     private boolean isEmailSent = false; // 이메일 발송 여부
     private String verificationCode; // 랜덤 인증 코드
+
+    // 회원 아이디를 저장할 ArrayList
+    private List<String> registeredIds = new ArrayList<>();
 
     /**
      * Launch the application.
@@ -186,14 +206,7 @@ public class JoinScreen extends JFrame {
         textField_4.setBounds(129, 311, 130, 20);
         textField_4.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_4);
-/*
-        textField_5 = new JTextField();
-        textField_5.setForeground(new Color(255, 255, 255));
-        textField_5.setBackground(new Color(155, 174, 176));
-        textField_5.setBounds(129, 341, 130, 20);
-        textField_5.setBorder(BorderFactory.createEmptyBorder());
-        contentPane.add(textField_5);
-*/
+
         // DocumentFilter를 생성하여 textField_4에 적용
         ((AbstractDocument) textField_4.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
@@ -237,64 +250,70 @@ public class JoinScreen extends JFrame {
         lblImage_1.setBounds(106, 270, 38, 20);
         panel_1.add(lblImage_1);
 
+        // JoinScreen 클래스의 마우스 클릭 이벤트 업데이트
         panel_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String id = textField.getText();
-                String password = new String(passwordField.getPassword());
-                String name = textField_2.getText();
-                String phoneNumber = textField_3.getText();
-                String RRN = textField_4.getText();
+                JoinScreen joinScreen = (JoinScreen) JoinScreen.this;
+                if (joinScreen.isAuthenticationCompleted()) {
+                    String id = textField.getText();
+                    String password = new String(passwordField.getPassword());
+                    String name = textField_2.getText();
+                    String phoneNumber = textField_3.getText();
+                    String RRN = textField_4.getText();
 
+                    List<String> errorMessages = new ArrayList<>();
 
-                List<String> errorMessages = new ArrayList<>();
-
-                if (id.isEmpty()) {
-                    errorMessages.add("I D");
-                }
-                if (password.isEmpty()) {
-                    errorMessages.add("PW");
-                }
-                if (name.isEmpty()) {
-                    errorMessages.add("Name");
-                }
-                if (phoneNumber.isEmpty()) {
-                    errorMessages.add("Phone");
-                }
-                if (RRN.isEmpty()) {
-                    errorMessages.add("IDNum");
-                }
-                if (!errorMessages.isEmpty()) {
-                    StringBuilder errorMessage = new StringBuilder("다음 항목이 입력되지 않았거나 올바르지 않습니다:\n");
-                    for (String error : errorMessages) {
-                        errorMessage.append("- ").append(error).append("\n");
+                    // 아이디 중복 여부 확인
+                    if (id.isEmpty()) {
+                        errorMessages.add("I D");
+                    } else if (isIdDuplicated(id)) {
+                        errorMessages.add("중복된 아이디입니다.");
                     }
-                    JOptionPane.showMessageDialog(JoinScreen.this, errorMessage.toString());
 
-                    // 필드 내용 초기화
-                    textField.setText("");
-                    passwordField.setText("");
-                    textField_2.setText("");
-                    textField_3.setText("");
-                    textField_4.setText("");
+                    if (password.isEmpty()) {
+                        errorMessages.add("PW");
+                    }
+                    if (name.isEmpty()) {
+                        errorMessages.add("Name");
+                    }
+                    if (phoneNumber.isEmpty()) {
+                        errorMessages.add("Phone");
+                    }
+                    if (RRN.isEmpty()) {
+                        errorMessages.add("IDNum");
+                    }
+                    if (!errorMessages.isEmpty()) {
+                        StringBuilder errorMessage = new StringBuilder("다음 항목이 입력되지 않았거나 올바르지 않습니다:\n");
+                        for (String error : errorMessages) {
+                            errorMessage.append("- ").append(error).append("\n");
+                        }
+                        JOptionPane.showMessageDialog(JoinScreen.this, errorMessage.toString());
 
-                    // 선택된 필드로 포커스 이동
-                    textField.requestFocusInWindow();
-                    return;
-                }
+                        textField.setText("");
+                        passwordField.setText("");
+                        textField_2.setText("");
+                        textField_3.setText("");
+                        textField_4.setText("");
+                        textField.requestFocusInWindow();
+                        return;
+                    }
 
-                MemberDTO memberDTO = new MemberDTO();
-                memberDTO.setId(id);
-                memberDTO.setName(name);
-                memberDTO.setPassword(new String(passwordField.getPassword()));
-                memberDTO.setPhonenumber(phoneNumber);
-                memberDTO.setRRN(RRN);
+                    MemberDTO memberDTO = new MemberDTO();
+                    memberDTO.setId(id);
+                    memberDTO.setName(name);
+                    memberDTO.setPassword(new String(passwordField.getPassword()));
+                    memberDTO.setPhonenumber(phoneNumber);
+                    memberDTO.setRRN(RRN);
 
-                if (SignUp.registerMember(memberDTO)) {
-                    JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!");
-                    FirstSwing main = new FirstSwing();
-                    main.setVisible(true);
-                    JoinScreen.this.dispose();
+                    if (SignUp.registerMember(memberDTO)) {
+                        JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!");
+                        FirstSwing main = new FirstSwing();
+                        main.setVisible(true);
+                        JoinScreen.this.dispose();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(JoinScreen.this, "인증이 완료되지 않았습니다.");
                 }
             }
         });
@@ -309,19 +328,19 @@ public class JoinScreen extends JFrame {
         JLabel lblImage_2 = new JLabel(imageIcon_2);
         lblImage_2.setBounds(106, 270, 38, 20);
         panel_2.add(lblImage_2);
-        
+
         JPanel panel_3 = new JPanel();
         panel_3.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		Authenticate atc = new Authenticate();
-        		atc.setVisible(true);
-        	}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Authenticate atc = new Authenticate();
+                atc.setVisible(true);
+            }
         });
         panel_3.setBackground(new Color(185, 207, 210));
         panel_3.setBounds(189, 330, 70, 25);
         contentPane.add(panel_3);
-        
+
         ImageIcon imageIcon_3 = new ImageIcon("image/authenticate.png");
         JLabel lblImage_3 = new JLabel(imageIcon_3);
         lblImage_3.setBounds(106, 270, 38, 20);
@@ -337,15 +356,39 @@ public class JoinScreen extends JFrame {
         });
     }
 
-    private String generateVerificationCode() {
-        if (verificationCode == null) {
-            Random random = new Random();
-            StringBuilder codeBuilder = new StringBuilder();
-            for (int i = 0; i < 6; i++) {
-                codeBuilder.append(random.nextInt(10));
+    // 아이디 중복 여부 확인 메서드
+    private boolean isIdDuplicated(String id) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        boolean isDuplicated = false;
+
+        try {
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            String query = "SELECT COUNT(*) FROM members WHERE id = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                isDuplicated = count > 0;
             }
-            verificationCode = codeBuilder.toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return verificationCode;
+
+        return isDuplicated;
     }
+
+    
+
 }
