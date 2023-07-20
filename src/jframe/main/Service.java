@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.midi.Soundbank;
 import javax.swing.JOptionPane;
 
 public class Service extends Thread {
@@ -58,7 +59,7 @@ public class Service extends Thread {
 						messageWait("160|" + getRoomInfo());
 						messageWait("180|" + getWaitInwon());
 						break;
-
+					
 					case "160":
 						myRoom = new Room();
 						myRoom.title = msgs[1];
@@ -117,33 +118,84 @@ public class Service extends Thread {
 							if (service.nickName.equals(targetUser)) {
 								targetService = service;
 								break;
-								
-								
 							}
 						}
 						if (targetService != null) {
-					        // Send the whispered message only to the selected user
+					        // 귓속말 타켓 서비스(클라이언트 소켓) 에게 전달
 					        messageTo(targetService, "320|[귓속말 -"+ nickName +"] "+ whisperMsg + "\n");
-					        // Send an acknowledgment to the sender
+					        // 귓속말 보내는 사람에 채팅창에도 뜨게 만듦
 					        messageTo(this, "320|[귓속말 -"+ nickName +"] " + whisperMsg + "\n");
 					    } else {
-					        // Send an error message if the selected user is not found
+				
 					        messageTo(this, "320|귓속말 대상 유저를 찾을 수 없습니다.");
 					    }
 					    break;
-							
+					    
+					    
+					case "600": // 강퇴
 						
+						String target = msgs[1];
+						
+						Service targetServ = null;
 
-					case "400":
-						myRoom.count--;
-						messageRoom("400|" + nickName);
+						// 대상 사용자 찾기
+						for (Service service : myRoom.user) {
+							if (service.nickName.equals(target)) {
+								targetServ = service;
+								break;
+							}
+						}
+						if (targetServ != null) {
+					        messageTo(targetServ, "610|"); // 강퇴당한 유저
+					       
+					        disconnect(targetServ); // 사용자를 강퇴 처리
+					        
+					    }
+						messageRoom("701|" + target);
+						
+					    break;
+					
+						
+					case "700":
+						String target2 = msgs[1];
+						Service targetServ2 = null;
 
-						myRoom.user.remove(this);
-						wait.add(this);
+						// 대상 사용자 찾기
+						for (Service service : myRoom.user) {
+							if (service.nickName.equals(target2)) {
+								targetServ2 = service;
+								myRoom.user.remove(targetServ2);
+								
+								break;
+							} if (targetServ2 != null) {
+						        myRoom.count--;
+						        messageRoom("175|" + getRoomInwon());
+						        messageWait("160|" + getRoomInfo());
+						        messageRoom("701|" + target2);
+						    }
+							
+						}
 
-						messageRoom("175|" + getRoomInwon());
-						messageWait("160|" + getRoomInfo());
 						break;
+					
+						case "400":
+							System.out.println(msgs[1] + "server");
+						    if (myRoom.count == 1) {
+						    	System.out.println(msgs[1]);
+						        messageRoom("165|" + msgs[1]); // 방 삭제를 알림
+						        roomSer.remove(myRoom); // 방 목록에서 해당 방을 삭제
+						        myRoom = null;
+						    } else if (myRoom.count > 1) {
+						        myRoom.count--;
+						        messageRoom("400|" + nickName); // 다른 사용자들에게 퇴장 메시지 전송
+						        
+						        myRoom.user.remove(this); // 사용자를 방에서 제거
+						        wait.add(this); // 대기방 목록에 사용자 추가
+
+						        messageRoom("175|" + getRoomInwon()); // 방의 사용자 목록을 업데이트
+						        messageWait("160|" + getRoomInfo()); // 대기방의 방 목록을 업데이트
+						    }
+						    break;
 					}
 
 				}
@@ -252,6 +304,21 @@ public class Service extends Thread {
 	        myRoom.user.remove(service);
 	        System.out.println("클라이언트 접속 끊음!!");
 	    }
+	}
+	
+	public void disconnect(Service service) {
+		/*try {
+			service.socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		myRoom.count--;
+		myRoom.user.remove(service);
+		messageRoom("175|" + getRoomInwon());
+		messageWait("160|" + getRoomInfo());
+		
+
 	}
 	
 }
