@@ -96,7 +96,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+// 날씨정보 api 
 		WeatherPanel c = new WeatherPanel();
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(60, 0, 284, 60);
