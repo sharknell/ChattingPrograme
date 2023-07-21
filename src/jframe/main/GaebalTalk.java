@@ -34,19 +34,21 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import chatdb.MemberDTO;
 import jframe.menu.EngVerFirstSwing;
 import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
+import javax.swing.border.LineBorder;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
-	private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
-	private static final String DB_USER = "root";
-	private static final String DB_PASSWORD = "gyuho9480!";
+
 	Room room;
 	String title;
 	JPanel panel;
-	private JPanel panel_1;
-	private JPanel panel_2;
+	public JPanel panel_1;
+	public JPanel panel_2;
+	public JPanel panel_3;
+	public JPanel panel_4;
 	private JPanel contentPane;
 	private boolean panelsVisible = false; // 패널들의 가시성 상태를 저장하는 변수
 	ChatClient client;
@@ -60,6 +62,13 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	DefaultListModel<String> listModel2;
 	DefaultListModel<String> roominfoDefault = new DefaultListModel<>();
 	JList<String> roomInfo, roommUser, waitInfo;
+	
+	MemberDTO member = new MemberDTO();
+	   
+	public static JLabel dbName = new JLabel("");
+	public static JLabel dbId = new JLabel("");
+	public static JLabel dbPhonenumber = new JLabel("");
+
 
 	public static JLabel weatherIcon = new JLabel("");
 	public static JLabel temperatureLabel = new JLabel("");
@@ -89,10 +98,11 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	 * @throws IOException
 	 */
 	public GaebalTalk() throws IOException {
+		setBackground(new Color(245, 245, 245));
 		room = new Room();
 		client = new ChatClient();
 		roomInfo = new JList<String>(roominfoDefault);
-		roomInfo.setBackground(new Color(187, 207, 210));
+		roomInfo.setBackground(new Color(245, 245, 245));
 		roomInfo.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
 		roomInfo.setBorder(new TitledBorder("방정보"));
 
@@ -112,41 +122,42 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 600);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(185, 207, 210));
+		contentPane.setBackground(new Color(245, 245, 245));
 		contentPane.setForeground(new Color(185, 207, 210));
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JPanel panel_4 = new JPanel();
+		panel_4 = new JPanel();
 		panel_4.setBounds(60, 0, 284, 60);
 		panel_4.setBackground(new Color(255, 255, 255));
 		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER));
 		contentPane.add(panel_4, BorderLayout.NORTH);
 
-		Weather c = new Weather();
-		c.weatherAPI();
+		//Weather c = new Weather();
+		//c.weatherAPI();
  
 		// 온도
 
-		temperatureLabel.setText(c.temperature + "C");
-		weatherIcon.setBounds(25, 0, 50, 50);
-		temperatureLabel.setBounds(75, 0, 50, 50);
+		//temperatureLabel.setText(c.temperature + "C");
+		//weatherIcon.setBounds(25, 0, 50, 50);
+		//temperatureLabel.setBounds(75, 0, 50, 50);
 
-		panel_4.add(weatherIcon);
-		panel_4.add(temperatureLabel);
+		//panel_4.add(weatherIcon);
+		//panel_4.add(temperatureLabel);
 
-		temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
+		//temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel.setBackground(new Color(27, 35, 42));
 		panel.setBounds(0, 0, 60, 561);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
 		panel_1 = new JPanel();
-		panel_1.setBounds(10, 20, 40, 40);
+		panel_1.setBounds(10, 20, 40, 45);
 		panel_1.setBackground(new Color(27, 35, 42));
 		panel_1.setBorder(null);
 		panel.add(panel_1);
@@ -158,7 +169,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 		panel_2 = new JPanel();
 		panel_2.setBackground(new Color(27, 35, 42));
-		panel_2.setBounds(10, 90, 40, 40);
+		panel_2.setBounds(10, 90, 40, 45);
 		panel.add(panel_2);
 
 		ImageIcon imageIcon_1 = new ImageIcon("image/speech.png");
@@ -166,74 +177,88 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		lblImage_1.setBounds(106, 270, 38, 20);
 		panel_2.add(lblImage_1);
 
-		JPanel panel_3 = new JPanel();
+		panel_3 = new JPanel();
 		panel_3.setBackground(new Color(27, 35, 42));
-		panel_3.setBounds(10, 500, 40, 42);
+		panel_3.setBounds(10, 500, 40, 50);
 		panel.add(panel_3);
 
 		ImageIcon imageIcon_2 = new ImageIcon("image/setting.png");
 		JLabel lblImage_2 = new JLabel(imageIcon_2);
-		lblImage_2.setBounds(106, 270, 38, 20);
+		lblImage_2.setBounds(106, 270, 38, 45);
 		panel_3.add(lblImage_2);
 
 		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(new Color(187, 207, 210));
+		panel_5.setBackground(new Color(245, 245, 245));
 		panel_5.setBounds(60, 60, 284, 220);
 		contentPane.add(panel_5);
 
 		ImageIcon panel_5Icon = new ImageIcon("image/dePro.png");
 		panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel panel_5Image = new JLabel(panel_5Icon);
+		panel_5Image.setBackground(new Color(245, 245, 245));
 		panel_5.add(panel_5Image);
 
 		JPanel myProfile = new JPanel();
-		myProfile.setBackground(new Color(187, 207, 210));
+		myProfile.setBackground(new Color(245, 245, 245));
 		myProfile.setBounds(100, 300, 40, 45);
 		contentPane.add(myProfile);
 
 		ImageIcon profile = new ImageIcon("image/myProfile.png");
 		myProfile.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel myPro = new JLabel(profile);
+		myPro.setBackground(new Color(245, 245, 245));
 		myProfile.add(myPro);
 
 		JPanel display_Icon = new JPanel();
-		display_Icon.setBackground(new Color(187, 207, 210));
+		display_Icon.setBackground(new Color(245, 245, 245));
 		display_Icon.setBounds(182, 300, 40, 45);
 		contentPane.add(display_Icon);
 
 		ImageIcon color = new ImageIcon("image/dark_or_light.png");
 		display_Icon.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel displayColor = new JLabel(color);
+		displayColor.setBackground(new Color(245, 245, 245));
 		display_Icon.add(displayColor);
+		
+		display_Icon.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        super.mouseClicked(e);
+		        DarkModeChanger.toggleDarkMode(GaebalTalk.this); // 다크 모드와 라이트 모드를 번갈아가며 적용
+		    }
+		});
 
 		JPanel service = new JPanel();
-		service.setBackground(new Color(187, 207, 210));
+		service.setBackground(new Color(245, 245, 245));
 		service.setBounds(264, 310, 40, 45);
 		contentPane.add(service);
 
 		ImageIcon serviceCenter = new ImageIcon("image/callCenter.png");
 		service.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel callCenter = new JLabel(serviceCenter);
+		callCenter.setBackground(new Color(245, 245, 245));
 		service.add(callCenter);
 
 		JPanel font = new JPanel();
-		font.setBackground(new Color(187, 207, 210));
+		font.setBackground(new Color(245, 245, 245));
 		font.setBounds(100, 380, 40, 45);
 		contentPane.add(font);
 
 		ImageIcon kor_font = new ImageIcon("image/fontSize.png");
 		font.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel korFont = new JLabel(kor_font);
+		korFont.setBackground(new Color(245, 245, 245));
 		font.add(korFont);
 
 		JPanel language = new JPanel();
-		language.setBackground(new Color(187, 207, 210));
+		language.setBackground(new Color(245, 245, 245));
 		language.setBounds(182, 380, 40, 45);
 		contentPane.add(language);
 
 		ImageIcon kor_lang = new ImageIcon("image/korVer.png");
 		language.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel korVer = new JLabel(kor_lang);
+		korVer.setBackground(new Color(245, 245, 245));
 		language.add(korVer);
 
 		language.addMouseListener(new MouseAdapter() {
@@ -246,39 +271,42 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		});
 
 		JPanel game = new JPanel();
-		game.setBackground(new Color(187, 207, 210));
+		game.setBackground(new Color(245, 245, 245));
 		game.setBounds(264, 380, 40, 45);
 		contentPane.add(game);
 
 		ImageIcon gaeGame = new ImageIcon("image/game.png");
 		game.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel gaeGameIcon = new JLabel(gaeGame);
+		gaeGameIcon.setBackground(new Color(245, 245, 245));
 		game.add(gaeGameIcon);
 
 		JPanel notification = new JPanel();
-		notification.setBackground(new Color(187, 207, 210));
+		notification.setBackground(new Color(245, 245, 245));
 		notification.setBounds(100, 460, 40, 45);
 		contentPane.add(notification);
 
 		ImageIcon siren = new ImageIcon("image/siren.png");
 		notification.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel notificationIcon = new JLabel(siren);
+		notificationIcon.setBackground(new Color(245, 245, 245));
 		notification.add(notificationIcon);
 
 		JPanel gaebalVer = new JPanel();
-		gaebalVer.setBackground(new Color(187, 207, 210));
+		gaebalVer.setBackground(new Color(245, 245, 245));
 		gaebalVer.setBounds(182, 460, 40, 45);
 		contentPane.add(gaebalVer);
 
 		ImageIcon ver = new ImageIcon("image/gaebalVer.png");
 		gaebalVer.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel gaever = new JLabel(ver);
+		gaever.setBackground(new Color(245, 245, 245));
 		gaebalVer.add(gaever);
 
-		JPanel panel_chat = new JPanel();
+		panel_chat = new JPanel();
 		panel_chat.setLayout(new BorderLayout());
-		panel_chat.setBackground(new Color(187, 207, 210));
-		panel_chat.setBounds(60, 60, 284, 501);
+		panel_chat.setBackground(new Color(245, 245, 245));
+		panel_chat.setBounds(60, 60, 284, 381);
 		contentPane.add(panel_chat);
 
 		JScrollPane scrollPane = new JScrollPane(roomInfo);
@@ -287,37 +315,60 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		panel_chat.add(scrollPane);
 
 		JPanel profileSet = new JPanel();
-		profileSet.setBackground(new Color(185, 207, 210));
+		profileSet.setBackground(new Color(245, 245, 245));
 		profileSet.setBounds(60, 280, 284, 281);
 		contentPane.add(profileSet);
 		profileSet.setLayout(null);
 
 		JLabel myName = new JLabel("이름 : ");
+		myName.setBackground(new Color(245, 245, 245));
 		myName.setHorizontalAlignment(SwingConstants.RIGHT);
 		myName.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myName.setBounds(50, 25, 80, 30);
 		profileSet.add(myName);
 
 		JLabel myPhone = new JLabel("전화번호 : ");
+		myPhone.setBackground(new Color(245, 245, 245));
 		myPhone.setHorizontalAlignment(SwingConstants.RIGHT);
 		myPhone.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myPhone.setBounds(50, 55, 80, 30);
 		profileSet.add(myPhone);
 
 		JLabel myID = new JLabel("아이디 : ");
+		myID.setBackground(new Color(245, 245, 245));
 		myID.setHorizontalAlignment(SwingConstants.RIGHT);
 		myID.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myID.setBounds(50, 85, 80, 30);
 		profileSet.add(myID);
 
+		String id = member.getId();
+	    String name = member.getName();
+	    String phonenumber = member.getPhonenumber();
+	    dbId.setBackground(new Color(245, 245, 245));
+	   
+	    dbId.setText(id);
+	    dbId.setBounds(140,25,80,30);
+	    dbName.setBackground(new Color(245, 245, 245));
+	    dbName.setText(name);
+	    dbName.setBounds(140,55,80,30);
+	    dbPhonenumber.setBackground(new Color(245, 245, 245));
+	    dbPhonenumber.setText(phonenumber);
+	    dbPhonenumber.setBounds(140,85,80,30);
+	      
+	    profileSet.add(dbId);
+	    profileSet.add(dbName);
+	    profileSet.add(dbPhonenumber);
+
+	      
 		JPanel changePass = new JPanel();
-		changePass.setBackground(new Color(185, 207, 210));
+		changePass.setBackground(new Color(245, 245, 245));
 		changePass.setBounds(30, 125, 100, 30);
 		profileSet.add(changePass);
 
 		ImageIcon changePW = new ImageIcon("image/비밀번호변경.png");
 		changePass.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel changePs = new JLabel(changePW);
+		changePs.setBackground(new Color(245, 245, 245));
 		changePass.add(changePs);
 
 		changePass.addMouseListener(new MouseAdapter() {
@@ -329,13 +380,14 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		});
 
 		JPanel withdrawal = new JPanel();
-		withdrawal.setBackground(new Color(185, 207, 210));
+		withdrawal.setBackground(new Color(245, 245, 245));
 		withdrawal.setBounds(145, 125, 100, 30);
 		profileSet.add(withdrawal);
 
 		ImageIcon withdraw = new ImageIcon("image/회원탈퇴.png");
 		withdrawal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel draw = new JLabel(withdraw);
+		draw.setBackground(new Color(245, 245, 245));
 		withdrawal.add(draw);
 
 		withdrawal.addMouseListener(new MouseAdapter() {
@@ -503,9 +555,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			}
 			
 		}
-		
-		
-
 	}// 생성자 끝
 
 	private void eventUp() { // 이벤트소스-이벤트처리부 연결
@@ -531,9 +580,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				else {
 					JOptionPane.showMessageDialog(GaebalTalk.this, "방제목을 입력해주세요.");
 				}
-					
-				
-				
 			}
 		});
 
@@ -701,14 +747,12 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				                roominfoDefault.removeElementAt(i);
 				              
 				                i--; // 삭제 후 인덱스 조정
-				                break;
-				                
+				                break;     
 				            }
 				        }
 				    }
 				    break;
-				
-					
+				    
 				case "175": // (대화방에서) 대화방 인원정보
 
 					String myroomUsers[] = msgs[1].split(",");
@@ -729,12 +773,10 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 						if (exitUser.equals(msgs[1])) {
 							client.defaultListModel.remove(i);
 						}
-
 					}
 
 					client.ta.append("[" + msgs[1] + "]님이 퇴장하셨습니다.\n");
 					client.ta.setCaretPosition(client.ta.getText().length());
-
 					
 					break;
 
@@ -758,8 +800,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 					// stopClient();
 					break;
-				
-
+					
 				case "701": // 강퇴 알림
 					
 					client.ta.append("[관리자] " + msgs[1] + "님이 강퇴되었습니다.\n");
@@ -797,8 +838,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	private void writeChatLog(String roomTitle, String message) {
+	protected void writeChatLog(String roomTitle, String message) {
 		try {
 			// 로그 파일 경로3
 			String logPath = LOG_DIRECTORY + "/" + roomTitle + ".txt";
@@ -812,7 +852,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					System.out.println("파일 생성 실패");
 				}
 			}
-
 			// 로그 파일에 내용 작성
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -825,5 +864,4 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			e.printStackTrace();
 		}
 	}
-
 }
