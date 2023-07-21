@@ -29,19 +29,20 @@ public class ChatClient extends JFrame {
 	// 채팅방
 	ImageIcon img = new ImageIcon("./bt_img/cloud.png");
 	JTextField sendTF;
-
+	JButton bt_kick;
 	JTextArea ta;
 	JScrollPane sp_ta, sp_list;
 
 	JList<String> li_inwon;
-	JButton bt_exit; // bt_img 파일ㅇ
-	JButton bt_perChat; // bt_img 파일ㅇ
-	JButton bt_kick;
+	JButton bt_exit; 
+	JButton bt_perChat; 
+	JButton bt_sendFile;
 	JPanel p;
 
 	OutputStream out;
 	Socket s = new Socket();
 	private JLabel lblNewLabel_1;
+	
 
 	public ChatClient() throws IOException {
 		p = new JPanel();
@@ -57,13 +58,8 @@ public class ChatClient extends JFrame {
 		sp_ta = new JScrollPane();
 		sp_list = new JScrollPane();
 		
-		
-		
-		
-		
-		
 		bt_exit = new JButton("");
-		bt_exit.setFont(new Font("777별나라달님", Font.PLAIN, 17)); // 글꼴 변경하기
+		bt_exit.setFont(new Font("777별나라달님", Font.PLAIN, 17));
 		bt_exit.setBackground(new Color(255, 255, 255));
 		bt_exit.setLayout(null);
 		bt_exit.setBorderPainted(false);
@@ -116,8 +112,12 @@ public class ChatClient extends JFrame {
 		p.add(lblNewLabel_1);
 		
 		bt_kick = new JButton("강퇴");
-		bt_kick.setBounds(195, 271, 97, 23);
+		bt_kick.setBounds(189, 254, 97, 23);
 		p.add(bt_kick);
+		
+		bt_sendFile = new JButton("파일전송");
+		bt_sendFile.setBounds(184, 300, 97, 23);
+		p.add(bt_sendFile);
 		setBounds(300, 200, 302, 500);
 		sendTF.requestFocus();
 
