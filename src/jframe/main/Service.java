@@ -63,7 +63,7 @@ public class Service extends Thread {
 					case "160":
 						myRoom = new Room();
 						myRoom.title = msgs[1];
-						myRoom.count = 1;
+						myRoom.count++;
 						myRoom.boss = nickName;
 						roomSer.add(myRoom);
 
@@ -178,24 +178,36 @@ public class Service extends Thread {
 
 						break;
 					
-						case "400":
-							System.out.println(msgs[1] + "server");
-						    if (myRoom.count == 1) {
-						    	System.out.println(msgs[1]);
-						        messageRoom("165|" + msgs[1]); // 방 삭제를 알림
+					case "400":
+					    System.out.println(msgs[1] + "server");
+					    System.out.println("방인원 -> " + myRoom.count);
+					   
+					      if (myRoom.count >= 1) {
+					        myRoom.count--;
+					        messageRoom("400|" + nickName); // 다른 사용자들에게 퇴장 메시지 전송
+					        myRoom.user.remove(this); // 사용자를 방에서 제거
+					        wait.add(this); // 대기방 목록에 사용자 추가
+					        messageRoom("175|" + getRoomInwon()); // 방의 사용자 목록을 업데이트
+					        messageWait("160|" + getRoomInfo()); // 대기방의 방 목록을 업데이트
+					        if (myRoom.count == 0) {
+						        System.out.println(msgs[1]);
+						        myRoom.user.remove(this);
+						        messageRoom("175|" + getRoomInwon());
+						       // messageRoom("165|" + msgs[1]); // 남은 사용자에게 방이 삭제되었음을 알림
 						        roomSer.remove(myRoom); // 방 목록에서 해당 방을 삭제
 						        myRoom = null;
-						    } else if (myRoom.count > 1) {
-						        myRoom.count--;
-						        messageRoom("400|" + nickName); // 다른 사용자들에게 퇴장 메시지 전송
-						        
-						        myRoom.user.remove(this); // 사용자를 방에서 제거
-						        wait.add(this); // 대기방 목록에 사용자 추가
-
-						        messageRoom("175|" + getRoomInwon()); // 방의 사용자 목록을 업데이트
+						        messageWait("165|" + msgs[1]);
 						        messageWait("160|" + getRoomInfo()); // 대기방의 방 목록을 업데이트
-						    }
-						    break;
+					        }
+					    }
+
+					    // 방에 남은 유저가 없으면 방을 삭제하고 모든 클라이언트에게 방이 삭제되었다고 알립니다.
+					    if (myRoom == null) {
+					        // 방이 비어있으면 방을 삭제하고 모든 클라이언트에게 방이 삭제되었다고 알림
+					        messageWait("165|" + msgs[1]);
+					        messageWait("160|" + getRoomInfo());
+					    }
+					    break;
 					}
 
 				}
