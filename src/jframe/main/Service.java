@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 public class Service extends Thread {
 	Room myRoom;
-
+	private final String FILE_SAVE_PATH = "C:/receiver/";
 	BufferedReader in;
 	OutputStream out;
 	List<Service> all;
