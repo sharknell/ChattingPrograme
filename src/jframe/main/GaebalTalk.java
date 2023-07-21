@@ -617,6 +617,37 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				}
 			}
 		});
+	client.bt_sendFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] selectedUsers = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
+
+                if (selectedUsers.length != 0) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    int option = fileChooser.showOpenDialog(GaebalTalk.this);
+                    if (option == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = fileChooser.getSelectedFile();
+                        String fileName = selectedFile.getName();
+
+                        try {
+                            FileInputStream fileInputStream = new FileInputStream(selectedFile);
+                            byte[] fileContentBytes = fileInputStream.readAllBytes();
+                            String fileContent = new String(fileContentBytes);
+
+                            for (String user : selectedUsers) {
+                                String message = "500|" + user + "|" + nickName + "|" + fileName + "|" + fileContent;
+                                System.out.println("이벤트"+message);
+                                sendMsg(message);
+                            }
+
+                            fileInputStream.close();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
 
 		client.bt_perChat.addActionListener(new ActionListener() {
 			@Override
@@ -792,7 +823,9 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				case "202": // 개설된 방의 타이틀 제목 얻기
 					client.setTitle("채팅방-[" + msgs[1] + "]");
 					break;
-
+				case "502":
+					JOptionPane.showMessageDialog(GaebalTalk.this, msgs[1] + "님이 " + msgs[2] +"파일을 보냈습니다.\nD:reciver 폴더를 확인해주세요!!\n");     
+					break;
 				case "610": // 강퇴당한 서버
 
 					client.setVisible(false);
