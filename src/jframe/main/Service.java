@@ -179,23 +179,24 @@ public class Service extends Thread {
 						break;
 					
 					case "400":
+						
 
-					      if (myRoom.count >= 1) {
+					    if (myRoom.count >= 1) {
 					        myRoom.count--;
+					       
 					        messageRoom("400|" + nickName); // 다른 사용자들에게 퇴장 메시지 전송
 					        myRoom.user.remove(this); // 사용자를 방에서 제거
 					        wait.add(this); // 대기방 목록에 사용자 추가
 					        messageRoom("175|" + getRoomInwon()); // 방의 사용자 목록을 업데이트
 					        messageWait("160|" + getRoomInfo()); // 대기방의 방 목록을 업데이트
+
 					        if (myRoom.count == 0) {
-						       
-							messageAll("165|" +  title);
-						        myRoom.user.remove(this);
-						        messageRoom("175|" + getRoomInwon());
-						       // messageRoom("165|" + msgs[1]); // 남은 사용자에게 방이 삭제되었음을 알림
-						        roomSer.remove(myRoom); // 방 목록에서 해당 방을 삭제
-						        
-						        messageWait("160|" + getRoomInfo()); // 대기방의 방 목록을 업데이트
+					            System.out.println(myRoom.title);
+					            messageTo("165|" + myRoom.title);
+					            messageAll("165|" + myRoom.title);
+					            myRoom.user.remove(this);
+					            roomSer.remove(myRoom);
+					          
 					        }
 					    }
 
