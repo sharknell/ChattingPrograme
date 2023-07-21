@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,6 +25,7 @@ import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -873,7 +875,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	}
 	protected void writeChatLog(String roomTitle, String message) {
 		try {
-			// 로그 파일 경로3
+			// 로그 파일 경로
 			String logPath = LOG_DIRECTORY + "/" + roomTitle + ".txt";
 
 			// 로그 파일 생성 (존재하지 않을 경우)
