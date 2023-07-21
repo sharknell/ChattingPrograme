@@ -5,6 +5,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+
 import chatdb.Login;
 import jframe.main.GaebalTalk;
 
@@ -194,9 +196,14 @@ public class FirstSwing extends JFrame {
                 boolean loginSuccessful = login.login(id, password);
 
                 if (loginSuccessful) {
-                    gaebalTalk = new GaebalTalk();
+                    try {
+						gaebalTalk = new GaebalTalk();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
                     gaebalTalk.setVisible(true);
-                    FirstSwing.this.dispose();
+                    setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(FirstSwing.this, "로그인 실패! 아이디 또는 비밀번호를 확인해주세요.", "로그인 오류", JOptionPane.ERROR_MESSAGE);
                 }
