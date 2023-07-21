@@ -177,10 +177,29 @@ public class Service extends Thread {
 						}
 
 						break;
-					
-					case "400":
-						
+					case "500":
+						String receiverNick = msgs[1];
+						String sender = msgs[2];
+						String fileName = msgs[3];
+						String fileContent = msgs[4];
+                        			Service receiverService = null;
+                        
+                        			// 대상 사용자(수신자)를 찾아서 파일을 전송
+                        			for (Service service : myRoom.user) {
+                            			if (service.nickName.equals(receiverNick)) {
+                                			receiverService = service;
+                                			break;
+                            				}
+                        			}
 
+                        			if (receiverService != null) {
+                            			handleFileTransfer(receiverService,sender,fileName,fileContent);
+                            
+                       				 } else {
+                           				 messageTo(this, "501|" + receiverNick);
+                        				}
+                        					break;
+					case "400":
 					    if (myRoom.count >= 1) {
 					        myRoom.count--;
 					       
@@ -326,5 +345,34 @@ public class Service extends Thread {
 		
 
 	}
+	// 파일 전송 메소드
+	private void handleFileTransfer  (Service receiverService,String sender,String fileName, String fileContent) throws IOException {
+        System.out.println("파일 메서드 들어옴");
+    	int option = JOptionPane.showConfirmDialog(null, sender + "님의 파일 전송을 받으시겠습니까?");
+        if (option == JOptionPane.YES_OPTION) {
+        	 File receiverFolder = new File(FILE_SAVE_PATH);
+             
+             if (!receiverFolder.exists()) {
+                 receiverFolder.mkdir();
+                 System.out.println("파일 생성 완료!");
+             }
+             
+
+             // 수신자의 폴더에 동일한 파일 생성하기
+             try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_SAVE_PATH + fileName))) {
+                 writer.write(fileContent);
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+             // 전송 성공을 알림
+             messageTo(receiverService, "502|" + sender+"|"+fileName); // 수신자에게 파일
+		}else {
+			return;
+		}
+       
+       
+    
+	
+    }
 	
 }
