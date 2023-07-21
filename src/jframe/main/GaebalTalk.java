@@ -699,8 +699,10 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				                System.out.println(deleteRoom);
 				                System.out.println(ch);
 				                roominfoDefault.removeElementAt(i);
+				              
 				                i--; // 삭제 후 인덱스 조정
 				                break;
+				                
 				            }
 				        }
 				    }
@@ -798,7 +800,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 	private void writeChatLog(String roomTitle, String message) {
 		try {
-			// 로그 파일 경로
+			// 로그 파일 경로3
 			String logPath = LOG_DIRECTORY + "/" + roomTitle + ".txt";
 
 			// 로그 파일 생성 (존재하지 않을 경우)
