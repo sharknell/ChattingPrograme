@@ -882,10 +882,11 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					
 					
 					if (nickName.equals(msgs[1])) {
-						client.ta.append("<귓속말> To " + "[" + msgs[3] + "]\n" + msgs[2] + "\n");
+						client.ta.append("<"+ msgs[3]+"에게 보낸 귓속말> " + msgs[2] + "\n");
 						client.ta.setCaretPosition(client.ta.getText().length());
 					} else {
-						client.ta.append("<귓속말> [" + msgs[1] + "] --> " + msgs[2] + "\n");
+						client.ta.append("<귓속말> [" + msgs[1] + "] " + msgs[2] + "\n");
+						client.ta.setCaretPosition(client.ta.getText().length());
 					}
 
 					// client.ta.setForeground(Color.green);
