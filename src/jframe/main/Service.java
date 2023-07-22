@@ -1,19 +1,19 @@
 package jframe.main;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.sound.midi.Soundbank;
 import javax.swing.JOptionPane;
 
 public class Service extends Thread {
 	Room myRoom;
-	private final String FILE_SAVE_PATH = "C:/receiver/";
+	private final String FILE_SAVE_PATH = "D:/개발톡에서 받은 파일/";
 	BufferedReader in;
 	OutputStream out;
 	List<Service> all;
@@ -53,13 +53,17 @@ public class Service extends Thread {
 						all.add(this);
 						wait.add(this);
 						break;
+						
+					case "162":
+						messageRoom("177|" + msgs[1]);
+						break;
 
 					case "150":
 						nickName = msgs[1];
 						messageWait("160|" + getRoomInfo());
 						messageWait("180|" + getWaitInwon());
 						break;
-					
+
 					case "160":
 						myRoom = new Room();
 						myRoom.title = msgs[1];
@@ -105,7 +109,12 @@ public class Service extends Thread {
 						break;
 
 					case "300":
-						messageRoom("300|[" + nickName + "]  " + msgs[1]);
+						/*if (msgs[1].equals(nickName)) {
+							messageRoom("301|+m +  msgs[2]);
+						}*/
+							messageRoom("300|" + nickName + "|" + msgs[2]);
+						
+						
 						break;
 
 					case "310": // 귓속말 대화
@@ -121,21 +130,20 @@ public class Service extends Thread {
 							}
 						}
 						if (targetService != null) {
-					        // 귓속말 타켓 서비스(클라이언트 소켓) 에게 전달
-					        messageTo(targetService, "320|[귓속말 -"+ nickName +"] "+ whisperMsg + "\n");
-					        // 귓속말 보내는 사람에 채팅창에도 뜨게 만듦
-					        messageTo(this, "320|[귓속말 -"+ nickName +"] " + whisperMsg + "\n");
-					    } else {
-				
-					        messageTo(this, "320|귓속말 대상 유저를 찾을 수 없습니다.");
-					    }
-					    break;
-					    
-					    
+							// 귓속말 타켓 서비스(클라이언트 소켓) 에게 전달
+							messageTo(targetService, "320|" + nickName + "|" + whisperMsg + "|" + targetUser);
+							// 귓속말 보내는 사람에 채팅창에도 뜨게 만듦
+							messageTo(this, "320|"  + nickName + "|" + whisperMsg + "|" + targetUser);
+						} else {
+
+							messageTo(this, "320|귓속말 대상 유저를 찾을 수 없습니다.");
+						}
+						break;
+
 					case "600": // 강퇴
-						
+
 						String target = msgs[1];
-						
+
 						Service targetServ = null;
 
 						// 대상 사용자 찾기
@@ -146,16 +154,15 @@ public class Service extends Thread {
 							}
 						}
 						if (targetServ != null) {
-					        messageTo(targetServ, "610|"); // 강퇴당한 유저
-					       
-					        disconnect(targetServ); // 사용자를 강퇴 처리
-					        
-					    }
+							messageTo(targetServ, "610|"); // 강퇴당한 유저
+
+							disconnect(targetServ); // 사용자를 강퇴 처리
+
+						}
 						messageRoom("701|" + target);
-						
-					    break;
-					
-						
+
+						break;
+
 					case "700":
 						String target2 = msgs[1];
 						Service targetServ2 = null;
@@ -165,15 +172,16 @@ public class Service extends Thread {
 							if (service.nickName.equals(target2)) {
 								targetServ2 = service;
 								myRoom.user.remove(targetServ2);
-								
+
 								break;
-							} if (targetServ2 != null) {
-						        myRoom.count--;
-						        messageRoom("175|" + getRoomInwon());
-						        messageWait("160|" + getRoomInfo());
-						        messageRoom("701|" + target2);
-						    }
-							
+							}
+							if (targetServ2 != null) {
+								myRoom.count--;
+								messageRoom("175|" + getRoomInwon());
+								messageWait("160|" + getRoomInfo());
+								messageRoom("701|" + target2);
+							}
+
 						}
 
 						break;
@@ -182,52 +190,52 @@ public class Service extends Thread {
 						String sender = msgs[2];
 						String fileName = msgs[3];
 						String fileContent = msgs[4];
-                        			Service receiverService = null;
-                        
-                        			// 대상 사용자(수신자)를 찾아서 파일을 전송
-                        			for (Service service : myRoom.user) {
-                            			if (service.nickName.equals(receiverNick)) {
-                                			receiverService = service;
-                                			break;
-                            				}
-                        			}
+						Service receiverService = null;
 
-                        			if (receiverService != null) {
-                            			handleFileTransfer(receiverService,sender,fileName,fileContent);
-                            
-                       				 } else {
-                           				 messageTo(this, "501|" + receiverNick);
-                        				}
-                        					break;
+						// 대상 사용자(수신자)를 찾아서 파일을 전송
+						for (Service service : myRoom.user) {
+							if (service.nickName.equals(receiverNick)) {
+								receiverService = service;
+								break;
+							}
+						}
+
+						if (receiverService != null) {
+							handleFileTransfer(receiverService, sender, fileName, fileContent);
+
+						} else {
+							messageTo(this, "501|" + receiverNick);
+						}
+						break;
 					case "400":
-					    if (myRoom.count >= 1) {
-					        myRoom.count--;
-					       
-					        messageRoom("400|" + nickName); // 다른 사용자들에게 퇴장 메시지 전송
-					        myRoom.user.remove(this); // 사용자를 방에서 제거
-					        wait.add(this); // 대기방 목록에 사용자 추가
-					        messageRoom("175|" + getRoomInwon()); // 방의 사용자 목록을 업데이트
-					        messageWait("160|" + getRoomInfo()); // 대기방의 방 목록을 업데이트
+						if (myRoom.count >= 1) {
+							myRoom.count--;
 
-					        if (myRoom.count == 0) {
-					            System.out.println(myRoom.title);
-					            messageTo("165|" + myRoom.title);
-					            messageAll("165|" + myRoom.title);
-					            myRoom.user.remove(this);
-					            roomSer.remove(myRoom);
-					          
-					        }
-					    }
+							messageRoom("400|" + nickName); // 다른 사용자들에게 퇴장 메시지 전송
+							// messageTo("401|" + msgs[2]);
+							myRoom.user.remove(this); // 사용자를 방에서 제거
+							wait.add(this); // 대기방 목록에 사용자 추가
+							messageRoom("175|" + getRoomInwon()); // 방의 사용자 목록을 업데이트
+							messageWait("160|" + getRoomInfo()); // 대기방의 방 목록을 업데이트
 
-					   
-					    break;
+							if (myRoom.count == 0) {
+								System.out.println(myRoom.title);
+								messageTo("165|" + myRoom.title);
+								messageAll("165|" + myRoom.title);
+								myRoom.user.remove(this);
+								roomSer.remove(myRoom);
+
+							}
+						}
+
+						break;
 					}
 
 				}
 			}
 
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 	}
@@ -236,7 +244,7 @@ public class Service extends Thread {
 		String str = "";
 		for (int i = 0; i < roomSer.size(); i++) {
 			Room r = roomSer.get(i);
-			str += r.title + "- 현재인원  " + r.count+"명";
+			str += r.title + "- 현재인원  " + r.count + "명";
 			if (i < roomSer.size() - 1)
 				str += ",";
 		}
@@ -321,58 +329,53 @@ public class Service extends Thread {
 	public void messageTo(String msg) throws IOException {
 		out.write((msg + "\n").getBytes());
 	}
-	
+
 	public void messageTo(Service service, String msg) {
-	    try {
-	        service.messageTo(msg);
-	    } catch (IOException e) {
-	        myRoom.user.remove(service);
-	        System.out.println("클라이언트 접속 끊음!!");
-	    }
-	}
-	
-	public void disconnect(Service service) {
-		/*try {
-			service.socket.close();
+		try {
+			service.messageTo(msg);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+			myRoom.user.remove(service);
+			System.out.println("클라이언트 접속 끊음!!");
+		}
+	}
+
+	public void disconnect(Service service) {
+		/*
+		 * try { service.socket.close(); } catch (IOException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
 		myRoom.count--;
 		myRoom.user.remove(service);
 		messageRoom("175|" + getRoomInwon());
 		messageWait("160|" + getRoomInfo());
-		
 
 	}
-	// 파일 전송 메소드
-	private void handleFileTransfer  (Service receiverService,String sender,String fileName, String fileContent) throws IOException {
-        System.out.println("파일 메서드 들어옴");
-    	int option = JOptionPane.showConfirmDialog(null, sender + "님의 파일 전송을 받으시겠습니까?");
-        if (option == JOptionPane.YES_OPTION) {
-        	 File receiverFolder = new File(FILE_SAVE_PATH);
-             
-             if (!receiverFolder.exists()) {
-                 receiverFolder.mkdir();
-                 System.out.println("파일 생성 완료!");
-             }
-             
 
-             // 수신자의 폴더에 동일한 파일 생성하기
-             try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_SAVE_PATH + fileName))) {
-                 writer.write(fileContent);
-             } catch (IOException e) {
-                 e.printStackTrace();
-             }
-             // 전송 성공을 알림
-             messageTo(receiverService, "502|" + sender+"|"+fileName); // 수신자에게 파일
-		}else {
+	// 파일 전송 메소드
+	private void handleFileTransfer(Service receiverService, String sender, String fileName, String fileContent)
+			throws IOException {
+		System.out.println("파일 메서드 들어옴");
+		int option = JOptionPane.showConfirmDialog(null, sender + "님의 파일 전송을 받으시겠습니까?");
+		if (option == JOptionPane.YES_OPTION) {
+			File receiverFolder = new File(FILE_SAVE_PATH);
+
+			if (!receiverFolder.exists()) {
+				receiverFolder.mkdir();
+				System.out.println("파일 생성 완료!");
+			}
+
+			// 수신자의 폴더에 동일한 파일 생성하기
+			try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_SAVE_PATH + fileName))) {
+				writer.write(fileContent);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// 전송 성공을 알림
+			messageTo(receiverService, "502|" + sender + "|" + fileName); // 수신자에게 파일
+		} else {
 			return;
 		}
-       
-       
-    
-	
-    }
-	
+
+	}
+
 }
