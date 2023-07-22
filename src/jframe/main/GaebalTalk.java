@@ -17,11 +17,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.ref.Cleaner.Cleanable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -43,7 +46,7 @@ import jframe.menu.ProfliePasswordChangeScreen;
 import javax.swing.border.LineBorder;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
-
+	List<String> vanWord = new ArrayList<>();
 	Room room;
 	String title;
 	JPanel panel;
@@ -64,19 +67,19 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	DefaultListModel<String> listModel2;
 	DefaultListModel<String> roominfoDefault = new DefaultListModel<>();
 	JList<String> roomInfo, roommUser, waitInfo;
-	
+
 	MemberDTO member = new MemberDTO();
-	   
+
 	public static JLabel dbName = new JLabel("");
 	public static JLabel dbId = new JLabel("");
 	public static JLabel dbPhonenumber = new JLabel("");
-
 
 	public static JLabel weatherIcon = new JLabel("");
 	public static JLabel temperatureLabel = new JLabel("");
 
 	// 로그 파일 경로
 	private static final String LOG_DIRECTORY = "D:/chat_log";
+	
 
 	/**
 	 * Launch the application.
@@ -137,19 +140,19 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER));
 		contentPane.add(panel_4, BorderLayout.NORTH);
 
-		//Weather c = new Weather();
-		//c.weatherAPI();
- 
+		// Weather c = new Weather();
+		// c.weatherAPI();
+
 		// 온도
 
-		//temperatureLabel.setText(c.temperature + "C");
-		//weatherIcon.setBounds(25, 0, 50, 50);
-		//temperatureLabel.setBounds(75, 0, 50, 50);
+		// temperatureLabel.setText(c.temperature + "C");
+		// weatherIcon.setBounds(25, 0, 50, 50);
+		// temperatureLabel.setBounds(75, 0, 50, 50);
 
-		//panel_4.add(weatherIcon);
-		//panel_4.add(temperatureLabel);
+		// panel_4.add(weatherIcon);
+		// panel_4.add(temperatureLabel);
 
-		//temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
+		// temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
@@ -221,13 +224,13 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		JLabel displayColor = new JLabel(color);
 		displayColor.setBackground(new Color(245, 245, 245));
 		display_Icon.add(displayColor);
-		
+
 		display_Icon.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        super.mouseClicked(e);
-		        DarkModeChanger.toggleDarkMode(GaebalTalk.this); // 다크 모드와 라이트 모드를 번갈아가며 적용
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				DarkModeChanger.toggleDarkMode(GaebalTalk.this); // 다크 모드와 라이트 모드를 번갈아가며 적용
+			}
 		});
 
 		JPanel service = new JPanel();
@@ -344,24 +347,23 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		profileSet.add(myID);
 
 		String id = member.getId();
-	    String name = member.getName();
-	    String phonenumber = member.getPhonenumber();
-	    dbId.setBackground(new Color(245, 245, 245));
-	   
-	    dbId.setText(id);
-	    dbId.setBounds(140,25,80,30);
-	    dbName.setBackground(new Color(245, 245, 245));
-	    dbName.setText(name);
-	    dbName.setBounds(140,55,80,30);
-	    dbPhonenumber.setBackground(new Color(245, 245, 245));
-	    dbPhonenumber.setText(phonenumber);
-	    dbPhonenumber.setBounds(140,85,80,30);
-	      
-	    profileSet.add(dbId);
-	    profileSet.add(dbName);
-	    profileSet.add(dbPhonenumber);
+		String name = member.getName();
+		String phonenumber = member.getPhonenumber();
+		dbId.setBackground(new Color(245, 245, 245));
 
-	      
+		dbId.setText(id);
+		dbId.setBounds(140, 25, 80, 30);
+		dbName.setBackground(new Color(245, 245, 245));
+		dbName.setText(name);
+		dbName.setBounds(140, 55, 80, 30);
+		dbPhonenumber.setBackground(new Color(245, 245, 245));
+		dbPhonenumber.setText(phonenumber);
+		dbPhonenumber.setBounds(140, 85, 80, 30);
+
+		profileSet.add(dbId);
+		profileSet.add(dbName);
+		profileSet.add(dbPhonenumber);
+
 		JPanel changePass = new JPanel();
 		changePass.setBackground(new Color(245, 245, 245));
 		changePass.setBounds(30, 125, 100, 30);
@@ -539,23 +541,22 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		new Thread(this).start(); // 서버메시지 대기
 
 		sendMsg("100|"); // (대기실)접속 알림
-		
-		
-		while (true){
+
+		while (true) {
 			nickName = JOptionPane.showInputDialog(this, "닉네임");
 			if (nickName != null && !nickName.isEmpty()) {
 				sendMsg("150|" + nickName); // 대화명 전달
 				eventUp();
 				break;
-			}else {
-				int option = JOptionPane.showConfirmDialog(this,"닉네임을 입력해주세요." ,"닉네임",JOptionPane.YES_NO_OPTION);
+			} else {
+				int option = JOptionPane.showConfirmDialog(this, "닉네임을 입력해주세요.", "닉네임", JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
 					continue;
-				}else if (option == JOptionPane.NO_OPTION) {
+				} else if (option == JOptionPane.NO_OPTION) {
 					System.exit(0);
 				}
 			}
-			
+
 		}
 	}// 생성자 끝
 
@@ -567,19 +568,19 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		client.bt_perChat.addActionListener(this);
 		client.bt_exit.addActionListener(this);
 		client.bt_kick.addActionListener(this);
+		client.bt_vanWord.addActionListener(this);
 		panel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				 title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
-				if (title !=null && !title.isEmpty()) {
+				title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
+				if (title != null && !title.isEmpty()) {
 					// 방제목을 서버에게 전달
 					sendMsg("160|" + title);
 					client.setTitle("채팅방-[" + title + "]");
 					sendMsg("175|"); // 대화방내 인원정보 요청
 					setVisible(false);
 					client.setVisible(true); // 대화방 이동
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(GaebalTalk.this, "방제목을 입력해주세요.");
 				}
 			}
@@ -600,6 +601,33 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			}
 		});
 
+		client.bt_vanWord.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (nickName.equals(client.defaultListModel.get(0))) {
+					String vanWordSet = JOptionPane.showInputDialog(GaebalTalk.this, "금지어를 입력해주세요.");
+					boolean alreadyExists = false;
+		            for (String word : vanWord) {
+		                if (word.equals(vanWordSet)) {
+		                    alreadyExists = true;
+		                    break;
+		                }
+		            }
+
+		            if (!alreadyExists) {
+		                vanWord.add(vanWordSet);
+		                System.out.println(vanWordSet);
+		                sendMsg("162|" + vanWordSet);
+		            } else {
+		                JOptionPane.showMessageDialog(GaebalTalk.this, "이미 등록된 금지어입니다.");
+		            }
+		        } else {
+		            JOptionPane.showMessageDialog(GaebalTalk.this, "해당 기능을 이용할 권한이 없습니다.");
+		        }
+		    }
+		});
 		client.bt_kick.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -614,42 +642,44 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					for (String user : userName) {
 						System.out.println("600|" + user + "|" + nickName);
 						sendMsg("600|" + user + "|" + nickName);
-						
+
 					}
 				}
 			}
 		});
-	client.bt_sendFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String[] selectedUsers = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
+		client.bt_sendFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] selectedUsers = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
 
-                if (selectedUsers.length != 0) {
-                    JFileChooser fileChooser = new JFileChooser();
-                    int option = fileChooser.showOpenDialog(GaebalTalk.this);
-                    if (option == JFileChooser.APPROVE_OPTION) {
-                        File selectedFile = fileChooser.getSelectedFile();
-                        String fileName = selectedFile.getName();
+				if (selectedUsers.length != 0) {
+					JFileChooser fileChooser = new JFileChooser();
+					int option = fileChooser.showOpenDialog(GaebalTalk.this);
+					if (option == JFileChooser.APPROVE_OPTION) {
+						File selectedFile = fileChooser.getSelectedFile();
+						String fileName = selectedFile.getName();
 
-                        try {
-                            FileInputStream fileInputStream = new FileInputStream(selectedFile);
-                            byte[] fileContentBytes = fileInputStream.readAllBytes();
-                            String fileContent = new String(fileContentBytes);
+						try {
+							FileInputStream fileInputStream = new FileInputStream(selectedFile);
+							byte[] fileContentBytes = fileInputStream.readAllBytes();
+							String fileContent = new String(fileContentBytes);
 
-                            for (String user : selectedUsers) {
-                                String message = "500|" + user + "|" + nickName + "|" + fileName + "|" + fileContent;
-                                System.out.println("이벤트"+message);
-                                sendMsg(message);
-                            }
+							for (String user : selectedUsers) {
+								String message = "500|" + user + "|" + nickName + "|" + fileName + "|" + fileContent;
+								System.out.println("이벤트" + message);
+								writeChatLog(client.getTitle(),
+										"[파일전송]" + "<파일이름 : " + fileName + ">" + nickName + " --> " + user);
+								sendMsg(message);
+							}
 
-                            fileInputStream.close();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
+							fileInputStream.close();
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+			}
+		});
 
 		client.bt_perChat.addActionListener(new ActionListener() {
 			@Override
@@ -661,25 +691,32 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					return;
 				}
 
-				for (int i = 0; i < client.defaultListModel.size(); i++) {
-					String user = client.defaultListModel.get(i);
-					if (userName[0].equals(user)) {
-						JOptionPane.showMessageDialog(GaebalTalk.this, "자기 자신을 선택할 수 없습니다."); 
-						break;
-					}
-				}
-				String message = JOptionPane.showInputDialog(GaebalTalk.this, "귓속말 메시지");
-				
-				System.out.println("선택된 항목 : " + userName);
-				if (message != null && !message.isEmpty()) {
-					for (String user : userName) {
-						System.out.println("310|" + user + "|" + message);
-						sendMsg("310|" + user + "|" + message);
-						writeChatLog(client.getTitle(), "[귓속말]" + "[" + user + "]  " + message);
-						break;
-					}
+				if (nickName.equals(userName[0])) {
+					JOptionPane.showMessageDialog(GaebalTalk.this, "자기 자신을 선택할 수 없습니다.");
+					return;
 				} else {
-					JOptionPane.showMessageDialog(GaebalTalk.this, "메시지를 입력해주세요.");
+					String message = JOptionPane.showInputDialog(GaebalTalk.this, "귓속말 메시지");
+					if (message != null && !message.isEmpty()) {
+						for (String word : vanWord) {
+				            if (message.contains(word)) {
+				                JOptionPane.showMessageDialog(GaebalTalk.this, word + "은(는) 금지어입니다 [" + word + "]");
+				              
+				                return; // 금지어가 있으면 바로 리턴하여 메시지를 서버로 보내지 않도록 합니다.
+				            }
+				        }
+
+						for (String user : userName) {
+							System.out.println("310|" + user + "|" + message);
+							sendMsg("310|" + user + "|" + message);
+							createChatLog(client.getTitle());
+							writeChatLog(client.getTitle(),
+									"[귓속말]" + "[" + nickName + " --> " + user + "]  " + message);
+							break;
+						}
+					} else {
+						JOptionPane.showMessageDialog(GaebalTalk.this, "메시지를 입력해주세요.");
+					}
+
 				}
 			}
 
@@ -691,16 +728,23 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
 		if (ob == client.bt_exit) { // 대화방 나가기 요청
-			sendMsg("400|" + title);
+			sendMsg("400|" + title + "|" + nickName);
 			client.setVisible(false);
 			setVisible(true);
 		} else if (ob == client.sendTF) { // (TextField입력)메시지 보내기 요청
 			String msg = client.sendTF.getText();
 			if (msg.length() > 0) {
-				sendMsg("300|" + msg);
-				client.sendTF.setText("");
-				// writeChatLog(client.getTitle(), msg); // 채팅 내용 로그에 기록
-
+				for (String word : vanWord) {
+		            if (msg.contains(word)) {
+		                JOptionPane.showMessageDialog(GaebalTalk.this, word + "은(는) 금지어입니다 [" + word + "]");
+		                client.sendTF.setText("");
+		                return; // 금지어가 있으면 바로 리턴하여 메시지를 서버로 보내지 않도록 합니다.
+		            }
+		        }
+		        sendMsg("300|" + nickName + "|" + msg);
+		        client.sendTF.setText("");
+		        createChatLog(client.getTitle());
+		        writeChatLog(client.getTitle(), "[" + nickName + "]  " + msg);
 			}
 		}
 	} // actionPerformed
@@ -737,18 +781,30 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				String protocol = msgs[0];
 				switch (protocol) {
 				case "300":
-					client.ta.append(msgs[1] + "\n");
-					client.ta.setCaretPosition(client.ta.getText().length());
-					writeChatLog(client.getTitle(), msgs[1]);
+					
+						if (nickName.equals(msgs[1])) {
+							client.ta.append("[ME]" + msgs[2] + "\n");
+							client.ta.setCaretPosition(client.ta.getText().length());
+							
+						} else {
+							client.ta.append("[" + msgs[1] + "]" + msgs[2] + "\n");
+							client.ta.setCaretPosition(client.ta.getText().length());
+							
+						
+						}
+					
+					
+
 					break;
+
 				case "160": // 방만들기
 					// 방정보를 List에 뿌리기
 					if (msgs.length > 1) {
 						// 개설된 방이 한개 이상이었을때 실행
 						// 개설된 방없음 ----> msg="120|" 였을때 에러
-						//String roomNames[] = msgs[1].split(",");
+						// String roomNames[] = msgs[1].split(",");
 						// "자바방--1,오라클방--1,JDBC방--1"
-						//roomInfo.setListData(roomNames);
+						// roomInfo.setListData(roomNames);
 
 						String roomNames[] = msgs[1].split(",");
 						roominfoDefault.clear(); // 기존 요소 제거
@@ -762,30 +818,34 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				 * case "170": // (대기실에서) 대화방 인원정보 String roommUsers[] = msgs[1].split(",");
 				 * roommUser.setListData(roommUsers); break;
 				 */
-					
+
 				case "165": // 방삭제
-				    String deleteRoom = msgs[1];
-				    System.out.println(msgs[1]);
-				    for (int i = 0; i < roominfoDefault.size(); i++) {
-				        String room = roominfoDefault.get(i);
-				        String[] splitName = room.split("-");
-				        for (int j = 0; j < splitName.length; j++) {
-				            String ch = splitName[j];
-				            System.out.println(ch);
-				            if (deleteRoom.equals(ch)) {
-				            	
-				                System.out.println(roominfoDefault.get(i));
-				                System.out.println(deleteRoom);
-				                System.out.println(ch);
-				                roominfoDefault.removeElementAt(i);
-				              
-				                i--; // 삭제 후 인덱스 조정
-				                break;     
-				            }
-				        }
-				    }
-				    break;
-				    
+					String deleteRoom = msgs[1];
+					System.out.println(msgs[1]);
+					for (int i = 0; i < roominfoDefault.size(); i++) {
+						String room = roominfoDefault.get(i);
+						String[] splitName = room.split("-");
+						for (int j = 0; j < splitName.length; j++) {
+							String ch = splitName[j];
+							System.out.println(ch);
+							if (deleteRoom.equals(ch)) {
+
+								System.out.println(roominfoDefault.get(i));
+								System.out.println(deleteRoom);
+
+								roominfoDefault.removeElementAt(i);
+
+								i--; // 삭제 후 인덱스 조정
+								break;
+							}
+						}
+					}
+					break;
+				case "177":
+					client.ta.append("[금지어 공지] " + msgs[1]+"\n");
+					client.ta.setCaretPosition(client.ta.getText().length());
+					break;
+
 				case "175": // (대화방에서) 대화방 인원정보
 
 					String myroomUsers[] = msgs[1].split(",");
@@ -805,18 +865,29 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 						if (exitUser.equals(msgs[1])) {
 							client.defaultListModel.remove(i);
+
 						}
 					}
-
-					client.ta.append("[" + msgs[1] + "]님이 퇴장하셨습니다.\n");
-					client.ta.setCaretPosition(client.ta.getText().length());
-					
+					if (nickName.equals(msgs[1])) {
+						client.ta.setText("");
+					} else {
+						client.ta.append("[" + msgs[1] + "]님이 퇴장하셨습니다.\n");
+						client.ta.setCaretPosition(client.ta.getText().length());
+					}
 					break;
 
 				case "320": // 귓속말 대화
-					String a = msgs[1];
-					// highlightText(a, Color.GREEN);
-					client.ta.append(a + "\n");
+					
+					
+					
+					
+					if (nickName.equals(msgs[1])) {
+						client.ta.append("<귓속말> To " + "[" + msgs[3] + "]\n" + msgs[2] + "\n");
+						client.ta.setCaretPosition(client.ta.getText().length());
+					} else {
+						client.ta.append("<귓속말> [" + msgs[1] + "] --> " + msgs[2] + "\n");
+					}
+
 					// client.ta.setForeground(Color.green);
 					client.ta.setCaretPosition(client.ta.getText().length());
 
@@ -826,18 +897,19 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					client.setTitle("채팅방-[" + msgs[1] + "]");
 					break;
 				case "502":
-					JOptionPane.showMessageDialog(GaebalTalk.this, msgs[1] + "님이 " + msgs[2] +"파일을 보냈습니다.\nD:reciver 폴더를 확인해주세요!!\n");     
+					JOptionPane.showMessageDialog(GaebalTalk.this,
+							msgs[1] + "님이 " + msgs[2] + "파일을 보냈습니다.\nD:개발톡에서 보낸 파일 폴더를 확인해주세요!!\n");
 					break;
 				case "610": // 강퇴당한 서버
-
+					client.ta.setText("");
 					client.setVisible(false);
 					setVisible(true);
 
 					// stopClient();
 					break;
-					
+
 				case "701": // 강퇴 알림
-					
+
 					client.ta.append("[관리자] " + msgs[1] + "님이 강퇴되었습니다.\n");
 					client.ta.setCaretPosition(client.ta.getText().length());
 
@@ -849,35 +921,22 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	}// End of run
 
 	private void createChatLog(String roomTitle) {
-		try {
-			// 날짜와 시간을 포맷에 맞게 생성
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-			String fileName = roomTitle + "_" + dateFormat.format(new Date()) + ".txt";
+		// 날짜와 시간을 포맷에 맞게 생성
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		String fileName = roomTitle + "_" + dateFormat.format(new Date()) + ".txt";
 
-			// 로그 디렉토리 생성 (존재하지 않을 경우)
-			File directory = new File(LOG_DIRECTORY);
-			if (!directory.exists()) {
-				directory.mkdirs();
-			}
-
-			// 로그 파일 생성 (존재하지 않을 경우)
-			File file = new File(directory, fileName);
-			if (!file.exists()) {
-				if (file.createNewFile()) {
-					System.out.println("파일 생성: " + file.getAbsolutePath());
-				} else {
-					System.out.println("파일 생성 실패");
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		// 로그 디렉토리 생성 (존재하지 않을 경우)
+		File directory = new File(LOG_DIRECTORY);
+		if (!directory.exists()) {
+			directory.mkdirs();
 		}
 	}
+
 	protected void writeChatLog(String roomTitle, String message) {
 		try {
 			// 로그 파일 경로
 			String logPath = LOG_DIRECTORY + "/" + roomTitle + ".txt";
-
+			
 			// 로그 파일 생성 (존재하지 않을 경우)
 			File file = new File(logPath);
 			if (!file.exists()) {
