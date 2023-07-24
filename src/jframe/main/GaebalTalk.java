@@ -17,13 +17,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.ref.Cleaner.Cleanable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -37,23 +35,26 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import chatdb.MemberDTO;
 import jframe.menu.EngVerFirstSwing;
 import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
-import javax.swing.border.LineBorder;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	List<String> vanWord = new ArrayList<>();
 	Room room;
 	String title;
-	JPanel panel;
-	public JPanel panel_1;
-	public JPanel panel_2;
-	public JPanel panel_3;
-	public JPanel panel_4;
+	JPanel menuBar;
+	public JPanel createRoom;
+	private JLabel createRoomLb;
+	public JPanel inRoom;
+	private JLabel inRoomLb;
+	JPanel setting;
+	private JLabel settingLb;
+	public JPanel weather;
 	private JPanel contentPane;
 	private boolean panelsVisible = false; // 패널들의 가시성 상태를 저장하는 변수
 	ChatClient client;
@@ -69,6 +70,8 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	JList<String> roomInfo, roommUser, waitInfo;
 
 	MemberDTO member = new MemberDTO();
+	public JLabel korFont;
+	public JLabel callCenter;
 
 	public static JLabel dbName = new JLabel("");
 	public static JLabel dbId = new JLabel("");
@@ -134,11 +137,11 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		panel_4 = new JPanel();
-		panel_4.setBounds(60, 0, 284, 60);
-		panel_4.setBackground(new Color(255, 255, 255));
-		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER));
-		contentPane.add(panel_4, BorderLayout.NORTH);
+		weather = new JPanel();
+		weather.setBounds(60, 0, 284, 60);
+		weather.setBackground(new Color(255, 255, 255));
+		weather.setLayout(new FlowLayout(FlowLayout.CENTER));
+		contentPane.add(weather, BorderLayout.NORTH);
 
 		// Weather c = new Weather();
 		// c.weatherAPI();
@@ -149,59 +152,48 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		// weatherIcon.setBounds(25, 0, 50, 50);
 		// temperatureLabel.setBounds(75, 0, 50, 50);
 
-		// panel_4.add(weatherIcon);
-		// panel_4.add(temperatureLabel);
+		// weather.add(weatherIcon);
+		// weather.add(temperatureLabel);
 
 		// temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		panel.setBackground(new Color(27, 35, 42));
-		panel.setBounds(0, 0, 60, 561);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		menuBar = new JPanel();
+		menuBar.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		menuBar.setBackground(new Color(245, 245, 245));
+		menuBar.setBounds(0, 0, 60, 561);
+		contentPane.add(menuBar);
+		menuBar.setLayout(null);
 
-		panel_1 = new JPanel();
-		panel_1.setBounds(10, 20, 40, 45);
-		panel_1.setBackground(new Color(27, 35, 42));
-		panel_1.setBorder(null);
-		panel.add(panel_1);
+		createRoom = new JPanel();
+		createRoom.setBounds(10, 20, 40, 45);
+		createRoom.setBackground(new Color(245, 245, 245));
+		createRoom.setBorder(null);
+		menuBar.add(createRoom);
 
-		ImageIcon imageIcon = new ImageIcon("image/human.png");
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JLabel lblImage = new JLabel(imageIcon);
-		panel_1.add(lblImage);
+		ImageIcon createRoomImage = new ImageIcon("image/human.png");
+		createRoom.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		createRoomLb = new JLabel(createRoomImage);
+		createRoom.add(createRoomLb);
 
-		panel_2 = new JPanel();
-		panel_2.setBackground(new Color(27, 35, 42));
-		panel_2.setBounds(10, 90, 40, 45);
-		panel.add(panel_2);
+		inRoom = new JPanel();
+		inRoom.setBackground(new Color(245, 245, 245));
+		inRoom.setBounds(10, 90, 40, 45);
+		menuBar.add(inRoom);
 
-		ImageIcon imageIcon_1 = new ImageIcon("image/speech.png");
-		JLabel lblImage_1 = new JLabel(imageIcon_1);
-		lblImage_1.setBounds(106, 270, 38, 20);
-		panel_2.add(lblImage_1);
+		ImageIcon inRoomImage = new ImageIcon("image/speech.png");
+		inRoomLb = new JLabel(inRoomImage);
+		inRoomLb.setBounds(106, 270, 38, 20);
+		inRoom.add(inRoomLb);
 
-		panel_3 = new JPanel();
-		panel_3.setBackground(new Color(27, 35, 42));
-		panel_3.setBounds(10, 500, 40, 50);
-		panel.add(panel_3);
+		setting = new JPanel();
+		setting.setBackground(new Color(245, 245, 245));
+		setting.setBounds(10, 500, 40, 50);
+		menuBar.add(setting);
 
-		ImageIcon imageIcon_2 = new ImageIcon("image/setting.png");
-		JLabel lblImage_2 = new JLabel(imageIcon_2);
-		lblImage_2.setBounds(106, 270, 38, 45);
-		panel_3.add(lblImage_2);
-
-		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(new Color(245, 245, 245));
-		panel_5.setBounds(60, 60, 284, 220);
-		contentPane.add(panel_5);
-
-		ImageIcon panel_5Icon = new ImageIcon("image/dePro.png");
-		panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JLabel panel_5Image = new JLabel(panel_5Icon);
-		panel_5Image.setBackground(new Color(245, 245, 245));
-		panel_5.add(panel_5Image);
+		ImageIcon settingImage = new ImageIcon("image/setting.png");
+		settingLb = new JLabel(settingImage);
+		settingLb.setBounds(106, 270, 38, 45);
+		setting.add(settingLb);
 
 		JPanel myProfile = new JPanel();
 		myProfile.setBackground(new Color(245, 245, 245));
@@ -240,7 +232,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 		ImageIcon serviceCenter = new ImageIcon("image/callCenter.png");
 		service.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JLabel callCenter = new JLabel(serviceCenter);
+		callCenter = new JLabel(serviceCenter);
 		callCenter.setBackground(new Color(245, 245, 245));
 		service.add(callCenter);
 
@@ -251,7 +243,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 		ImageIcon kor_font = new ImageIcon("image/fontSize.png");
 		font.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JLabel korFont = new JLabel(kor_font);
+		korFont = new JLabel(kor_font);
 		korFont.setBackground(new Color(245, 245, 245));
 		font.add(korFont);
 
@@ -285,28 +277,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		JLabel gaeGameIcon = new JLabel(gaeGame);
 		gaeGameIcon.setBackground(new Color(245, 245, 245));
 		game.add(gaeGameIcon);
-
-		JPanel notification = new JPanel();
-		notification.setBackground(new Color(245, 245, 245));
-		notification.setBounds(100, 460, 40, 45);
-		contentPane.add(notification);
-
-		ImageIcon siren = new ImageIcon("image/siren.png");
-		notification.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JLabel notificationIcon = new JLabel(siren);
-		notificationIcon.setBackground(new Color(245, 245, 245));
-		notification.add(notificationIcon);
-
-		JPanel gaebalVer = new JPanel();
-		gaebalVer.setBackground(new Color(245, 245, 245));
-		gaebalVer.setBounds(182, 460, 40, 45);
-		contentPane.add(gaebalVer);
-
-		ImageIcon ver = new ImageIcon("image/gaebalVer.png");
-		gaebalVer.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JLabel gaever = new JLabel(ver);
-		gaever.setBackground(new Color(245, 245, 245));
-		gaebalVer.add(gaever);
 
 		panel_chat = new JPanel();
 		panel_chat.setLayout(new BorderLayout());
@@ -402,138 +372,87 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			}
 		});
 
+		// SettingScreen 클래스의 인스턴스 생성
+		NotificationScreen notificationScreen = new NotificationScreen();
+		// JScrollPane로 감싸서 notification에 추가
+		JScrollPane nofitication = new JScrollPane(notificationScreen);
+		nofitication.setBounds(60, 60, 284, 220);
+		contentPane.add(nofitication);
+
 		// 초기에 보이지 않도록 설정
-		panel_5.setVisible(false);
 		myProfile.setVisible(false);
 		display_Icon.setVisible(false);
 		service.setVisible(false);
 		font.setVisible(false);
 		language.setVisible(false);
 		game.setVisible(false);
-		notification.setVisible(false);
-		gaebalVer.setVisible(false);
 		profileSet.setVisible(false);
 
-		panel_3.addMouseListener(new MouseAdapter() {
+		setting.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				panelsVisible = !panelsVisible; // 패널들의 가시성 상태를 토글
 
 				if (panelsVisible) {
 					// 패널들을 보여줍니다.
-					panel_chat.setVisible(false);
-					panel_5.setVisible(true);
-					myProfile.setVisible(true);
-					display_Icon.setVisible(true);
-					service.setVisible(true);
-					font.setVisible(true);
-					language.setVisible(true);
-					game.setVisible(true);
-					notification.setVisible(true);
-					gaebalVer.setVisible(true);
-					profileSet.setVisible(false);
+					panel_chat.setVisible(false); myProfile.setVisible(true); display_Icon.setVisible(true); service.setVisible(true);
+					font.setVisible(true); language.setVisible(true); game.setVisible(true); profileSet.setVisible(false);
 				} else {
 					// 패널들을 가립니다.
-					panel_chat.setVisible(true);
-					panel_5.setVisible(false);
-					myProfile.setVisible(false);
-					display_Icon.setVisible(false);
-					service.setVisible(false);
-					font.setVisible(false);
-					language.setVisible(false);
-					game.setVisible(false);
-					notification.setVisible(false);
-					gaebalVer.setVisible(false);
-					profileSet.setVisible(false);
+					panel_chat.setVisible(true); myProfile.setVisible(false); display_Icon.setVisible(false); service.setVisible(false);
+					font.setVisible(false); language.setVisible(false); game.setVisible(false); profileSet.setVisible(false);
 				}
 			}
 		});
 
-		// this
-
 		// 패널 크기를 JFrame 크기에 맞게 설정
 		addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent evt) {
-				int panelWidth = panel.getWidth();
-				int panelHeight = panel.getHeight();
+				int panelWidth = menuBar.getWidth();
+				int panelHeight = menuBar.getHeight();
 				int frameWidth = getWidth();
 				int frameHeight = getHeight();
 
-				panel.setBounds(0, 0, 60, getHeight());
-				panel_4.setBounds(60, 0, getWidth(), 60);
+				menuBar.setBounds(0, 0, 60, getHeight());
+				weather.setBounds(60, 0, getWidth(), 60);
 				panel_chat.setBounds(60, 60, getWidth(), getHeight());
 				scrollPane.setBounds(0, 0, panel_chat.getWidth(), panel_chat.getHeight());
+				nofitication.setBounds(60, 60, frameWidth, (int)(frameHeight * 0.4));
 
 				int x = 10; // x 좌표
-				int y = (int) (panelHeight * 0.8); // y 좌표 (panel 높이의 90% 위치에 설정)
+				int y = (int) (panelHeight * 0.8); // y 좌표 (panel 높이의 80% 위치에 설정)
 
-				int profileSetX = (int) (frameWidth * 0.20); // profileSet x 좌표
-				int profileSetY = (int) (frameHeight * 0.5); // profileSet y 좌표
-				profileSet.setBounds(profileSetX, profileSetY, 284, 281);
+				profileSet.setBounds((int) (frameWidth * 0.20), (int) (frameHeight * 0.5), 284, 281);
 
-				panel_3.setBounds(x, y, 40, 42);
-
-				int panel_5X = (int) (frameWidth * 0.20); // panel_5 x 좌표
-				int panel_5Y = (int) (frameHeight * 0.10); // panel_5 y 좌표
-				panel_5.setBounds(panel_5X, panel_5Y, 284, 220);
-
+				setting.setBounds(x, y, 40, 50);
+						
 				// myProfile 위치 조정
-				int myProfileX = (int) (frameWidth * 0.25); // myProfile x 좌표
-				int myProfileY = (int) (frameHeight * 0.5); // myProfile y 좌표
-				myProfile.setBounds(myProfileX, myProfileY, 40, 45);
-
+				myProfile.setBounds((int) (frameWidth * 0.25), (int) (frameHeight * 0.6), 40, 45);
+				
 				myProfile.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						// myProfile 패널을 클릭했을 때 다른 패널들을 가립니다.
-						panel_5.setVisible(true);
-						panel_chat.setVisible(false);
-						display_Icon.setVisible(false);
-						service.setVisible(false);
-						font.setVisible(false);
-						language.setVisible(false);
-						game.setVisible(false);
-						notification.setVisible(false);
-						gaebalVer.setVisible(false);
-						myProfile.setVisible(false);
+						panel_chat.setVisible(false); display_Icon.setVisible(false); service.setVisible(false); font.setVisible(false);
+						language.setVisible(false); game.setVisible(false); myProfile.setVisible(false);
 						// profile 패널만 보이도록 설정
 						profileSet.setVisible(true);
 					}
 				});
 
 				// display_Icon 위치 조정
-				int displayIconX = (int) (frameWidth * 0.52); // display_Icon x 좌표
-				int displayIconY = (int) (frameHeight * 0.5); // display_Icon y 좌표
-				display_Icon.setBounds(displayIconX, displayIconY, 40, 45);
+				display_Icon.setBounds((int) (frameWidth * 0.52), (int) (frameHeight * 0.6), 40, 45);
 
 				// service 위치 조정
-				int serviceX = (int) (frameWidth * 0.80); // service x 좌표
-				int serviceY = (int) (frameHeight * 0.50); // service y 좌표
-				service.setBounds(serviceX, serviceY, 40, 45);
+				service.setBounds((int) (frameWidth * 0.80), (int) (frameHeight * 0.6), 40, 45);
 
 				// font 위치 조정
-				int fontX = (int) (frameWidth * 0.25); // font x 좌표
-				int fontY = (int) (frameHeight * 0.65); // font y 좌표
-				font.setBounds(fontX, fontY, 40, 45);
+				font.setBounds((int) (frameWidth * 0.25), (int) (frameHeight * 0.75), 40, 45);
 
 				// language 위치 조정
-				int languageX = (int) (frameWidth * 0.52); // language x 좌표
-				int languageY = (int) (frameHeight * 0.65); // language y 좌표
-				language.setBounds(languageX, languageY, 40, 45);
+				language.setBounds((int) (frameWidth * 0.52), (int) (frameHeight * 0.75), 40, 45);
 
 				// game 위치 조정
-				int gameX = (int) (frameWidth * 0.80); // game x 좌표
-				int gameY = (int) (frameHeight * 0.65); // game y 좌표
-				game.setBounds(gameX, gameY, 40, 45);
-
-				// notification 위치 조정
-				int notificationX = (int) (frameWidth * 0.25); // notification x 좌표
-				int notificationY = (int) (frameHeight * 0.80); // notification y 좌표
-				notification.setBounds(notificationX, notificationY, 40, 45);
-
-				// gaebalVer 위치 조정
-				int gaebalVerX = (int) (frameWidth * 0.52); // gaebalVer x 좌표
-				int gaebalVerY = (int) (frameHeight * 0.80); // gaebalVer y 좌표
-				gaebalVer.setBounds(gaebalVerX, gaebalVerY, 40, 45);
+				game.setBounds((int) (frameWidth * 0.80), (int) (frameHeight * 0.75), 40, 45);
 			}
 		});
 
@@ -569,7 +488,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		client.bt_exit.addActionListener(this);
 		client.bt_kick.addActionListener(this);
 		client.bt_vanWord.addActionListener(this);
-		panel_1.addMouseListener(new MouseAdapter() {
+		createRoom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
@@ -587,7 +506,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		});
 
 		// "방들어가기" 이미지 클릭 이벤트
-		panel_2.addMouseListener(new MouseAdapter() {
+		inRoom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (selectedRoom == null) {
@@ -661,16 +580,16 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 						try {
 							FileInputStream fileInputStream = new FileInputStream(selectedFile);
-							byte[] fileContentBytes = fileInputStream.readAllBytes();
-							String fileContent = new String(fileContentBytes);
+							//byte[] fileContentBytes = fileInputStream.readAllBytes();
+							//String fileContent = new String(fileContentBytes);
 
-							for (String user : selectedUsers) {
-								String message = "500|" + user + "|" + nickName + "|" + fileName + "|" + fileContent;
-								System.out.println("이벤트" + message);
-								writeChatLog(client.getTitle(),
-										"[파일전송]" + "<파일이름 : " + fileName + ">" + nickName + " --> " + user);
-								sendMsg(message);
-							}
+							//for (String user : selectedUsers) {
+							//String message = "500|" + user + "|" + nickName + "|" + fileName + "|" + fileContent;
+							//	System.out.println("이벤트" + message);
+							//	writeChatLog(client.getTitle(),
+							//			"[파일전송]" + "<파일이름 : " + fileName + ">" + nickName + " --> " + user);
+							//	sendMsg(message);
+							//}
 
 							fileInputStream.close();
 						} catch (IOException ex) {
