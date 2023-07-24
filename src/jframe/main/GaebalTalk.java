@@ -53,6 +53,8 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 	public JPanel inRoom;
 	private JLabel inRoomLb;
 	JPanel setting;
+	
+	public NotificationScreen  notificationScreen;
 	private JLabel settingLb;
 	public JPanel weather;
 	private JPanel contentPane;
@@ -280,7 +282,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 		panel_chat = new JPanel();
 		panel_chat.setLayout(new BorderLayout());
-		panel_chat.setBackground(new Color(245, 245, 245));
+		panel_chat.setBackground(new Color(245,245,245));
 		panel_chat.setBounds(60, 60, 284, 381);
 		contentPane.add(panel_chat);
 
@@ -373,9 +375,10 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		});
 
 		// SettingScreen 클래스의 인스턴스 생성
-		NotificationScreen notificationScreen = new NotificationScreen();
+		notificationScreen = new NotificationScreen();
 		// JScrollPane로 감싸서 notification에 추가
 		JScrollPane nofitication = new JScrollPane(notificationScreen);
+		nofitication.setBackground(new Color(0, 0, 0));
 		nofitication.setBounds(60, 60, 284, 220);
 		contentPane.add(nofitication);
 

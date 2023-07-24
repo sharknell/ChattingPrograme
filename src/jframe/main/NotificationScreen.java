@@ -18,7 +18,11 @@ import javax.swing.JScrollPane;
 public class NotificationScreen extends JPanel {
     private static JPanel cardPanel;
     private CardLayout cardLayout;
-    private JList<String> notificationList;
+    public JList<String> notificationList;
+    public JLabel contentLabel;
+    public Component titleLabel;
+    public JPanel returnPanel;
+    public JLabel lblImage;
 
     private String[] notificationTitles = {
             "7/30 공지사항 1",
@@ -45,7 +49,7 @@ public class NotificationScreen extends JPanel {
         JPanel listPanel = new JPanel(new BorderLayout());
         listPanel.setBackground(new Color(245, 245, 245));
         notificationList = new JList<>(notificationTitles);
-        notificationList.setBackground(new Color(245, 245, 245));
+        notificationList.setBackground(new Color(245,245,245));
         notificationList.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         JScrollPane listScrollPane = new JScrollPane(notificationList);
         listPanel.add(listScrollPane, BorderLayout.CENTER);
@@ -54,10 +58,10 @@ public class NotificationScreen extends JPanel {
         // 공지사항 내용을 보여주는 패널
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(new Color(245, 245, 245));
-        JLabel titleLabel = new JLabel();
+        titleLabel = new JLabel();
         titleLabel.setBackground(new Color(245, 245, 245));
         titleLabel.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 20));
-        JLabel contentLabel = new JLabel();
+        contentLabel = new JLabel();
         contentLabel.setBackground(new Color(245, 245, 245));
         contentLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         contentPanel.add(titleLabel, BorderLayout.NORTH);
@@ -81,10 +85,10 @@ public class NotificationScreen extends JPanel {
         });
         
      // 공지사항 내용을 보여주는 패널에 되돌리는 패널 추가
-        JPanel returnPanel = new JPanel();
+        returnPanel = new JPanel();
         returnPanel.setBackground(new Color(245, 245, 245));
         ImageIcon imageIcon = new ImageIcon("image/cancel.png");
-        JLabel lblImage = new JLabel(imageIcon);
+        lblImage = new JLabel(imageIcon);
         lblImage.setBounds(0, 0, 38, 20);
         returnPanel.add(lblImage);
         returnPanel.addMouseListener(new MouseAdapter() {
