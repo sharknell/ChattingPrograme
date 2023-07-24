@@ -14,3 +14,4 @@
 fontSize 및 engFontSize 크기조절
 darkEngFontSize 및 darkFontSize 추가
 07.23 <이승민> 위에서 문제있던 부분 수정 완료, darkCancel이미지 추가
+07.23 <이승민> ChatClient 클래스 버튼들 이미지로 변경
