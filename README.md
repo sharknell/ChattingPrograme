@@ -13,3 +13,4 @@
 07.23 <이승민> 라인정리, 각 아이콘들의 위치조절코드 수정, 설정 탭에 프로필지우고 NotificationScreen 클래스 추가(다크모드 관련 수정 중)
 fontSize 및 engFontSize 크기조절
 darkEngFontSize 및 darkFontSize 추가
+07.23 <이승민> 위에서 문제있던 부분 수정 완료, darkCancel이미지 추가
