@@ -15,3 +15,4 @@ fontSize 및 engFontSize 크기조절
 darkEngFontSize 및 darkFontSize 추가
 07.23 <이승민> 위에서 문제있던 부분 수정 완료, darkCancel이미지 추가
 07.23 <이승민> ChatClient 클래스 버튼들 이미지로 변경
+07.24 <이승민> chatdb패키지 안에있는 모든 파일 규호 컴퓨터 바뀌면서 IP 14.42.124.97로 되어있던거 전부 14.42.124.13 으로 변경하고 DTO private로 되어있던거 이름, 전화번호, 아이디 등의 정보 빼오기 위해 public으로 수정
