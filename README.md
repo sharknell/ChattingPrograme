@@ -24,3 +24,5 @@
               EngGaebalTalk 업데이트 및 EngDarkModeChanger 추가, EngVerFirstSwing 수정
               공지사항 내용란에 html태그를 사용하여 줄 바꿈이 가능하게 함.
               내용은 임시로 깃에 ReadMe에 있는 내용 그냥 갖다박아놓음
+07.25 <이승민> ChatClient 클래스 내에 있는 컴포넌트들 각 위치를 기준으로 JFrame크기를 변경했을 때 그 비율에 맞춰 크기 조절되게함.
+              GaebalTalk내에 ProfileSet 내부에 있는 되돌리기 버튼 추가가 안되어 있어서 DarkModeChanger에 cancelLb 이미지 추가
