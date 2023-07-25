@@ -110,7 +110,7 @@ public class NotificationScreen extends JPanel {
         lblImage.setBounds(0, 0, 38, 20);
         returnPanel.add(lblImage);
         returnPanel.addMouseListener(new MouseAdapter() {
-            @Override
+            @Override	
             public void mouseClicked(MouseEvent e) {
                 // 되돌리는 패널을 클릭하면 다시 공지사항 목록을 보여줍니다.
                 cardLayout.show(cardPanel, "listPanel");
