@@ -22,3 +22,5 @@
               207라인! 220라인까지 GaebalTalk로 정보 전해주게 수정
               이미지가 너무 많아서 빼먹은게 있을까봐 전체 재업로드, 이름은 같아서 코드에는 영향없음.
               EngGaebalTalk 업데이트 및 EngDarkModeChanger 추가, EngVerFirstSwing 수정
+              공지사항 내용란에 html태그를 사용하여 줄 바꿈이 가능하게 함.
+              내용은 임시로 깃에 ReadMe에 있는 내용 그냥 갖다박아놓음
