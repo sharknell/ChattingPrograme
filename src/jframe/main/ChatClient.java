@@ -37,7 +37,6 @@ public class ChatClient extends JFrame {
 	JButton bt_exit; 
 	JButton bt_perChat; 
 	JButton bt_sendFile;
-	JButton bt_vanWord;
 	JPanel p;
 
 	OutputStream out;
@@ -103,7 +102,7 @@ public class ChatClient extends JFrame {
 		bt_perChat.setFont(new Font("777별나라달님", Font.PLAIN, 17));
 		bt_perChat.setBorderPainted(false);
 		bt_perChat.setBackground(Color.WHITE);
-		bt_perChat.setBounds(245, 191, 60, 50);
+		bt_perChat.setBounds(242, 187, 60, 50);
 		p.add(bt_perChat);
 		
 		lblNewLabel_1 = new JLabel("Message");
@@ -115,23 +114,16 @@ public class ChatClient extends JFrame {
 		bt_kick = new JButton();
 		bt_kick.setIcon(new ImageIcon("image/강퇴.png"));
 		bt_kick.setBackground(new Color(255, 255, 255));
-		bt_kick.setBounds(245, 291, 60, 50);
+		bt_kick.setBounds(242, 247, 60, 50);
 		bt_kick.setBorderPainted(false);
 		p.add(bt_kick);
 		
 		bt_sendFile = new JButton();
 		bt_sendFile.setIcon(new ImageIcon("image/파일전송.png"));
 		bt_sendFile.setBackground(new Color(255, 255, 255));
-		bt_sendFile.setBounds(245, 341, 60, 50);
+		bt_sendFile.setBounds(242, 307, 60, 50);
 		bt_sendFile.setBorderPainted(false);
 		p.add(bt_sendFile);
-		
-		bt_vanWord = new JButton();
-		bt_vanWord.setIcon(new ImageIcon("image/금칙어.png"));
-		bt_vanWord.setBackground(new Color(255, 255, 255));
-		bt_vanWord.setBounds(245, 241, 60, 50);
-		bt_vanWord.setBorderPainted(false);
-		p.add(bt_vanWord);
 		setBounds(300, 200, 332, 500);
 		sendTF.requestFocus();
 
