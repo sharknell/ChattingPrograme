@@ -7,7 +7,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import chatdb.ChatDAO;
 import chatdb.Login;
+import chatdb.MemberDTO;
 import jframe.main.GaebalTalk;
 
 public class FirstSwing extends JFrame {
@@ -15,7 +17,9 @@ public class FirstSwing extends JFrame {
     private JPanel contentPane;
     private JTextField textField;    private JTextField textField_1;
     private JPanel panel_2;
+    private static MemberDTO globalUserDTO;
     private GaebalTalk gaebalTalk;
+    static MemberDTO member = new MemberDTO();
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -31,6 +35,9 @@ public class FirstSwing extends JFrame {
     }
 
     public FirstSwing() {
+    	
+    	globalUserDTO = new MemberDTO(member.id, member.name, member.phonenumber);
+    	
     	setResizable(false);
 
 		setBackground(Color.WHITE);
@@ -196,14 +203,19 @@ public class FirstSwing extends JFrame {
                 boolean loginSuccessful = login.login(id, password);
 
                 if (loginSuccessful) {
-                    try {
-						gaebalTalk = new GaebalTalk();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                    gaebalTalk.setVisible(true);
-                    setVisible(false);
+                	// 로그인 성공한 경우, 사용자 정보를 가져옴
+                    ChatDAO chatDAO = ChatDAO.getInstance();
+                    MemberDTO userDTO = chatDAO.getMemberById(id);
+                    
+                   try {
+					gaebalTalk = new GaebalTalk(userDTO);
+				} catch (IOException e1) {
+				
+					e1.printStackTrace();
+				} // MemberDTO를 전달하여 객체 생성
+                   gaebalTalk.setVisible(true);
+                   setVisible(false);
+                    
                 } else {
                     JOptionPane.showMessageDialog(FirstSwing.this, "로그인 실패! 아이디 또는 비밀번호를 확인해주세요.", "로그인 오류", JOptionPane.ERROR_MESSAGE);
                 }
