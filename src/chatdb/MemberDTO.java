@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class MemberDTO {
-    private String id;
-    private String name;
-    private String password;
-    private String phonenumber;
+    public String id;
+    public String name;
+    public String password;
+    public String phonenumber;
     private int countrycode;
     private Date reg_date;
     private String RRN;
@@ -79,5 +79,11 @@ public class MemberDTO {
     public void setRRN(String RRN) {
         this.RRN = RRN;
     }
+
+	public MemberDTO(String id, String name, String phonenumber) {
+		this.id = id;
+		this.name = name;
+		this.phonenumber = phonenumber;
+	}
 
 }

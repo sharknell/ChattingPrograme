@@ -12,13 +12,58 @@ import java.util.Collections;
 public class ChatDAO {
     private static final ChatDAO instance = new ChatDAO();
 
-    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.13:3306/chatdb";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
 
     private ChatDAO() {
     }
 
+    public MemberDTO getMemberById(String id) {
+        Connection conn = getConnection();
+        String sql = "SELECT * FROM members WHERE id = ?";
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        MemberDTO dto = null;
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                dto = new MemberDTO();
+
+                dto.setName(rs.getString("name"));
+                dto.setId(rs.getString("id"));
+                dto.setPassword(rs.getString("password"));
+                dto.setReg_date(rs.getDate("reg_date"));
+                dto.setPhonenumber(rs.getString("phonenumber"));
+                dto.setCountrycode(rs.getInt("countrycode"));
+                dto.setRRN(rs.getString("RRN"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return dto;
+    }
+    
     public static ChatDAO getInstance() {
         return instance;
     }
