@@ -24,16 +24,17 @@ public class Service extends Thread {
 	List<Room> roomSer;
 	Socket socket;
 	String nickName;
-	
+
 	private static final String PNG = "png";
 	private static final String JPG = "jpg";
 	private static final String JPEG = "jpeg";
+
 	public Service(Socket socket, Server server) {
 		all = server.all;
 		wait = server.wait;
 		roomSer = server.room;
 		this.socket = socket;
-		
+
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = socket.getOutputStream();
@@ -60,7 +61,7 @@ public class Service extends Thread {
 						all.add(this);
 						wait.add(this);
 						break;
-					
+
 					case "150":
 						nickName = msgs[1];
 						messageWait("160|" + getRoomInfo());
@@ -112,12 +113,10 @@ public class Service extends Thread {
 						break;
 
 					case "300":
-						String message = msgs[2];  
-					    messageRoom("300|" + nickName + "|" + message);
-					   
-					    break;
-						
-						
+						String message = msgs[2];
+						messageRoom("300|" + nickName + "|" + message);
+
+						break;
 
 					case "310": // 귓속말 대화
 						String targetUser = msgs[1];
@@ -131,16 +130,14 @@ public class Service extends Thread {
 								break;
 							}
 						}
-						
-					  
-					    if (targetService != null) {
-					    
-					    	messageTo(targetService, "320|" + nickName + "|" + whisperMsg + "|" + targetUser);
-							messageTo(this, "320|"  + nickName + "|" + whisperMsg + "|" + targetUser);
-					   
-					    break;
-						
-						
+
+						if (targetService != null) {
+
+							messageTo(targetService, "320|" + nickName + "|" + whisperMsg + "|" + targetUser);
+							messageTo(this, "320|" + nickName + "|" + whisperMsg + "|" + targetUser);
+
+							break;
+
 						} else {
 
 							messageTo(this, "320|귓속말 대상 유저를 찾을 수 없습니다.");
@@ -196,21 +193,8 @@ public class Service extends Thread {
 						String receiverNick = msgs[1];
 						String sender = msgs[2];
 						String fileName = msgs[3];
+						String filecontent = msgs[4];
 						Service receiverService = null;
-						String fileContent="";
-						
-						
-						SharedData sharedData = SharedData.getInstance();
-						// SharedData 클래스의 인스턴스를 얻고 파일 내용을 가져오기
-						
-						String encodingFile = sharedData.getFileContent();
-							
-						
-						System.out.println("endcodingFileName -- > " + encodingFile);
-					    System.out.println("인코딩 " + encodingFile);
-						System.out.println("service에서 받은 filecontents : " + sharedData.getFileContent());
-
-					
 
 						// 대상 사용자(수신자)를 찾아서 파일을 전송
 						for (Service service : myRoom.user) {
@@ -221,8 +205,8 @@ public class Service extends Thread {
 						}
 
 						if (receiverService != null) {
-							messageTo(receiverService,"502|" + sender  +"|" + fileName);
-							System.out.println( " 넘어가는 인코딩 " + fileContent);
+							messageTo(receiverService, "502|" + sender + "|" + fileName + "|" + filecontent);
+
 						} else {
 							messageTo(this, "501|" + receiverNick);
 						}
@@ -345,15 +329,10 @@ public class Service extends Thread {
 			}
 		}
 	}
-	
 
 	public void messageTo(String msg) throws IOException {
 		out.write((msg + "\n").getBytes());
 	}
-	
-	
-
-   
 
 	public void messageTo(Service service, String msg) {
 		try {
