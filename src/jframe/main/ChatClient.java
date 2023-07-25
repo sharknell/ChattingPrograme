@@ -1,5 +1,6 @@
 package jframe.main;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -19,6 +20,10 @@ import javax.swing.ListModel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -96,7 +101,27 @@ public class ChatClient extends JFrame {
 		sp_list.setViewportView(li_inwon);
 		p.add(bt_exit);
 
-		getContentPane().add(p);
+		getContentPane().add(p, BorderLayout.CENTER);
+		
+		addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent evt) {
+                int panelWidth = p.getWidth();
+                int panelHeight = p.getHeight();
+                int frameWidth = getWidth();
+                int frameHeight = getHeight();
+
+                //각 컴포넌트들의 위치 지정 및 프레임 크기에 맞춰 조절하기
+                sp_ta.setBounds(12, 6, (int)(frameWidth * 0.6), (int)(frameHeight * 0.76));
+                sp_list.setBounds((int)(frameWidth * 0.73), 9, (int)(frameWidth * 0.2), (int)(frameHeight * 0.4));
+                sendTF.setBounds(8, (int)(frameHeight * 0.85), (int)(frameWidth * 0.66), 30);
+                lblNewLabel_1.setBounds(8, (int)(frameHeight * 0.8), 74, 21);
+                bt_perChat.setBounds((int)(frameWidth * 0.52), (int)(frameHeight * 0.8), 20, 20);
+                bt_sendFile.setBounds((int)(frameWidth * 0.6), (int)(frameHeight * 0.8), 20, 20);
+                bt_kick.setBounds((int)(frameWidth * 0.78), (int)(frameHeight * 0.45), 60, 50);
+                bt_exit.setBounds((int)(frameWidth * 0.83), (int)(frameHeight * 0.83), 45, 41);
+            
+            }
+        });
 		
 		bt_perChat = new JButton("");
 		bt_perChat.setOpaque(false);
