@@ -42,7 +42,7 @@ public class JoinScreen extends JFrame {
     private JTextField textField_3;
     private JTextField textField_4;
     private JPasswordField passwordField;
-    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.13:3306/chatdb";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
 
@@ -89,15 +89,15 @@ public class JoinScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 360, 540);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(185, 207, 210));
-        contentPane.setForeground(new Color(185, 207, 210));
+        contentPane.setBackground(new Color(245, 245, 245));
+        contentPane.setForeground(new Color(245, 245, 245));
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         panel = new JPanel();
-        panel.setBackground(new Color(185, 207, 210));
+        panel.setBackground(new Color(245, 245, 245));
         panel.setBounds(32, 10, 280, 160);
         contentPane.add(panel);
         panel.setLayout(null);
@@ -138,22 +138,22 @@ public class JoinScreen extends JFrame {
         contentPane.add(lblNewLabel_4);
 
         textField = new JTextField();
-        textField.setForeground(new Color(255, 255, 255));
-        textField.setBackground(new Color(155, 174, 176));
+        textField.setForeground(new Color(36, 36, 36));
+        textField.setBackground(new Color(255, 255, 255));
         textField.setColumns(10);
         textField.setBounds(129, 191, 130, 20);
         textField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField);
 
         passwordField = new JPasswordField();
-        passwordField.setForeground(new Color(255, 255, 255));
-        passwordField.setBackground(new Color(155, 174, 176));
+        passwordField.setForeground(new Color(36, 36, 36));
+        passwordField.setBackground(new Color(255, 255, 255));
         passwordField.setBounds(129, 221, 130, 21);
         passwordField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordField);
 
         JPanel passwordPanel = new JPanel();
-        passwordPanel.setBackground(new Color(185, 207, 210));
+        passwordPanel.setBackground(new Color(245, 245, 245));
         passwordPanel.setBounds(257, 221, 20, 20);
         passwordPanel.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordPanel);
@@ -162,7 +162,7 @@ public class JoinScreen extends JFrame {
         final ImageIcon unlockIcon = new ImageIcon("image/unlock.png");
         passwordPanel.setLayout(null);
         final JLabel passwordLabel = new JLabel();
-        passwordLabel.setBackground(new Color(185, 207, 210));
+        passwordLabel.setBackground(new Color(245, 245, 245));
         passwordLabel.setIcon(lockIcon);
         passwordLabel.setBounds(0, 0, 20, 20);
         passwordPanel.add(passwordLabel);
@@ -184,24 +184,24 @@ public class JoinScreen extends JFrame {
         });
 
         textField_2 = new JTextField();
-        textField_2.setForeground(new Color(255, 255, 255));
-        textField_2.setBackground(new Color(155, 174, 176));
+        textField_2.setForeground(new Color(36, 36, 36));
+        textField_2.setBackground(new Color(255, 255, 255));
         textField_2.setColumns(10);
         textField_2.setBounds(129, 251, 130, 20);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_2);
 
         textField_3 = new JTextField();
-        textField_3.setForeground(new Color(255, 255, 255));
-        textField_3.setBackground(new Color(155, 174, 176));
+        textField_3.setForeground(new Color(36, 36, 36));
+        textField_3.setBackground(new Color(255, 255, 255));
         textField_3.setColumns(10);
         textField_3.setBounds(129, 281, 130, 20);
         textField_3.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_3);
 
         textField_4 = new JTextField();
-        textField_4.setForeground(new Color(255, 255, 255));
-        textField_4.setBackground(new Color(155, 174, 176));
+        textField_4.setForeground(new Color(36, 36, 36));
+        textField_4.setBackground(new Color(255, 255, 255));
         textField_4.setColumns(14); // 14자리(6자리 + "-" + 7자리)로 설정
         textField_4.setBounds(129, 311, 130, 20);
         textField_4.setBorder(BorderFactory.createEmptyBorder());
@@ -240,8 +240,8 @@ public class JoinScreen extends JFrame {
         });
 
         JPanel panel_1 = new JPanel();
-        panel_1.setForeground(new Color(185, 207, 210));
-        panel_1.setBackground(new Color(185, 207, 210));
+        panel_1.setForeground(new Color(245, 245, 245));
+        panel_1.setBackground(new Color(245, 245, 245));
         panel_1.setBounds(110, 430, 30, 35);
         contentPane.add(panel_1);
 
@@ -319,8 +319,8 @@ public class JoinScreen extends JFrame {
         });
 
         JPanel panel_2 = new JPanel();
-        panel_2.setForeground(new Color(185, 207, 210));
-        panel_2.setBackground(new Color(185, 207, 210));
+        panel_2.setForeground(new Color(245, 245, 245));
+        panel_2.setBackground(new Color(245, 245, 245));
         panel_2.setBounds(200, 430, 30, 35);
         contentPane.add(panel_2);
 
@@ -337,7 +337,7 @@ public class JoinScreen extends JFrame {
                 atc.setVisible(true);
             }
         });
-        panel_3.setBackground(new Color(185, 207, 210));
+        panel_3.setBackground(new Color(245, 245, 245));
         panel_3.setBounds(189, 330, 70, 25);
         contentPane.add(panel_3);
 

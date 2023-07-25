@@ -30,7 +30,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
     private JTextField textField_1;
     private JTextField textField_2;
 
-    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.13:3306/chatdb";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
 
@@ -54,15 +54,15 @@ public class ProfliePasswordChangeScreen extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 540);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(185, 207, 210));
-		contentPane.setForeground(new Color(185, 207, 210));
+		contentPane.setBackground(new Color(245, 245, 245));
+		contentPane.setForeground(new Color(245, 245, 245));
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		panel = new JPanel();
-		panel.setBackground(new Color(185, 207, 210));
+		panel.setBackground(new Color(245, 245, 245));
         panel.setBounds(32, 10, 280, 160);
         contentPane.add(panel);
         panel.setLayout(null);
@@ -91,21 +91,21 @@ public class ProfliePasswordChangeScreen extends JFrame {
         contentPane.add(lblNewLabel_3);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setForeground(new Color(255, 255, 255));
-        passwordField.setBackground(new Color(155, 174, 176));
+        passwordField.setForeground(new Color(36, 36, 36));
+        passwordField.setBackground(new Color(255, 255, 255));
         passwordField.setBounds(129, 221, 130, 20);
         passwordField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordField);
 
         JPasswordField passwordConfirmField = new JPasswordField();
-        passwordConfirmField.setForeground(new Color(255, 255, 255));
-        passwordConfirmField.setBackground(new Color(155, 174, 176));
+        passwordConfirmField.setForeground(new Color(36, 36, 36));
+        passwordConfirmField.setBackground(new Color(255, 255, 255));
         passwordConfirmField.setBounds(129, 251, 130, 20);
         passwordConfirmField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordConfirmField);
 
         JPanel passwordPanel = new JPanel();
-        passwordPanel.setBackground(new Color(185, 207, 210));
+        passwordPanel.setBackground(new Color(245, 245, 245));
         passwordPanel.setBounds(257, 221, 20, 20);
         passwordPanel.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordPanel);
@@ -139,7 +139,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
         textField_2.setForeground(Color.WHITE);
         textField_2.setColumns(10);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
-        textField_2.setBackground(new Color(155, 174, 176));
+        textField_2.setBackground(new Color(255, 255, 255));
         textField_2.setBounds(129, 191, 130, 20);
         contentPane.add(textField_2);
 
@@ -148,7 +148,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
         
         
         JPanel panel_1 = new JPanel();
-        panel_1.setBackground(new Color(185, 207, 210));
+        panel_1.setBackground(new Color(245, 245, 245));
         panel_1.setBounds(200, 430, 30, 35);
         contentPane.add(panel_1);
         JLabel lblImage_2 = new JLabel(imageIcon_2);
@@ -163,7 +163,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
         });
 
         JPanel panel_2 = new JPanel();
-        panel_2.setBackground(new Color(185, 207, 210));
+        panel_2.setBackground(new Color(245, 245, 245));
         panel_2.setBounds(110, 430, 30, 35);
         contentPane.add(panel_2);
         JLabel lblImage_1 = new JLabel(imageIcon_1);

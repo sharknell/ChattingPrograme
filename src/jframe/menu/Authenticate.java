@@ -44,7 +44,7 @@ public class Authenticate extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 400, 300);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(185, 207, 210));
+        contentPane.setBackground(new Color(245, 245, 245));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         int mainFrameX = Authenticate.this.getX();
@@ -59,7 +59,7 @@ public class Authenticate extends JFrame {
         contentPane.setLayout(null);
 
         JPanel email = new JPanel();
-        email.setBackground(new Color(185, 207, 210));
+        email.setBackground(new Color(245, 245, 245));
         email.setBounds(50, 110, 100, 30);
         contentPane.add(email);
 
@@ -69,7 +69,7 @@ public class Authenticate extends JFrame {
         email.add(emailLb);
 
         JPanel phone = new JPanel();
-        phone.setBackground(new Color(185, 207, 210));
+        phone.setBackground(new Color(245, 245, 245));
         phone.setBounds(234, 110, 100, 30);
         contentPane.add(phone);
 
@@ -79,8 +79,8 @@ public class Authenticate extends JFrame {
         phone.add(phoneLb);
 
         JPanel complete = new JPanel();
-        complete.setForeground(new Color(185, 207, 210));
-        complete.setBackground(new Color(185, 207, 210));
+        complete.setForeground(new Color(245, 245, 245));
+        complete.setBackground(new Color(245, 245, 245));
         complete.setBounds(112, 200, 30, 35);
         contentPane.add(complete);
 
@@ -90,8 +90,8 @@ public class Authenticate extends JFrame {
         complete.add(completeLb);
 
         JPanel cancel = new JPanel();
-        cancel.setForeground(new Color(185, 207, 210));
-        cancel.setBackground(new Color(185, 207, 210));
+        cancel.setForeground(new Color(245, 245, 245));
+        cancel.setBackground(new Color(245, 245, 245));
         cancel.setBounds(242, 200, 30, 35);
         contentPane.add(cancel);
 

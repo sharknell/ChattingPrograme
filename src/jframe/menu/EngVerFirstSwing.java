@@ -49,16 +49,16 @@ public class EngVerFirstSwing extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 540);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(185, 207, 210));
-		contentPane.setForeground(new Color(185, 207, 210));
+		contentPane.setBackground(new Color(245, 245, 245));
+		contentPane.setForeground(new Color(245, 245, 245));
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		textField_1 = new JTextField();
-		textField_1.setForeground(new Color(255, 255, 255));
-		textField_1.setBackground(new Color(155, 174, 176));
+		textField_1.setForeground(new Color(36, 36, 36));
+		textField_1.setBackground(new Color(255, 255, 255));
 		textField_1.setToolTipText("");
 		textField_1.setBounds(129, 180, 130, 20);
 		textField_1.setBorder(BorderFactory.createEmptyBorder()); // 테두리 제거
@@ -67,14 +67,14 @@ public class EngVerFirstSwing extends JFrame {
 		textField_1.setColumns(10);
 		
 		JPasswordField passwordField = new JPasswordField();
-        passwordField.setForeground(new Color(255, 255, 255));
-        passwordField.setBackground(new Color(155, 174, 176));
+        passwordField.setForeground(new Color(36, 36, 36));
+        passwordField.setBackground(new Color(255, 255, 255));
         passwordField.setBounds(129, 221, 130, 21);
         passwordField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordField);
         
         JPanel passwordPanel = new JPanel();
-        passwordPanel.setBackground(new Color(185, 207, 210));
+        passwordPanel.setBackground(new Color(245, 245, 245));
         passwordPanel.setBounds(259, 221, 20, 20);
         passwordPanel.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordPanel);
@@ -83,7 +83,7 @@ public class EngVerFirstSwing extends JFrame {
         ImageIcon unlockIcon = new ImageIcon("image/unlock.png");
         passwordPanel.setLayout(null);
         JLabel passwordLabel = new JLabel();
-        passwordLabel.setBackground(new Color(185, 207, 210));
+        passwordLabel.setBackground(new Color(245, 245, 245));
         passwordLabel.setIcon(lockIcon);
         passwordLabel.setBounds(0, 0, 20, 20);
         passwordPanel.add(passwordLabel);
@@ -115,7 +115,7 @@ public class EngVerFirstSwing extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		panel_2 = new JPanel();
-		panel_2.setBackground(new Color(185, 207, 210));
+		panel_2.setBackground(new Color(245, 245, 245));
         panel_2.setBounds(32, 10, 280, 160);
         contentPane.add(panel_2);
         panel_2.setLayout(null);
@@ -126,9 +126,9 @@ public class EngVerFirstSwing extends JFrame {
         panel_2.add(lblImage);
         
         JPanel panel = new JPanel();
-        panel.setForeground(new Color(185, 207, 210));
+        panel.setForeground(new Color(245, 245, 245));
         panel.setBorder(null);
-        panel.setBackground(new Color(185, 207, 210));
+        panel.setBackground(new Color(245, 245, 245));
         panel.setBounds(127, 195, 38, 20);
         contentPane.add(panel);
         
@@ -147,9 +147,9 @@ public class EngVerFirstSwing extends JFrame {
         });
 
         JPanel panel_1 = new JPanel();
-        panel_1.setForeground(new Color(185, 207, 210));
+        panel_1.setForeground(new Color(245, 245, 245));
         panel_1.setBorder(null);
-        panel_1.setBackground(new Color(185, 207, 210));
+        panel_1.setBackground(new Color(245, 245, 245));
         panel_1.setBounds(130, 236, 38, 20);
         contentPane.add(panel_1);
         
@@ -168,8 +168,8 @@ public class EngVerFirstSwing extends JFrame {
         });
 
         final JPanel panel_3 = new JPanel();
-        panel_3.setForeground(new Color(185, 207, 210));
-        panel_3.setBackground(new Color(185, 207, 210));
+        panel_3.setForeground(new Color(245, 245, 245));
+        panel_3.setBackground(new Color(245, 245, 245));
         panel_3.setBounds(157, 430, 30, 30);
         contentPane.add(panel_3);
 
@@ -188,8 +188,8 @@ public class EngVerFirstSwing extends JFrame {
         });
 
         final JPanel panel_4 = new JPanel();
-        panel_4.setForeground(new Color(185, 207, 210));
-        panel_4.setBackground(new Color(185, 207, 210));
+        panel_4.setForeground(new Color(245, 245, 245));
+        panel_4.setBackground(new Color(245, 245, 245));
         panel_4.setBounds(110, 266, 70, 25);
         contentPane.add(panel_4);
         
@@ -218,8 +218,8 @@ public class EngVerFirstSwing extends JFrame {
         });
 
         final JPanel panel_5 = new JPanel();
-        panel_5.setForeground(new Color(185, 207, 210));
-        panel_5.setBackground(new Color(185, 207, 210));
+        panel_5.setForeground(new Color(245, 245, 245));
+        panel_5.setBackground(new Color(245, 245, 245));
         panel_5.setBounds(200, 266, 70, 25);
         contentPane.add(panel_5);
         

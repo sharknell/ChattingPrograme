@@ -40,15 +40,15 @@ public class EngVerFindPasswordScreen extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 540);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(185, 207, 210));
-		contentPane.setForeground(new Color(185, 207, 210));
+		contentPane.setBackground(new Color(245, 245, 245));
+		contentPane.setForeground(new Color(245, 245, 245));
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		panel = new JPanel();
-		panel.setBackground(new Color(185, 207, 210));
+		panel.setBackground(new Color(245, 245, 245));
         panel.setBounds(32, 10, 280, 160);
         contentPane.add(panel);
         panel.setLayout(null);
@@ -83,39 +83,39 @@ public class EngVerFindPasswordScreen extends JFrame {
         contentPane.add(lblNewLabel_3);
         
         textField = new JTextField();
-        textField.setForeground(new Color(255, 255, 255));
-        textField.setBackground(new Color(155, 174, 176));
+        textField.setForeground(new Color(36, 36, 36));
+        textField.setBackground(new Color(255, 255, 255));
         textField.setColumns(10);
         textField.setBounds(129, 191, 130, 20);
         textField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField);
         
         textField_1 = new JTextField();
-        textField_1.setForeground(new Color(255, 255, 255));
-        textField_1.setBackground(new Color(155, 174, 176));
+        textField_1.setForeground(new Color(36, 36, 36));
+        textField_1.setBackground(new Color(255, 255, 255));
         textField_1.setColumns(10);
         textField_1.setBounds(129, 221, 130, 20);
         textField_1.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_1);
         
         textField_2 = new JTextField();
-        textField_2.setForeground(new Color(255, 255, 255));
-        textField_2.setBackground(new Color(155, 174, 176));
+        textField_2.setForeground(new Color(36, 36, 36));
+        textField_2.setBackground(new Color(255, 255, 255));
         textField_2.setColumns(10);
         textField_2.setBounds(129, 251, 130, 20);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_2);
         
         textField_3 = new JTextField();
-        textField_3.setForeground(new Color(255, 255, 255));
-        textField_3.setBackground(new Color(155, 174, 176));
+        textField_3.setForeground(new Color(36, 36, 36));
+        textField_3.setBackground(new Color(255, 255, 255));
         textField_3.setColumns(14); // 14자리(6자리 + "-" + 7자리)로 설정
         textField_3.setBounds(129, 281, 130, 20);
         textField_3.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(textField_3);
 
         JPanel panel = new JPanel();
-        panel.setBackground(new Color(185, 207, 210));
+        panel.setBackground(new Color(245, 245, 245));
         panel.setBounds(110, 430, 30, 35);
         contentPane.add(panel);
         
@@ -156,7 +156,7 @@ public class EngVerFindPasswordScreen extends JFrame {
         });
 
         JPanel panel_1 = new JPanel();
-        panel_1.setBackground(new Color(185, 207, 210));
+        panel_1.setBackground(new Color(245, 245, 245));
         panel_1.setBounds(200, 430, 30, 35);
         contentPane.add(panel_1);
 

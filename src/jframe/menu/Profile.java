@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 public class Profile extends JFrame {
 
     private JPanel contentPane;
-    private static final String DB_URL = "jdbc:mariadb://14.42.124.97:3306/chatdb";
+    private static final String DB_URL = "jdbc:mariadb://14.42.124.13:3306/chatdb";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
 
@@ -54,15 +54,15 @@ public class Profile extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 360, 540);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(185, 207, 210));
-        contentPane.setForeground(new Color(185, 207, 210));
+        contentPane.setBackground(new Color(245, 245, 245));
+        contentPane.setForeground(new Color(245, 245, 245));
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         JPanel panel = new JPanel();
-        panel.setBackground(new Color(185, 207, 210));
+        panel.setBackground(new Color(245, 245, 245));
         panel.setBounds(67, 22, 210, 210);
         contentPane.add(panel);
         panel.setLayout(null);
@@ -73,7 +73,7 @@ public class Profile extends JFrame {
         panel.add(lblImage);
 
         JPanel panel_1 = new JPanel();
-        panel_1.setBackground(new Color(185, 207, 210));
+        panel_1.setBackground(new Color(245, 245, 245));
         panel_1.setBounds(100, 430, 40, 40);
         contentPane.add(panel_1);
 
@@ -108,7 +108,7 @@ public class Profile extends JFrame {
         });
 
         JPanel panel_2 = new JPanel();
-        panel_2.setBackground(new Color(185, 207, 210));
+        panel_2.setBackground(new Color(245, 245, 245));
         panel_2.setBounds(200, 430, 40, 40);
         contentPane.add(panel_2);
 
