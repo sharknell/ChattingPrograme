@@ -21,3 +21,4 @@
               MemberDTO 변수 필드 선언하고 39라인에 globalUserDTO 라는 변수추가
               207라인! 220라인까지 GaebalTalk로 정보 전해주게 수정
               이미지가 너무 많아서 빼먹은게 있을까봐 전체 재업로드, 이름은 같아서 코드에는 영향없음.
+              EngGaebalTalk 업데이트 및 EngDarkModeChanger 추가, EngVerFirstSwing 수정
