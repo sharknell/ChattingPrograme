@@ -17,8 +17,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +46,7 @@ import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
+	private final String FILE_SAVE_PATH = "D:/개발톡에서 받은 파일/";
 	List<String> vanWord = new ArrayList<>();
 	Room room;
 	String title;
@@ -490,7 +493,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		client.bt_perChat.addActionListener(this);
 		client.bt_exit.addActionListener(this);
 		client.bt_kick.addActionListener(this);
-		client.bt_vanWord.addActionListener(this);
+		
 		createRoom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -523,33 +526,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			}
 		});
 
-		client.bt_vanWord.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if (nickName.equals(client.defaultListModel.get(0))) {
-					String vanWordSet = JOptionPane.showInputDialog(GaebalTalk.this, "금지어를 입력해주세요.");
-					boolean alreadyExists = false;
-		            for (String word : vanWord) {
-		                if (word.equals(vanWordSet)) {
-		                    alreadyExists = true;
-		                    break;
-		                }
-		            }
-
-		            if (!alreadyExists) {
-		                vanWord.add(vanWordSet);
-		                System.out.println(vanWordSet);
-		                sendMsg("162|" + vanWordSet);
-		            } else {
-		                JOptionPane.showMessageDialog(GaebalTalk.this, "이미 등록된 금지어입니다.");
-		            }
-		        } else {
-		            JOptionPane.showMessageDialog(GaebalTalk.this, "해당 기능을 이용할 권한이 없습니다.");
-		        }
-		    }
-		});
+		
 		client.bt_kick.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -570,37 +547,52 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 			}
 		});
 		client.bt_sendFile.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String[] selectedUsers = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        String[] selectedUsers = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
+		       if (nickName.equals(selectedUsers[0])) {
+				JOptionPane.showMessageDialog(GaebalTalk.this, "자신을 선택할 수 없습니다.");
+				return;
+		       }
+		       
+		        if (selectedUsers.length != 0) {
+		            JFileChooser fileChooser = new JFileChooser();
+		            int option = fileChooser.showOpenDialog(GaebalTalk.this);
+		            if (option == JFileChooser.APPROVE_OPTION) {
+		                File selectedFile = fileChooser.getSelectedFile();
+		                String fileName = selectedFile.getName();
+		                String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+		                String fileContent="";
+		               
+		               
+		               if (!fileExtension.equalsIgnoreCase("txt")) {
+						JOptionPane.showMessageDialog(GaebalTalk.this, "txt 형식의 파일만 전송 가능합니다");
+						return;
+		               }
 
-				if (selectedUsers.length != 0) {
-					JFileChooser fileChooser = new JFileChooser();
-					int option = fileChooser.showOpenDialog(GaebalTalk.this);
-					if (option == JFileChooser.APPROVE_OPTION) {
-						File selectedFile = fileChooser.getSelectedFile();
-						String fileName = selectedFile.getName();
+		                try (FileInputStream fileInputStream = new FileInputStream(selectedFile)) {
+		                	 byte[] fileContentBytes= fileInputStream.readAllBytes();
+		                	 fileContent = new String(fileContentBytes, StandardCharsets.UTF_8);
+		                	 // SharedData 클래스의 인스턴스를 얻고 파일 내용을 저장
+		                	 SharedData sharedData = SharedData.getInstance();
+		                	 sharedData.setFileContent(fileContent);	
+		 		            
+		                	}catch (IOException ex) {
+		                   	ex.printStackTrace();
+		                    
+		                		}
 
-						try {
-							FileInputStream fileInputStream = new FileInputStream(selectedFile);
-							//byte[] fileContentBytes = fileInputStream.readAllBytes();
-							//String fileContent = new String(fileContentBytes);
+		                System.out.println("파일 내용입니다 : " + fileContent);
 
-							//for (String user : selectedUsers) {
-							//String message = "500|" + user + "|" + nickName + "|" + fileName + "|" + fileContent;
-							//	System.out.println("이벤트" + message);
-							//	writeChatLog(client.getTitle(),
-							//			"[파일전송]" + "<파일이름 : " + fileName + ">" + nickName + " --> " + user);
-							//	sendMsg(message);
-							//}
-
-							fileInputStream.close();
-						} catch (IOException ex) {
-							ex.printStackTrace();
-						}
-					}
-				}
-			}
+		                for (String user : selectedUsers) {
+		                    String message = "500|" + user +"|" + nickName + "|" + fileName + "|" + fileContent;
+		                    System.out.println("이벤트" + message);
+		                    writeChatLog(client.getTitle(), "[파일전송]" + "<파일이름 : " + fileName + ">" + nickName + " --> " + user);
+		                    sendMsg(message);
+		                }
+		            }
+		        }
+		    }
 		});
 
 		client.bt_perChat.addActionListener(new ActionListener() {
@@ -619,14 +611,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				} else {
 					String message = JOptionPane.showInputDialog(GaebalTalk.this, "귓속말 메시지");
 					if (message != null && !message.isEmpty()) {
-						for (String word : vanWord) {
-				            if (message.contains(word)) {
-				                JOptionPane.showMessageDialog(GaebalTalk.this, word + "은(는) 금지어입니다 [" + word + "]");
-				              
-				                return; // 금지어가 있으면 바로 리턴하여 메시지를 서버로 보내지 않도록 합니다.
-				            }
-				        }
-
+						
 						for (String user : userName) {
 							System.out.println("310|" + user + "|" + message);
 							sendMsg("310|" + user + "|" + message);
@@ -656,13 +641,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		} else if (ob == client.sendTF) { // (TextField입력)메시지 보내기 요청
 			String msg = client.sendTF.getText();
 			if (msg.length() > 0) {
-				for (String word : vanWord) {
-		            if (msg.contains(word)) {
-		                JOptionPane.showMessageDialog(GaebalTalk.this, word + "은(는) 금지어입니다 [" + word + "]");
-		                client.sendTF.setText("");
-		                return; // 금지어가 있으면 바로 리턴하여 메시지를 서버로 보내지 않도록 합니다.
-		            }
-		        }
 		        sendMsg("300|" + nickName + "|" + msg);
 		        client.sendTF.setText("");
 		        createChatLog(client.getTitle());
@@ -702,17 +680,14 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				String msgs[] = msg.split("\\|");
 				String protocol = msgs[0];
 				switch (protocol) {
-				case "300":
+				case "300": // 대화
 					
 						if (nickName.equals(msgs[1])) {
 							client.ta.append("[ME]" + msgs[2] + "\n");
 							client.ta.setCaretPosition(client.ta.getText().length());
-							
 						} else {
 							client.ta.append("[" + msgs[1] + "]" + msgs[2] + "\n");
-							client.ta.setCaretPosition(client.ta.getText().length());
-							
-						
+							client.ta.setCaretPosition(client.ta.getText().length());					
 						}
 					
 					
@@ -724,10 +699,8 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					if (msgs.length > 1) {
 						// 개설된 방이 한개 이상이었을때 실행
 						// 개설된 방없음 ----> msg="120|" 였을때 에러
-						// String roomNames[] = msgs[1].split(",");
 						// "자바방--1,오라클방--1,JDBC방--1"
-						// roomInfo.setListData(roomNames);
-
+						
 						String roomNames[] = msgs[1].split(",");
 						roominfoDefault.clear(); // 기존 요소 제거
 						for (String room : roomNames) {
@@ -736,11 +709,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 						break;
 					}
 					break;
-				/*
-				 * case "170": // (대기실에서) 대화방 인원정보 String roommUsers[] = msgs[1].split(",");
-				 * roommUser.setListData(roommUsers); break;
-				 */
-
+				
 				case "165": // 방삭제
 					String deleteRoom = msgs[1];
 					System.out.println(msgs[1]);
@@ -762,10 +731,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 							}
 						}
 					}
-					break;
-				case "177":
-					client.ta.append("[금지어 공지] " + msgs[1]+"\n");
-					client.ta.setCaretPosition(client.ta.getText().length());
 					break;
 
 				case "175": // (대화방에서) 대화방 인원정보
@@ -800,9 +765,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 
 				case "320": // 귓속말 대화
 					
-					
-					
-					
 					if (nickName.equals(msgs[1])) {
 						client.ta.append("<"+ msgs[3]+"에게 보낸 귓속말> " + msgs[2] + "\n");
 						client.ta.setCaretPosition(client.ta.getText().length());
@@ -819,7 +781,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				case "202": // 개설된 방의 타이틀 제목 얻기
 					client.setTitle("채팅방-[" + msgs[1] + "]");
 					break;
-				case "502":
+				case "502": //파일전송
 					JOptionPane.showMessageDialog(GaebalTalk.this,
 							msgs[1] + "님이 " + msgs[2] + "파일을 보냈습니다.\nD:개발톡에서 보낸 파일 폴더를 확인해주세요!!\n");
 					break;
@@ -880,5 +842,32 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private void handleFileTransfer(String sender, String fileName, String fileContent) throws IOException {
+	    System.out.println("파일 메서드 들어옴");
+	    
+	    int option = JOptionPane.showConfirmDialog(null, sender + "님의 파일 전송을 받으시겠습니까?");
+	    if (option == JOptionPane.YES_OPTION) {
+	        File receiverFolder = new File(FILE_SAVE_PATH);
+
+	        if (!receiverFolder.exists()) {
+	            receiverFolder.mkdir();
+	            System.out.println("파일 생성 완료!");
+	        }
+
+	        // 수신자의 폴더에 동일한 파일 생성하기
+	        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_SAVE_PATH + fileName))) {
+	            writer.write(fileContent);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        // 전송 성공을 알림
+
+	    } else {
+	        return;
+	    }
+
 	}
 }
