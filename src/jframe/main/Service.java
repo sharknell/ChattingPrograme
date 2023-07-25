@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -21,12 +24,16 @@ public class Service extends Thread {
 	List<Room> roomSer;
 	Socket socket;
 	String nickName;
-
+	
+	private static final String PNG = "png";
+	private static final String JPG = "jpg";
+	private static final String JPEG = "jpeg";
 	public Service(Socket socket, Server server) {
 		all = server.all;
 		wait = server.wait;
 		roomSer = server.room;
 		this.socket = socket;
+		
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = socket.getOutputStream();
@@ -53,11 +60,7 @@ public class Service extends Thread {
 						all.add(this);
 						wait.add(this);
 						break;
-						
-					case "162":
-						messageRoom("177|" + msgs[1]);
-						break;
-
+					
 					case "150":
 						nickName = msgs[1];
 						messageWait("160|" + getRoomInfo());
@@ -109,13 +112,12 @@ public class Service extends Thread {
 						break;
 
 					case "300":
-						/*if (msgs[1].equals(nickName)) {
-							messageRoom("301|+m +  msgs[2]);
-						}*/
-							messageRoom("300|" + nickName + "|" + msgs[2]);
+						String message = msgs[2];  
+					    messageRoom("300|" + nickName + "|" + message);
+					   
+					    break;
 						
 						
-						break;
 
 					case "310": // 귓속말 대화
 						String targetUser = msgs[1];
@@ -129,11 +131,16 @@ public class Service extends Thread {
 								break;
 							}
 						}
-						if (targetService != null) {
-							// 귓속말 타켓 서비스(클라이언트 소켓) 에게 전달
-							messageTo(targetService, "320|" + nickName + "|" + whisperMsg + "|" + targetUser);
-							// 귓속말 보내는 사람에 채팅창에도 뜨게 만듦
+						
+					  
+					    if (targetService != null) {
+					    
+					    	messageTo(targetService, "320|" + nickName + "|" + whisperMsg + "|" + targetUser);
 							messageTo(this, "320|"  + nickName + "|" + whisperMsg + "|" + targetUser);
+					   
+					    break;
+						
+						
 						} else {
 
 							messageTo(this, "320|귓속말 대상 유저를 찾을 수 없습니다.");
@@ -189,8 +196,21 @@ public class Service extends Thread {
 						String receiverNick = msgs[1];
 						String sender = msgs[2];
 						String fileName = msgs[3];
-						String fileContent = msgs[4];
 						Service receiverService = null;
+						String fileContent="";
+						
+						
+						SharedData sharedData = SharedData.getInstance();
+						// SharedData 클래스의 인스턴스를 얻고 파일 내용을 가져오기
+						
+						String encodingFile = sharedData.getFileContent();
+							
+						
+						System.out.println("endcodingFileName -- > " + encodingFile);
+					    System.out.println("인코딩 " + encodingFile);
+						System.out.println("service에서 받은 filecontents : " + sharedData.getFileContent());
+
+					
 
 						// 대상 사용자(수신자)를 찾아서 파일을 전송
 						for (Service service : myRoom.user) {
@@ -201,8 +221,8 @@ public class Service extends Thread {
 						}
 
 						if (receiverService != null) {
-							handleFileTransfer(receiverService, sender, fileName, fileContent);
-
+							messageTo(receiverService,"502|" + sender  +"|" + fileName);
+							System.out.println( " 넘어가는 인코딩 " + fileContent);
 						} else {
 							messageTo(this, "501|" + receiverNick);
 						}
@@ -325,10 +345,15 @@ public class Service extends Thread {
 			}
 		}
 	}
+	
 
 	public void messageTo(String msg) throws IOException {
 		out.write((msg + "\n").getBytes());
 	}
+	
+	
+
+   
 
 	public void messageTo(Service service, String msg) {
 		try {
@@ -348,33 +373,6 @@ public class Service extends Thread {
 		myRoom.user.remove(service);
 		messageRoom("175|" + getRoomInwon());
 		messageWait("160|" + getRoomInfo());
-
-	}
-
-	// 파일 전송 메소드
-	private void handleFileTransfer(Service receiverService, String sender, String fileName, String fileContent)
-			throws IOException {
-		System.out.println("파일 메서드 들어옴");
-		int option = JOptionPane.showConfirmDialog(null, sender + "님의 파일 전송을 받으시겠습니까?");
-		if (option == JOptionPane.YES_OPTION) {
-			File receiverFolder = new File(FILE_SAVE_PATH);
-
-			if (!receiverFolder.exists()) {
-				receiverFolder.mkdir();
-				System.out.println("파일 생성 완료!");
-			}
-
-			// 수신자의 폴더에 동일한 파일 생성하기
-			try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_SAVE_PATH + fileName))) {
-				writer.write(fileContent);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// 전송 성공을 알림
-			messageTo(receiverService, "502|" + sender + "|" + fileName); // 수신자에게 파일
-		} else {
-			return;
-		}
 
 	}
 
