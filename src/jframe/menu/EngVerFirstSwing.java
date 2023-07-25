@@ -1,25 +1,16 @@
 package jframe.menu;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
+import chatdb.ChatDAO;
 import chatdb.Login;
-import jframe.main.EngVerGaebalTalk;
-//import jframe.main.EngVerGaebalTalk;
+import chatdb.MemberDTO;
+import jframe.main.EngGaebalTalk;
 import jframe.main.GaebalTalk;
 
 public class EngVerFirstSwing extends JFrame {
@@ -27,7 +18,9 @@ public class EngVerFirstSwing extends JFrame {
     private JPanel contentPane;
     private JTextField textField;    private JTextField textField_1;
     private JPanel panel_2;
-    //private EngVerGaebalTalk gaebalTalk;
+    private static MemberDTO globalUserDTO;
+    private EngGaebalTalk gaebalTalk;
+    static MemberDTO member = new MemberDTO();
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -43,6 +36,9 @@ public class EngVerFirstSwing extends JFrame {
     }
 
     public EngVerFirstSwing() {
+    	
+    	globalUserDTO = new MemberDTO(member.id, member.name, member.phonenumber);
+    	
     	setResizable(false);
 
 		setBackground(Color.WHITE);
@@ -106,12 +102,12 @@ public class EngVerFirstSwing extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("I D");
 		lblNewLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
-		lblNewLabel.setBounds(79, 179, 56, 21);
+		lblNewLabel.setBounds(59, 179, 56, 21);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("PW");
 		lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(79, 219, 56, 21);
+		lblNewLabel_1.setBounds(59, 219, 56, 21);
 		contentPane.add(lblNewLabel_1);
 		
 		panel_2 = new JPanel();
@@ -181,7 +177,7 @@ public class EngVerFirstSwing extends JFrame {
         panel_3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                EngVerCustomerServiceGUI service = new EngVerCustomerServiceGUI();
+            	EngVerCustomerServiceGUI service = new EngVerCustomerServiceGUI();
                 service.setVisible(true);
                 EngVerFirstSwing.this.dispose();
             }
@@ -208,11 +204,21 @@ public class EngVerFirstSwing extends JFrame {
                 boolean loginSuccessful = login.login(id, password);
 
                 if (loginSuccessful) {
-                	EngVerGaebalTalk gaebalTalk = new EngVerGaebalTalk();
-                	gaebalTalk.setVisible(true);
-                    EngVerFirstSwing.this.dispose();
+                	// 로그인 성공한 경우, 사용자 정보를 가져옴
+                    ChatDAO chatDAO = ChatDAO.getInstance();
+                    MemberDTO userDTO = chatDAO.getMemberById(id);
+                    
+                   try {
+					gaebalTalk = new EngGaebalTalk(userDTO);
+				} catch (IOException e1) {
+				
+					e1.printStackTrace();
+				} // MemberDTO를 전달하여 객체 생성
+                   gaebalTalk.setVisible(true);
+                   setVisible(false);
+                    
                 } else {
-                    JOptionPane.showMessageDialog(EngVerFirstSwing.this, "로그인 실패! 아이디 또는 비밀번호를 확인해주세요.", "로그인 오류", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(EngVerFirstSwing.this, "Login failed! Please check your ID or password.", "로그인 오류", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
