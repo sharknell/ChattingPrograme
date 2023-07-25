@@ -8,10 +8,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-public class DarkModeChanger {
+public class EngDarkModeChanger {
     private static boolean isDarkMode = false;
 
-    public static void toggleDarkMode(GaebalTalk frame) {
+    public static void toggleDarkMode(EngGaebalTalk frame) {
         if (isDarkMode) {
             setLightMode(frame);
             isDarkMode = false;
@@ -21,7 +21,7 @@ public class DarkModeChanger {
         }
     }
 
-    public static void setDarkMode(GaebalTalk frame) {
+    public static void setDarkMode(EngGaebalTalk frame) {
         frame.getContentPane().setBackground(Color.BLACK);
         setPanelDarkMode(frame,  new Color(36,36,36), new Color(36, 36, 36)); // 패널들의 배경색과 전경색 변경
         frame.menuBar.setBackground(new Color(36, 36, 36));
@@ -43,17 +43,17 @@ public class DarkModeChanger {
         frame.notificationScreen.contentLabel.setForeground(new Color(245, 245, 245));
         frame.notificationScreen.titleLabel.setForeground(new Color(245, 245, 245));
         frame.notificationScreen.lblImage.setIcon(new ImageIcon("image/darkCancel.png"));
-        frame.korFont.setIcon(new ImageIcon("image/darkFontSize.png"));
+        frame.korFont.setIcon(new ImageIcon("image/darkEngFontSize.png"));
         frame.callCenter.setIcon(new ImageIcon("image/darkCallCenter.png"));
-        frame.changePs.setIcon(new ImageIcon("image/dark비밀번호변경.png"));
-        frame.draw.setIcon(new ImageIcon("image/dark회원탈퇴.png"));
+        frame.changePs.setIcon(new ImageIcon("image/darkEng비밀번호변경.png"));
+        frame.draw.setIcon(new ImageIcon("image/darkEng회원탈퇴.png"));
         // 기타 요소들의 스타일 및 색상 변경
         TitledBorder titledBorder = (TitledBorder) frame.roomInfo.getBorder();
         titledBorder.setTitleColor(new Color(245,245,245));
         frame.roomInfo.setBorder(titledBorder);
     }
 
-    public static void setLightMode(GaebalTalk frame) {
+    public static void setLightMode(EngGaebalTalk frame) {
         frame.getContentPane().setBackground(new Color(245, 245, 245));
         setPanelDarkMode(frame, new Color(245, 245, 245), new Color(245,245,245)); // 패널들의 배경색과 전경색 변경
         frame.menuBar.setBackground(new Color(245, 245, 245));
@@ -75,10 +75,10 @@ public class DarkModeChanger {
         frame.notificationScreen.contentLabel.setForeground(new Color(36,36,36));
         frame.notificationScreen.titleLabel.setForeground(new Color(36,36,36));
         frame.notificationScreen.lblImage.setIcon(new ImageIcon("image/Cancel.png"));
-        frame.korFont.setIcon(new ImageIcon("image/fontSize.png"));
+        frame.korFont.setIcon(new ImageIcon("image/engFontSize.png"));
         frame.callCenter.setIcon(new ImageIcon("image/callCenter.png"));
-        frame.changePs.setIcon(new ImageIcon("image/비밀번호변경.png"));
-        frame.draw.setIcon(new ImageIcon("image/회원탈퇴.png"));
+        frame.changePs.setIcon(new ImageIcon("image/eng비밀번호변경.png"));
+        frame.draw.setIcon(new ImageIcon("image/eng회원탈퇴.png"));
         
         // 기타 요소들의 스타일 및 색상 변경
         // TitledBorder의 폰트 색상 변경

@@ -37,6 +37,7 @@ public class ChatClient extends JFrame {
 	JButton bt_exit; 
 	JButton bt_perChat; 
 	JButton bt_sendFile;
+	JButton bt_vanWord;
 	JPanel p;
 
 	OutputStream out;
@@ -45,6 +46,8 @@ public class ChatClient extends JFrame {
 	
 
 	public ChatClient() throws IOException {
+		getContentPane().setBackground(new Color(245, 245, 245));
+		setBackground(new Color(245, 245, 245));
 		p = new JPanel();
 		ta = new JTextArea();
 		li_inwon = new JList<>(defaultListModel);
@@ -60,19 +63,19 @@ public class ChatClient extends JFrame {
 		
 		bt_exit = new JButton("");
 		bt_exit.setFont(new Font("777별나라달님", Font.PLAIN, 17));
-		bt_exit.setBackground(new Color(255, 255, 255));
+		bt_exit.setBackground(new Color(245, 245, 245));
 		bt_exit.setLayout(null);
 		bt_exit.setBorderPainted(false);
 		bt_exit.setIcon(new ImageIcon("image/door.png"));
 		
 		
-		sp_ta.setBounds(12, 6, 206, 390);
-		sendTF.setBounds(0, 431, 262, 30);
+		sp_ta.setBounds(12, 6, 220, 380);
+		sendTF.setBounds(0, 425, 234, 30);
 
-		sp_list.setBounds(242, 0, 74, 183);
-		bt_exit.setBounds(271, 420, 45, 41);
+		sp_list.setBounds(262, 9, 70, 200);
+		bt_exit.setBounds(299, 420, 45, 41);
 		p.setLayout(null);
-		p.setBackground(new Color(255, 255, 255));
+		p.setBackground(new Color(245, 245, 245));
 		p.add(sp_ta);
 		
 		ta.setFont(new Font("나눔고딕 ExtraBold", Font.BOLD, 12));
@@ -102,29 +105,30 @@ public class ChatClient extends JFrame {
 		bt_perChat.setFont(new Font("777별나라달님", Font.PLAIN, 17));
 		bt_perChat.setBorderPainted(false);
 		bt_perChat.setBackground(Color.WHITE);
-		bt_perChat.setBounds(242, 187, 60, 50);
+		bt_perChat.setBounds(185, 400, 20, 20);
 		p.add(bt_perChat);
 		
 		lblNewLabel_1 = new JLabel("Message");
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1.setFont(new Font("Gadugi", Font.ITALIC, 13));
-		lblNewLabel_1.setBounds(12, 406, 74, 21);
+		lblNewLabel_1.setBounds(12, 400, 74, 21);
 		p.add(lblNewLabel_1);
 		
 		bt_kick = new JButton();
 		bt_kick.setIcon(new ImageIcon("image/강퇴.png"));
-		bt_kick.setBackground(new Color(255, 255, 255));
-		bt_kick.setBounds(242, 247, 60, 50);
+		bt_kick.setBackground(new Color(245, 245, 245));
+		bt_kick.setBounds(272, 219, 60, 50);
 		bt_kick.setBorderPainted(false);
 		p.add(bt_kick);
 		
 		bt_sendFile = new JButton();
 		bt_sendFile.setIcon(new ImageIcon("image/파일전송.png"));
-		bt_sendFile.setBackground(new Color(255, 255, 255));
-		bt_sendFile.setBounds(242, 307, 60, 50);
+		bt_sendFile.setBackground(new Color(245, 245, 245));
+		bt_sendFile.setBounds(210, 400, 20, 20);
 		bt_sendFile.setBorderPainted(false);
 		p.add(bt_sendFile);
-		setBounds(300, 200, 332, 500);
+		
+		setBounds(300, 200, 360, 500);
 		sendTF.requestFocus();
 
 	}

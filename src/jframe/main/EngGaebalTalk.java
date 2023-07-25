@@ -50,7 +50,7 @@ import jframe.menu.JoinScreen;
 import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
 
-public class GaebalTalk extends JFrame implements ActionListener, Runnable {
+public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
    private final String FILE_SAVE_PATH = "E:/개발톡에서 받은 파일/";
    List<String> vanWord = new ArrayList<>();
    Room room;
@@ -108,7 +108,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       EventQueue.invokeLater(new Runnable() {
          public void run() {
             try {
-               GaebalTalk frame = new GaebalTalk(member);
+               EngGaebalTalk frame = new EngGaebalTalk(member);
                frame.setVisible(true);
             } catch (Exception e) {
                e.printStackTrace();
@@ -123,7 +123,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
     * 
     * @throws IOException
     */
-   public GaebalTalk(MemberDTO userDTO) throws IOException {
+   public EngGaebalTalk(MemberDTO userDTO) throws IOException {
 	   
 	   this.userDTO = userDTO; //사용자 정보를 저장
 		nickName = userDTO.getName();
@@ -226,7 +226,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
           public void mouseClicked(MouseEvent e) {
               FirstSwing main = new FirstSwing();
               main.setVisible(true);
-              GaebalTalk.this.dispose();
+              EngGaebalTalk.this.dispose();
           }
       });
   
@@ -267,7 +267,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
          @Override
          public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
-            DarkModeChanger.toggleDarkMode(GaebalTalk.this); // 다크 모드와 라이트 모드를 번갈아가며 적용
+            EngDarkModeChanger.toggleDarkMode(EngGaebalTalk.this); // 다크 모드와 라이트 모드를 번갈아가며 적용
          }
       });
 
@@ -287,7 +287,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       font.setBounds(100, 380, 40, 45);
       contentPane.add(font);
 
-      ImageIcon kor_font = new ImageIcon("image/fontSize.png");
+      ImageIcon kor_font = new ImageIcon("image/engFontSize.png");
       font.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
       korFont = new JLabel(kor_font);
       korFont.setBackground(new Color(245, 245, 245));
@@ -298,7 +298,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       language.setBounds(182, 380, 40, 45);
       contentPane.add(language);
 
-      ImageIcon kor_lang = new ImageIcon("image/korVer.png");
+      ImageIcon kor_lang = new ImageIcon("image/EngVer.png");
       language.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
       JLabel korVer = new JLabel(kor_lang);
       korVer.setBackground(new Color(245, 245, 245));
@@ -307,9 +307,9 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       language.addMouseListener(new MouseAdapter() {
          @Override
          public void mouseClicked(MouseEvent e) {
-            EngVerFirstSwing engVer = new EngVerFirstSwing();
+            FirstSwing engVer = new FirstSwing();
             engVer.setVisible(true);
-            GaebalTalk.this.dispose();
+            EngGaebalTalk.this.dispose();
          }
       });
 
@@ -341,19 +341,19 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       contentPane.add(profileSet);
       profileSet.setLayout(null);
 
-       	myName = new JLabel("이름 : ");
+       	myName = new JLabel("Name : ");
 		myName.setBackground(new Color(245, 245, 245));
 		myName.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myName.setBounds(30, 25, 80, 30);
 		profileSet.add(myName);
 
-		myPhone = new JLabel("전화번호 : ");
+		myPhone = new JLabel("Phone : ");
 		myPhone.setBackground(new Color(245, 245, 245));
 		myPhone.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myPhone.setBounds(30, 55, 80, 30);
 		profileSet.add(myPhone);
 
-		myID = new JLabel("아이디 : ");
+		myID = new JLabel("I D : ");
 		myID.setBackground(new Color(245, 245, 245));
 		myID.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
 		myID.setBounds(30, 85, 80, 30);
@@ -380,7 +380,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       changePass.setBounds(30, 125, 100, 30);
       profileSet.add(changePass);
 
-      ImageIcon changePW = new ImageIcon("image/비밀번호변경.png");
+      ImageIcon changePW = new ImageIcon("image/eng비밀번호변경.png");
       changePass.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
       changePs = new JLabel(changePW);
       changePs.setBackground(new Color(245, 245, 245));
@@ -399,7 +399,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       withdrawal.setBounds(145, 125, 100, 30);
       profileSet.add(withdrawal);
 
-      ImageIcon withdraw = new ImageIcon("image/회원탈퇴.png");
+      ImageIcon withdraw = new ImageIcon("image/eng회원탈퇴.png");
       withdrawal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
       draw = new JLabel(withdraw);
       draw.setBackground(new Color(245, 245, 245));
@@ -564,7 +564,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       createRoom.addMouseListener(new MouseAdapter() {
          @Override
          public void mouseClicked(MouseEvent e) {
-            title = JOptionPane.showInputDialog(GaebalTalk.this, "방제목:");
+            title = JOptionPane.showInputDialog(EngGaebalTalk.this, "방제목:");
             if (title != null && !title.isEmpty()) {
                // 방제목을 서버에게 전달
                sendMsg("160|" + title);
@@ -573,7 +573,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                setVisible(false);
                client.setVisible(true); // 대화방 이동
             } else {
-               JOptionPane.showMessageDialog(GaebalTalk.this, "방제목을 입력해주세요.");
+               JOptionPane.showMessageDialog(EngGaebalTalk.this, "방제목을 입력해주세요.");
             }
          }
       });
@@ -583,7 +583,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
          @Override
          public void mouseClicked(MouseEvent e) {
             if (selectedRoom == null) {
-               JOptionPane.showMessageDialog(GaebalTalk.this, "방을 선택하세요!");
+               JOptionPane.showMessageDialog(EngGaebalTalk.this, "방을 선택하세요!");
                return;
             }
             sendMsg("200|" + selectedRoom);
@@ -598,7 +598,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
          public void actionPerformed(ActionEvent e) {
             String[] userName = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
             if (!nickName.equals(client.defaultListModel.get(0))) {
-               JOptionPane.showMessageDialog(GaebalTalk.this, "해당 기능을 이용할 권한이 없습니다.");
+               JOptionPane.showMessageDialog(EngGaebalTalk.this, "해당 기능을 이용할 권한이 없습니다.");
                return;
             }
 
@@ -617,19 +617,19 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
          public void actionPerformed(ActionEvent e) {
             String[] selectedUsers = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
             if (nickName.equals(selectedUsers[0])) {
-               JOptionPane.showMessageDialog(GaebalTalk.this, "자신을 선택할 수 없습니다.");
+               JOptionPane.showMessageDialog(EngGaebalTalk.this, "자신을 선택할 수 없습니다.");
                return;
             }
             if (selectedUsers.length != 0) {
                JFileChooser fileChooser = new JFileChooser();
-               int option = fileChooser.showOpenDialog(GaebalTalk.this);
+               int option = fileChooser.showOpenDialog(EngGaebalTalk.this);
                if (option == JFileChooser.APPROVE_OPTION) {
                   File selectedFile = fileChooser.getSelectedFile();
                   String fileName = selectedFile.getName();
                   String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
 
                   if (!fileExtension.equalsIgnoreCase("txt")) {
-                     JOptionPane.showMessageDialog(GaebalTalk.this, "txt 형식의 파일만 전송 가능합니다");
+                     JOptionPane.showMessageDialog(EngGaebalTalk.this, "txt 형식의 파일만 전송 가능합니다");
                      return;
                   }
                   try (FileInputStream fileInputStream = new FileInputStream(selectedFile);
@@ -676,15 +676,15 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
             // 선택된 항목 가져오기
             String[] userName = client.li_inwon.getSelectedValuesList().toArray(new String[0]);
             if (userName.length == 0) {
-               JOptionPane.showMessageDialog(GaebalTalk.this, "1:1 대화할 유저를 선택하세요.");
+               JOptionPane.showMessageDialog(EngGaebalTalk.this, "1:1 대화할 유저를 선택하세요.");
                return;
             }
 
             if (nickName.equals(userName[0])) {
-               JOptionPane.showMessageDialog(GaebalTalk.this, "자기 자신을 선택할 수 없습니다.");
+               JOptionPane.showMessageDialog(EngGaebalTalk.this, "자기 자신을 선택할 수 없습니다.");
                return;
             } else {
-               String message = JOptionPane.showInputDialog(GaebalTalk.this, "귓속말 메시지");
+               String message = JOptionPane.showInputDialog(EngGaebalTalk.this, "귓속말 메시지");
                if (message != null && !message.isEmpty()) {
 
                   for (String user : userName) {
@@ -696,7 +696,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                      break;
                   }
                } else {
-                  JOptionPane.showMessageDialog(GaebalTalk.this, "메시지를 입력해주세요.");
+                  JOptionPane.showMessageDialog(EngGaebalTalk.this, "메시지를 입력해주세요.");
                }
 
             }
@@ -859,7 +859,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                System.out.println("502:" +msgs[3] + " 끝");
                handleFileTransfer(msgs[1], msgs[2],msgs[3]);
 
-               JOptionPane.showMessageDialog(GaebalTalk.this,
+               JOptionPane.showMessageDialog(EngGaebalTalk.this,
                      msgs[1] + "님이 " + msgs[2] + "파일을 보냈습니다.\nD:개발톡에서 보낸 파일 폴더를 확인해주세요!!\n");
                break;
             case "610": // 강퇴당한 서버
