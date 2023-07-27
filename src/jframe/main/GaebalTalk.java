@@ -90,6 +90,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
    private JLabel logOutLb;
    public JLabel changePs;
    public JLabel draw;
+   public JLabel cancelLb;
 
    public static JLabel dbName = new JLabel("");
    public static JLabel dbId = new JLabel("");
@@ -420,7 +421,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       profileSet.add(cancel);
       
       ImageIcon cancelIcon = new ImageIcon("image/cancel.png");
-      JLabel cancelLb = new JLabel(cancelIcon);
+      cancelLb = new JLabel(cancelIcon);
       cancelLb.setBounds(106, 270, 38, 20);
       cancel.add(cancelLb);
 
