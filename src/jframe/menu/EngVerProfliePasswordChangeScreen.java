@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class ProfliePasswordChangeScreen extends JFrame {
+public class EngVerProfliePasswordChangeScreen extends JFrame {
 
     private JPanel contentPane;
     private JPanel panel;
@@ -38,7 +38,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ProfliePasswordChangeScreen frame = new ProfliePasswordChangeScreen();
+                    EngVerProfliePasswordChangeScreen frame = new EngVerProfliePasswordChangeScreen();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -47,7 +47,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
         });
     }
 
-    public ProfliePasswordChangeScreen() {
+    public EngVerProfliePasswordChangeScreen() {
     	
     	setResizable(false);
 		setBackground(Color.WHITE);
@@ -72,19 +72,19 @@ public class ProfliePasswordChangeScreen extends JFrame {
         lblImage.setBounds(0, 0, 280, 160);
         panel.add(lblImage);
         
-        JLabel lblNewLabel_1 = new JLabel("아이디");
+        JLabel lblNewLabel_1 = new JLabel("I D");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_1.setBounds(32, 191, 100, 20);
         contentPane.add(lblNewLabel_1);
         
-        JLabel lblNewLabel_2 = new JLabel("비밀번호확인");
+        JLabel lblNewLabel_2 = new JLabel("Confirm");
         lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_2.setBounds(32, 251, 100, 20);
         contentPane.add(lblNewLabel_2);
         
-        JLabel lblNewLabel_3 = new JLabel("비밀번호");
+        JLabel lblNewLabel_3 = new JLabel("PW");
         lblNewLabel_3.setForeground(Color.BLACK);
         lblNewLabel_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_3.setBounds(32, 221, 100, 20);
@@ -158,7 +158,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
         panel_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ProfliePasswordChangeScreen.this.dispose();
+                EngVerProfliePasswordChangeScreen.this.dispose();
             }
         });
 
@@ -189,10 +189,10 @@ public class ProfliePasswordChangeScreen extends JFrame {
                         updateStatement.setString(2, id);
                         updateStatement.executeUpdate();
 
-                        JOptionPane.showMessageDialog(null, "비밀번호 변경이 완료되었습니다.");
-                        ProfliePasswordChangeScreen.this.dispose();
+                        JOptionPane.showMessageDialog(null, "Password change is complete.");
+                        EngVerProfliePasswordChangeScreen.this.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "아이디가 일치하지 않습니다.");
+                        JOptionPane.showMessageDialog(null, "ID does not match.");
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();

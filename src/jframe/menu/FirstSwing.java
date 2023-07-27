@@ -176,8 +176,8 @@ public class FirstSwing extends JFrame {
         panel_3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                CustomerServiceGUI service = new CustomerServiceGUI();
-                service.setVisible(true);
+                CustomerServiceGUI service1 = new CustomerServiceGUI();
+                service1.setVisible(true);
                 FirstSwing.this.dispose();
             }
         });

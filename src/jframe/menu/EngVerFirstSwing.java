@@ -218,7 +218,7 @@ public class EngVerFirstSwing extends JFrame {
                    setVisible(false);
                     
                 } else {
-                    JOptionPane.showMessageDialog(EngVerFirstSwing.this, "Login failed! Please check your ID or password.", "로그인 오류", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(EngVerFirstSwing.this, "Login failed! Please check your ID or password.", "Login error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

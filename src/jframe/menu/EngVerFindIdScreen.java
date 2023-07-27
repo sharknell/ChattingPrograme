@@ -76,7 +76,7 @@ public class EngVerFindIdScreen extends JFrame {
         lblNewLabel.setBounds(62, 191, 78, 20);
         contentPane.add(lblNewLabel);
         
-        JLabel lblNewLabel_1 = new JLabel("Phong");
+        JLabel lblNewLabel_1 = new JLabel("Phone");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
         lblNewLabel_1.setBounds(62, 221, 78, 20);
@@ -162,12 +162,12 @@ public class EngVerFindIdScreen extends JFrame {
 
                 String foundId = FindId.findId(name, phoneNumber, idNum);
                 if (foundId != null) {
-                    JOptionPane.showMessageDialog(null, "회원님의 ID는 " + foundId + "입니다.");
+                    JOptionPane.showMessageDialog(null, "Your ID is" + foundId);
                     EngVerFindIdScreen.this.dispose();
                     EngVerFirstSwing main = new EngVerFirstSwing();
                     main.setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(null, "일치하는 회원 정보를 찾을 수 없습니다.");
+                    JOptionPane.showMessageDialog(null, "No matching member information found.");
                  // 필드 내용 초기화
                     textField.setText("");
                     textField_1.setText("");

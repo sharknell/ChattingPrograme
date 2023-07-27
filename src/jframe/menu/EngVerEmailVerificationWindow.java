@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import chatdb.email.EmailSender;
 
-public class EmailVerificationWindow extends JFrame {
+public class EngVerEmailVerificationWindow extends JFrame {
     private JLabel emailLabel;
     private JTextField emailField;
     private JButton sendButton;
@@ -17,16 +17,16 @@ public class EmailVerificationWindow extends JFrame {
     private String sentVerificationCode;
     private static boolean isEmailVerified = false;
 
-    public EmailVerificationWindow() {
+    public EngVerEmailVerificationWindow() {
         setTitle("Email Authentication");
         setSize(400, 250);
 
-        emailLabel = new JLabel("이메일 주소:");
+        emailLabel = new JLabel("Email Address:");
         emailField = new JTextField(20);
-        sendButton = new JButton("인증번호 보내기");
-        verificationCodeLabel = new JLabel("인증번호:");
+        sendButton = new JButton("Send authentication number");
+        verificationCodeLabel = new JLabel("Certification Number:");
         verificationCodeField = new JTextField(10);
-        verifyButton = new JButton("인증확인");
+        verifyButton = new JButton("authentication check");
         verificationCodeLabel.setVisible(false);
         verificationCodeField.setVisible(false);
         verifyButton.setVisible(false);
@@ -41,7 +41,7 @@ public class EmailVerificationWindow extends JFrame {
                     verificationCodeField.setVisible(true);
                     verifyButton.setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(EmailVerificationWindow.this, "이메일 주소를 입력해주세요!");
+                    JOptionPane.showMessageDialog(EngVerEmailVerificationWindow.this, "Please enter your email address!");
                 }
             }
         });
@@ -53,7 +53,7 @@ public class EmailVerificationWindow extends JFrame {
                 if (!enteredCode.isEmpty()) {
                     verifyCode(enteredCode);
                 } else {
-                    JOptionPane.showMessageDialog(EmailVerificationWindow.this, "인증 코드를 입력하세요!");
+                    JOptionPane.showMessageDialog(EngVerEmailVerificationWindow.this, "Enter your verification code!");
                 }
             }
         });
@@ -99,11 +99,11 @@ public class EmailVerificationWindow extends JFrame {
 
     private void verifyCode(String enteredCode) {
         if (enteredCode.trim().equals(sentVerificationCode)) {
-            JOptionPane.showMessageDialog(EmailVerificationWindow.this, "인증성공!");
+            JOptionPane.showMessageDialog(EngVerEmailVerificationWindow.this, "Certified!");
             isEmailVerified = true; // 인증이 성공한 경우 isEmailVerified를 true로 설정
             dispose();
         } else {
-            JOptionPane.showMessageDialog(EmailVerificationWindow.this, "인증실패!");
+            JOptionPane.showMessageDialog(EngVerEmailVerificationWindow.this, "Not verified!");
             isEmailVerified = false; // 인증이 실패한 경우 isEmailVerified를 false로 설정
         }
     }
@@ -122,7 +122,7 @@ public class EmailVerificationWindow extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new EmailVerificationWindow();
+                new EngVerEmailVerificationWindow();
             }
         });
     }

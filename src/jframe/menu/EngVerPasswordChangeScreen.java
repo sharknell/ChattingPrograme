@@ -75,19 +75,19 @@ public class EngVerPasswordChangeScreen extends JFrame {
         JLabel lblNewLabel_1 = new JLabel("I D");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_1.setBounds(62, 191, 100, 20);
+        lblNewLabel_1.setBounds(42, 191, 120, 20);
         contentPane.add(lblNewLabel_1);
         
         JLabel lblNewLabel_2 = new JLabel("Confirm");
         lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_2.setBounds(62, 251, 100, 20);
+        lblNewLabel_2.setBounds(42, 251, 120, 20);
         contentPane.add(lblNewLabel_2);
         
         JLabel lblNewLabel_3 = new JLabel("PW");
         lblNewLabel_3.setForeground(Color.BLACK);
         lblNewLabel_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_3.setBounds(62, 221, 100, 20);
+        lblNewLabel_3.setBounds(42, 221, 120, 20);
         contentPane.add(lblNewLabel_3);
 
         JPasswordField passwordField = new JPasswordField();
@@ -136,7 +136,7 @@ public class EngVerPasswordChangeScreen extends JFrame {
         });
         
         textField_2 = new JTextField();
-        textField_2.setForeground(Color.WHITE);
+        textField_2.setForeground(new Color(36, 36, 36));
         textField_2.setColumns(10);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         textField_2.setBackground(new Color(255, 255, 255));

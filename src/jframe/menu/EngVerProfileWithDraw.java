@@ -3,13 +3,9 @@ package jframe.menu;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,10 +15,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
 
-public class ProfliePasswordChangeScreen extends JFrame {
+import chatdb.WithDraw;
+
+public class EngVerProfileWithDraw extends JFrame {
 
     private JPanel contentPane;
     private JPanel panel;
@@ -33,12 +35,13 @@ public class ProfliePasswordChangeScreen extends JFrame {
     private static final String DB_URL = "jdbc:mariadb://14.42.124.13:3306/chatdb";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "gyuho9480!";
+    private JTextField textField_3;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ProfliePasswordChangeScreen frame = new ProfliePasswordChangeScreen();
+                    EngVerProfileWithDraw frame = new EngVerProfileWithDraw();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -47,10 +50,10 @@ public class ProfliePasswordChangeScreen extends JFrame {
         });
     }
 
-    public ProfliePasswordChangeScreen() {
+    public EngVerProfileWithDraw() {
     	
     	setResizable(false);
-		setBackground(Color.WHITE);
+		setBackground(new Color(36, 36, 36));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 540);
 		contentPane = new JPanel();
@@ -72,22 +75,22 @@ public class ProfliePasswordChangeScreen extends JFrame {
         lblImage.setBounds(0, 0, 280, 160);
         panel.add(lblImage);
         
-        JLabel lblNewLabel_1 = new JLabel("아이디");
+        JLabel lblNewLabel_1 = new JLabel("I D");
         lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_1.setBounds(32, 191, 100, 20);
+        lblNewLabel_1.setBounds(52, 191, 100, 20);
         contentPane.add(lblNewLabel_1);
         
-        JLabel lblNewLabel_2 = new JLabel("비밀번호확인");
+        JLabel lblNewLabel_2 = new JLabel("IDNum");
         lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_2.setBounds(32, 251, 100, 20);
+        lblNewLabel_2.setBounds(52, 251, 100, 20);
         contentPane.add(lblNewLabel_2);
         
-        JLabel lblNewLabel_3 = new JLabel("비밀번호");
+        JLabel lblNewLabel_3 = new JLabel("PW");
         lblNewLabel_3.setForeground(Color.BLACK);
         lblNewLabel_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 16));
-        lblNewLabel_3.setBounds(32, 221, 100, 20);
+        lblNewLabel_3.setBounds(52, 221, 100, 20);
         contentPane.add(lblNewLabel_3);
 
         JPasswordField passwordField = new JPasswordField();
@@ -96,13 +99,6 @@ public class ProfliePasswordChangeScreen extends JFrame {
         passwordField.setBounds(129, 221, 130, 20);
         passwordField.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(passwordField);
-
-        JPasswordField passwordConfirmField = new JPasswordField();
-        passwordConfirmField.setForeground(new Color(36, 36, 36));
-        passwordConfirmField.setBackground(new Color(255, 255, 255));
-        passwordConfirmField.setBounds(129, 251, 130, 20);
-        passwordConfirmField.setBorder(BorderFactory.createEmptyBorder());
-        contentPane.add(passwordConfirmField);
 
         JPanel passwordPanel = new JPanel();
         passwordPanel.setBackground(new Color(245, 245, 245));
@@ -126,11 +122,9 @@ public class ProfliePasswordChangeScreen extends JFrame {
                 if (passwordVisible) {
                     passwordLabel.setIcon(showIcon);
                     passwordField.setEchoChar((char) 0);
-                    passwordConfirmField.setEchoChar((char) 0);
                 } else {
                     passwordLabel.setIcon(hideIcon);
                     passwordField.setEchoChar('*');
-                    passwordConfirmField.setEchoChar('*');
                 }
             }
         });
@@ -158,7 +152,7 @@ public class ProfliePasswordChangeScreen extends JFrame {
         panel_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ProfliePasswordChangeScreen.this.dispose();
+                EngVerProfileWithDraw.this.dispose();
             }
         });
 
@@ -169,34 +163,71 @@ public class ProfliePasswordChangeScreen extends JFrame {
         JLabel lblImage_1 = new JLabel(imageIcon_1);
         lblImage_1.setBounds(106, 270, 38, 20);
         panel_2.add(lblImage_1);
-
+        
         panel_2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String id = textField_2.getText();
-                String newPassword = passwordField.getText();
+                String id = textField_2.getText(); // 입력된 사용자 아이디 가져오기
+                String password = new String(passwordField.getPassword()); // 입력된 비밀번호 가져오기
+                String RRN = textField_3.getText(); // 입력된 주민등록번호 가져오기
 
-                try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-                    String query = "SELECT * FROM members WHERE id = ?";
-                    PreparedStatement statement = connection.prepareStatement(query);
-                    statement.setString(1, id);
+                boolean result = WithDraw.deleteMember(id, password, RRN);
+                if (result) {
+                    // 탈퇴 성공
+                    JOptionPane.showMessageDialog(EngVerProfileWithDraw.this, "Membership withdrawal is complete.");
+                    dispose(); // ProfileWithDraw(JFrame) 닫기
 
-                    ResultSet resultSet = statement.executeQuery();
-                    if (resultSet.next()) {
-                        String updateQuery = "UPDATE members SET password = ? WHERE id = ?";
-                        PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
-                        updateStatement.setString(1, newPassword);
-                        updateStatement.setString(2, id);
-                        updateStatement.executeUpdate();
-
-                        JOptionPane.showMessageDialog(null, "비밀번호 변경이 완료되었습니다.");
-                        ProfliePasswordChangeScreen.this.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "아이디가 일치하지 않습니다.");
+                    // 현재 실행 중인 프로그램에서 모든 JFrame을 종료합니다.
+                    for (Window window : Window.getWindows()) {
+                        window.dispose();
                     }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
+
+                    // FirstSwing(JFrame) 열기
+                    EngVerFirstSwing frame = new EngVerFirstSwing();
+                    frame.setVisible(true);
+                } else {
+                    // 탈퇴 실패
+                    JOptionPane.showMessageDialog(EngVerProfileWithDraw.this, "Membership withdrawal failed. Please check the information you entered.");
                 }
+            }
+        });
+        
+        textField_3 = new JTextField();
+        textField_3.setForeground(new Color(36, 36, 36));
+        textField_3.setColumns(10);
+        textField_3.setBorder(BorderFactory.createEmptyBorder());
+        textField_3.setColumns(14); // 14자리(6자리 + "-" + 7자리)로 설정
+        textField_3.setBackground(new Color(255, 255, 255));
+        textField_3.setBounds(129, 252, 130, 20);
+        contentPane.add(textField_3);
+        
+        ((AbstractDocument) textField_3.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                Document doc = fb.getDocument();
+                StringBuilder sb = new StringBuilder(doc.getText(0, doc.getLength()));
+                sb.replace(offset, offset + length, text);
+
+                // "-"를 삽입할 위치 계산
+                int dashes = 0;
+                for (int i = 0; i < sb.length(); i++) {
+                    if (sb.charAt(i) == '-')
+                        dashes++;
+                }
+                if (offset <= 5 && dashes > 0)
+                    return; // 6자리 이상 입력 시 "-" 입력 방지
+                if (offset == 6 && dashes == 0)
+                    sb.insert(offset, "-"); // 6자리 입력 시 "-" 삽입
+                if (sb.length() > 14)
+                    return; // 14자리 이상 입력 방지
+
+                super.replace(fb, 0, doc.getLength(), sb.toString(), attrs);
+            }
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+                    throws BadLocationException {
+                replace(fb, offset, 0, string, attr);
             }
         });
     }

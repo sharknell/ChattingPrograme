@@ -53,7 +53,7 @@ public class ProfileWithDraw extends JFrame {
     public ProfileWithDraw() {
     	
     	setResizable(false);
-		setBackground(Color.WHITE);
+		setBackground(new Color(36, 36, 36));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 540);
 		contentPane = new JPanel();
@@ -130,7 +130,7 @@ public class ProfileWithDraw extends JFrame {
         });
         
         textField_2 = new JTextField();
-        textField_2.setForeground(Color.WHITE);
+        textField_2.setForeground(new Color(36, 36, 36));
         textField_2.setColumns(10);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         textField_2.setBackground(new Color(255, 255, 255));
@@ -193,7 +193,7 @@ public class ProfileWithDraw extends JFrame {
         });
         
         textField_3 = new JTextField();
-        textField_3.setForeground(Color.WHITE);
+        textField_3.setForeground(new Color(36, 36, 36));
         textField_3.setColumns(10);
         textField_3.setBorder(BorderFactory.createEmptyBorder());
         textField_3.setColumns(14); // 14자리(6자리 + "-" + 7자리)로 설정

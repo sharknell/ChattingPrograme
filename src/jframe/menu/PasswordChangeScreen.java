@@ -136,7 +136,7 @@ public class PasswordChangeScreen extends JFrame {
         });
         
         textField_2 = new JTextField();
-        textField_2.setForeground(Color.WHITE);
+        textField_2.setForeground(new Color(36, 36, 36));
         textField_2.setColumns(10);
         textField_2.setBorder(BorderFactory.createEmptyBorder());
         textField_2.setBackground(new Color(255, 255, 255));
