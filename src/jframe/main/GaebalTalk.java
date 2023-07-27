@@ -86,7 +86,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
    public JLabel myName;
    public JLabel myPhone;
    public JLabel myID;
-   private JComponent logOut;
+   private JPanel logOut;
    private JLabel logOutLb;
    public JLabel changePs;
    public JLabel draw;
@@ -212,24 +212,6 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       inRoomLb.setBounds(106, 270, 38, 20);
       inRoom.add(inRoomLb);
       
-      logOut = new JPanel();
-      logOut.setBackground(new Color(245, 245, 245));
-      logOut.setBounds(10, 400, 40, 50);
-      menuBar.add(logOut);
-
-      ImageIcon logOutIcon = new ImageIcon("image/logOut.png");
-      logOutLb = new JLabel(logOutIcon);
-      logOutLb.setBounds(106, 270, 38, 45);
-      logOut.add(logOutLb);
-      
-      logOut.addMouseListener(new MouseAdapter() {
-          @Override
-          public void mouseClicked(MouseEvent e) {
-              FirstSwing main = new FirstSwing();
-              main.setVisible(true);
-              GaebalTalk.this.dispose();
-          }
-      });
   
 
       setting = new JPanel();
@@ -282,17 +264,25 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       callCenter = new JLabel(serviceCenter);
       callCenter.setBackground(new Color(245, 245, 245));
       service.add(callCenter);
-
-      JPanel font = new JPanel();
-      font.setBackground(new Color(245, 245, 245));
-      font.setBounds(100, 380, 40, 45);
-      contentPane.add(font);
-
-      ImageIcon kor_font = new ImageIcon("image/fontSize.png");
-      font.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-      korFont = new JLabel(kor_font);
-      korFont.setBackground(new Color(245, 245, 245));
-      font.add(korFont);
+      
+      logOut = new JPanel();
+      logOut.setBackground(new Color(245, 245, 245));
+      logOut.setBounds(264, 380, 40, 45);
+      contentPane.add(logOut);
+      
+      ImageIcon logOutIcon = new ImageIcon("image/logOut.png");
+      logOutLb = new JLabel(logOutIcon);
+      logOutLb.setBounds(106, 270, 38, 45);
+      logOut.add(logOutLb);
+      
+      logOut.addMouseListener(new MouseAdapter() {
+    	  @Override
+    	  public void mouseClicked(MouseEvent e) {
+    		  FirstSwing main = new FirstSwing();
+    		  main.setVisible(true);
+    		  GaebalTalk.this.dispose();
+    	  }
+      });
 
       JPanel language = new JPanel();
       language.setBackground(new Color(245, 245, 245));
@@ -431,7 +421,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
         	  panel_chat.setVisible(false);
               display_Icon.setVisible(true);
               service.setVisible(true);
-              font.setVisible(true);
+              logOut.setVisible(true);
               language.setVisible(true);
               game.setVisible(true);
               myProfile.setVisible(true);
@@ -453,7 +443,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       myProfile.setVisible(false);
       display_Icon.setVisible(false);
       service.setVisible(false);
-      font.setVisible(false);
+      logOut.setVisible(false);
       language.setVisible(false);
       game.setVisible(false);
       profileSet.setVisible(false);
@@ -468,7 +458,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                myProfile.setVisible(true);
                display_Icon.setVisible(true);
                service.setVisible(true);
-               font.setVisible(true);
+               logOut.setVisible(true);
                language.setVisible(true);
                game.setVisible(true);
                profileSet.setVisible(false);
@@ -478,7 +468,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                myProfile.setVisible(false);
                display_Icon.setVisible(false);
                service.setVisible(false);
-               font.setVisible(false);
+               logOut.setVisible(false);
                language.setVisible(false);
                game.setVisible(false);
                profileSet.setVisible(false);
@@ -506,7 +496,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
             profileSet.setBounds((int) (frameWidth * 0.20), (int) (frameHeight * 0.5), 284, 281);
 
             logOut.setBounds(x, y, 40, 50);
-            setting.setBounds(x, y + 60, 40, 50);
+            setting.setBounds(x, y + 40, 40, 50);
 
             // myProfile 위치 조정
             myProfile.setBounds((int) (frameWidth * 0.25), (int) (frameHeight * 0.6), 40, 45);
@@ -518,7 +508,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                   panel_chat.setVisible(false);
                   display_Icon.setVisible(false);
                   service.setVisible(false);
-                  font.setVisible(false);
+                  logOut.setVisible(false);
                   language.setVisible(false);
                   game.setVisible(false);
                   myProfile.setVisible(false);
@@ -534,13 +524,16 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
             service.setBounds((int) (frameWidth * 0.80), (int) (frameHeight * 0.6), 40, 45);
 
             // font 위치 조정
-            font.setBounds((int) (frameWidth * 0.25), (int) (frameHeight * 0.75), 40, 45);
+           // font.setBounds((int) (frameWidth * 0.25), (int) (frameHeight * 0.75), 40, 45);
 
             // language 위치 조정
             language.setBounds((int) (frameWidth * 0.52), (int) (frameHeight * 0.75), 40, 45);
 
             // game 위치 조정
-            game.setBounds((int) (frameWidth * 0.80), (int) (frameHeight * 0.75), 40, 45);
+            game.setBounds((int) (frameWidth * 0.25), (int) (frameHeight * 0.75), 40, 45);
+            
+            // logOut 위치 조정
+            logOut.setBounds((int) (frameWidth * 0.80), (int) (frameHeight * 0.75), 40, 45);
          }
       });
 

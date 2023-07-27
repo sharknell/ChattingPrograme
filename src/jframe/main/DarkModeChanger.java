@@ -44,7 +44,6 @@ public class DarkModeChanger {
         frame.notificationScreen.titleLabel.setForeground(new Color(245, 245, 245));
         frame.notificationScreen.lblImage.setIcon(new ImageIcon("image/darkCancel.png"));
         frame.cancelLb.setIcon(new ImageIcon("image/darkCancel.png"));
-        frame.korFont.setIcon(new ImageIcon("image/darkFontSize.png"));
         frame.callCenter.setIcon(new ImageIcon("image/darkCallCenter.png"));
         frame.changePs.setIcon(new ImageIcon("image/dark비밀번호변경.png"));
         frame.draw.setIcon(new ImageIcon("image/dark회원탈퇴.png"));
@@ -75,9 +74,8 @@ public class DarkModeChanger {
         frame.dbPhonenumber.setForeground(new Color(36,36,36));
         frame.notificationScreen.contentLabel.setForeground(new Color(36,36,36));
         frame.notificationScreen.titleLabel.setForeground(new Color(36,36,36));
-        frame.notificationScreen.lblImage.setIcon(new ImageIcon("image/Cancel.png"));
+        frame.notificationScreen.lblImage.setIcon(new ImageIcon("image/cancel.png"));
         frame.cancelLb.setIcon(new ImageIcon("image/cancel.png"));
-        frame.korFont.setIcon(new ImageIcon("image/fontSize.png"));
         frame.callCenter.setIcon(new ImageIcon("image/callCenter.png"));
         frame.changePs.setIcon(new ImageIcon("image/비밀번호변경.png"));
         frame.draw.setIcon(new ImageIcon("image/회원탈퇴.png"));

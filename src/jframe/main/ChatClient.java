@@ -43,6 +43,7 @@ public class ChatClient extends JFrame {
 	JButton bt_perChat; 
 	JButton bt_sendFile;
 	JButton bt_vanWord;
+	JButton bt_changeFont;
 	JPanel p;
 
 	OutputStream out;
@@ -117,6 +118,7 @@ public class ChatClient extends JFrame {
                 lblNewLabel_1.setBounds(8, (int)(frameHeight * 0.8), 74, 21);
                 bt_perChat.setBounds((int)(frameWidth * 0.52), (int)(frameHeight * 0.8), 20, 20);
                 bt_sendFile.setBounds((int)(frameWidth * 0.6), (int)(frameHeight * 0.8), 20, 20);
+                bt_changeFont.setBounds((int)(frameWidth * 0.44), (int)(frameHeight * 0.8), 20, 20);
                 bt_kick.setBounds((int)(frameWidth * 0.78), (int)(frameHeight * 0.45), 60, 50);
                 bt_exit.setBounds((int)(frameWidth * 0.83), (int)(frameHeight * 0.83), 45, 41);
             
@@ -138,6 +140,19 @@ public class ChatClient extends JFrame {
 		lblNewLabel_1.setFont(new Font("Gadugi", Font.ITALIC, 13));
 		lblNewLabel_1.setBounds(12, 400, 74, 21);
 		p.add(lblNewLabel_1);
+		
+		bt_changeFont = new JButton("");
+        bt_changeFont.setBounds(160, 400, 20, 20);
+        bt_changeFont.setBackground(new Color(245, 245, 245));
+        bt_changeFont.setIcon(new ImageIcon("image/fontSize.png"));
+        bt_changeFont.setBorderPainted(false);
+        bt_changeFont.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FontSizeChanger.changeFontSize(ChatClient.this);
+            }
+        });
+        p.add(bt_changeFont);
 		
 		bt_kick = new JButton();
 		bt_kick.setIcon(new ImageIcon("image/강퇴.png"));
