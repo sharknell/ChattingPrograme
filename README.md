@@ -26,3 +26,5 @@
               내용은 임시로 깃에 ReadMe에 있는 내용 그냥 갖다박아놓음
 07.25 <이승민> ChatClient 클래스 내에 있는 컴포넌트들 각 위치를 기준으로 JFrame크기를 변경했을 때 그 비율에 맞춰 크기 조절되게함.
               GaebalTalk내에 ProfileSet 내부에 있는 되돌리기 버튼 추가가 안되어 있어서 DarkModeChanger에 cancelLb 이미지 추가
+07.27 <이승민> GaebalTalk마무리 및 EngVer 다수 수정 및 추가 영어버전에 사용 할 이미지 추가. 
+              오타 수정 및 JoinScreen, FindID클래스 등에서 textField내에 글자 색이 흰색으로 되어있는거 전체 수정
