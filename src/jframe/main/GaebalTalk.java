@@ -49,6 +49,7 @@ import jframe.menu.FirstSwing;
 import jframe.menu.JoinScreen;
 import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
+import jframe.menu.SettingCustomerServiceGUI;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
    private final String FILE_SAVE_PATH = "E:/개발톡에서 받은 파일/";
@@ -264,6 +265,14 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       callCenter = new JLabel(serviceCenter);
       callCenter.setBackground(new Color(245, 245, 245));
       service.add(callCenter);
+      
+      service.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+             SettingCustomerServiceGUI call = new SettingCustomerServiceGUI();
+             call.setVisible(true);
+          }
+       });
       
       logOut = new JPanel();
       logOut.setBackground(new Color(245, 245, 245));

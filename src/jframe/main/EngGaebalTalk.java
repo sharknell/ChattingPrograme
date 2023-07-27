@@ -46,11 +46,13 @@ import chatdb.MemberDTO;
 import jframe.menu.EngVerFirstSwing;
 import jframe.menu.EngVerProfileWithDraw;
 import jframe.menu.EngVerProfliePasswordChangeScreen;
+import jframe.menu.EngVerSettingCustomerServiceGUI;
 import jframe.menu.FindIdScreen;
 import jframe.menu.FirstSwing;
 import jframe.menu.JoinScreen;
 import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
+import jframe.menu.SettingCustomerServiceGUI;
 
 public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
    private final String FILE_SAVE_PATH = "E:/개발톡에서 받은 파일/";
@@ -264,6 +266,14 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
       callCenter = new JLabel(serviceCenter);
       callCenter.setBackground(new Color(245, 245, 245));
       service.add(callCenter);
+      
+      service.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+             EngVerSettingCustomerServiceGUI call = new EngVerSettingCustomerServiceGUI();
+             call.setVisible(true);
+          }
+       });
 
       logOut = new JPanel();
       logOut.setBackground(new Color(245, 245, 245));
