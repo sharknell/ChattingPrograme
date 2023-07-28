@@ -706,6 +706,66 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
          }
 
       });
+	client.emoticon1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {								
+				try {
+					Document doc = client.ta.getDocument();					
+					
+					Style styleMsg= client.ta.addStyle("emojiStyle", null);
+					 String emojiImagePath = "image/emoji/따봉.png";
+					sendMsg("320|" + nickName + "|" + emojiImagePath);
+												
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					
+				}
+			}
+		});
+    client.emoticon2.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {						
+				try {
+					Document doc = client.ta.getDocument();				
+					Style styleMsg= client.ta.addStyle("emojiStyle", null);
+					 String emojiImagePath = "image/emoji/오열.png";					
+					sendMsg("320|" + nickName + "|" + emojiImagePath);						
+				} catch (Exception ex) {
+					ex.printStackTrace();
+			}
+		}
+	});
+    client.emoticon3.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		try {
+			Document doc = client.ta.getDocument();					
+				Style styleMsg= client.ta.addStyle("emojiStyle", null);
+				 String emojiImagePath = "image/emoji/한눈에반함.png";
+				System.out.println("emojiButton if 문 : " +styleMsg );
+				sendMsg("320|" + nickName + "|" + emojiImagePath);
+											
+				} catch (Exception ex) {
+					ex.printStackTrace();
+			}
+		}
+	});
+    
+    client.emoticon4.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			`try {
+				Document doc = client.ta.getDocument();
+				Style styleMsg= client.ta.addStyle("emojiStyle", null);
+				 String emojiImagePath = "image/emoji/야유.png";
+				sendMsg("320|" + nickName + "|" + emojiImagePath);							
+				} catch (Exception ex) {
+					ex.printStackTrace();
+			}
+		}
+	});
+      
+	
 
    }
 
@@ -853,6 +913,31 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                client.ta.setCaretPosition(client.ta.getText().length());
 
                break;
+
+	   case "302":
+                try {
+                    Document doc = client.ta.getDocument();
+                    String nickNameReceived = msgs[1];
+                    String emojiImagePath = msgs[2];
+
+                   
+
+                    // Add the nickname and emotion before the emoji
+                    if (nickName != null && nickName.equals(nickNameReceived)) {
+                        doc.insertString(doc.getLength(), "[ME]", null);
+                    } else {
+                        doc.insertString(doc.getLength(), "[" + nickNameReceived + "]", null);
+                    }      
+                    Style style = client.ta.addStyle("emojiStyle", null);
+                    StyleConstants.setIcon(style, new ImageIcon(emojiImagePath));
+                    doc.insertString(doc.getLength(), "invisible text", style);
+
+                    doc.insertString(doc.getLength(), "\n", null);
+                    client.ta.setCaretPosition(client.ta.getDocument().getLength());
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
+                break;
 
             case "202": // 개설된 방의 타이틀 제목 얻기
                client.setTitle("채팅방-[" + msgs[1] + "]");
