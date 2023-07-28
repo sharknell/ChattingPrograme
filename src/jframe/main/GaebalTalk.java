@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,7 +36,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -45,11 +43,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+
 import chatdb.MemberDTO;
 import jframe.menu.EngVerFirstSwing;
-import jframe.menu.FindIdScreen;
 import jframe.menu.FirstSwing;
-import jframe.menu.JoinScreen;
 import jframe.menu.ProfileWithDraw;
 import jframe.menu.ProfliePasswordChangeScreen;
 import jframe.menu.SettingCustomerServiceGUI;
@@ -718,7 +715,14 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					Style styleMsg= client.ta.addStyle("emojiStyle", null);
 					 String emojiImagePath = "image/emoji/따봉.png";
 					sendMsg("320|" + nickName + "|" + emojiImagePath);
-												
+					client.emoticon.setVisible(true);
+					client.bt_perChat.setVisible(true);
+					client.bt_sendFile.setVisible(true);
+					client.bt_changeFont.setVisible(true); 
+					client.emoticon1.setVisible(false);
+					client.emoticon2.setVisible(false);
+					client.emoticon3.setVisible(false);
+					client.emoticon4.setVisible(false);							
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					
@@ -732,7 +736,15 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 					Document doc = client.ta.getDocument();				
 					Style styleMsg= client.ta.addStyle("emojiStyle", null);
 					 String emojiImagePath = "image/emoji/오열.png";					
-					sendMsg("320|" + nickName + "|" + emojiImagePath);						
+					sendMsg("320|" + nickName + "|" + emojiImagePath);			
+					client.emoticon.setVisible(true);
+					client.bt_perChat.setVisible(true);
+					client.bt_sendFile.setVisible(true);
+					client.bt_changeFont.setVisible(true); 
+					client.emoticon1.setVisible(false);
+					client.emoticon2.setVisible(false);
+					client.emoticon3.setVisible(false);
+					client.emoticon4.setVisible(false);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 			}
@@ -747,7 +759,14 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				 String emojiImagePath = "image/emoji/한눈에반함.png";
 				System.out.println("emojiButton if 문 : " +styleMsg );
 				sendMsg("320|" + nickName + "|" + emojiImagePath);
-											
+				client.emoticon.setVisible(true);
+				client.bt_perChat.setVisible(true);
+				client.bt_sendFile.setVisible(true);
+				client.bt_changeFont.setVisible(true); 
+				client.emoticon1.setVisible(false);
+				client.emoticon2.setVisible(false);
+				client.emoticon3.setVisible(false);
+				client.emoticon4.setVisible(false);							
 				} catch (Exception ex) {
 					ex.printStackTrace();
 			}
@@ -761,7 +780,15 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
 				Document doc = client.ta.getDocument();
 				Style styleMsg= client.ta.addStyle("emojiStyle", null);
 				 String emojiImagePath = "image/emoji/야유.png";
-				sendMsg("320|" + nickName + "|" + emojiImagePath);							
+				sendMsg("320|" + nickName + "|" + emojiImagePath);
+				client.emoticon.setVisible(true);
+				client.bt_perChat.setVisible(true);
+				client.bt_sendFile.setVisible(true);
+				client.bt_changeFont.setVisible(true); 
+				client.emoticon1.setVisible(false);
+				client.emoticon2.setVisible(false);
+				client.emoticon3.setVisible(false);
+				client.emoticon4.setVisible(false);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 			}

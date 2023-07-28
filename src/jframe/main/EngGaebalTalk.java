@@ -707,92 +707,91 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
          }
 
       });
-	client.emoticon1.addActionListener(new ActionListener() {
+      client.emoticon1.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-					try {
-						Document doc = client.ta.getDocument();
-						
-
-						// Check if text is an emoji code
+			public void actionPerformed(ActionEvent e) {								
+				try {
+					Document doc = client.ta.getDocument();					
 					
-							Style styleMsg= client.ta.addStyle("emojiStyle", null);
-							 String emojiImagePath = "image/emoji/따봉.png";
-							System.out.println("emojiButton if 문 : " +styleMsg );
-							sendMsg("320|" + nickName + "|" + emojiImagePath);
-												
+					Style styleMsg= client.ta.addStyle("emojiStyle", null);
+					 String emojiImagePath = "image/emoji/따봉.png";
+					sendMsg("320|" + nickName + "|" + emojiImagePath);
+					client.emoticon.setVisible(true);
+					client.bt_perChat.setVisible(true);
+					client.bt_sendFile.setVisible(true);
+					client.bt_changeFont.setVisible(true); 
+					client.emoticon1.setVisible(false);
+					client.emoticon2.setVisible(false);
+					client.emoticon3.setVisible(false);
+					client.emoticon4.setVisible(false);							
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					
 				}
 			}
 		});
-    client.emoticon2.addActionListener(new ActionListener() {
+  client.emoticon2.addActionListener(new ActionListener() {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			
+		public void actionPerformed(ActionEvent e) {						
 				try {
-					Document doc = client.ta.getDocument();
-					
-
-					// Check if text is an emoji code
-				
-						Style styleMsg= client.ta.addStyle("emojiStyle", null);
-						 String emojiImagePath = "image/emoji/오열.png";
-						System.out.println("emojiButton if 문 : " +styleMsg );
-						sendMsg("320|" + nickName + "|" + emojiImagePath);
-											
+					Document doc = client.ta.getDocument();				
+					Style styleMsg= client.ta.addStyle("emojiStyle", null);
+					 String emojiImagePath = "image/emoji/오열.png";					
+					sendMsg("320|" + nickName + "|" + emojiImagePath);			
+					client.emoticon.setVisible(true);
+					client.bt_perChat.setVisible(true);
+					client.bt_sendFile.setVisible(true);
+					client.bt_changeFont.setVisible(true); 
+					client.emoticon1.setVisible(false);
+					client.emoticon2.setVisible(false);
+					client.emoticon3.setVisible(false);
+					client.emoticon4.setVisible(false);
 				} catch (Exception ex) {
 					ex.printStackTrace();
-				
 			}
 		}
 	});
-    client.emoticon3.addActionListener(new ActionListener() {
+  client.emoticon3.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			
-				try {
-					Document doc = client.ta.getDocument();
-					
-
-					// Check if text is an emoji code
-				
-						Style styleMsg= client.ta.addStyle("emojiStyle", null);
-						 String emojiImagePath = "image/emoji/한눈에반함.png";
-						System.out.println("emojiButton if 문 : " +styleMsg );
-						sendMsg("320|" + nickName + "|" + emojiImagePath);
-											
+		try {
+			Document doc = client.ta.getDocument();					
+				Style styleMsg= client.ta.addStyle("emojiStyle", null);
+				 String emojiImagePath = "image/emoji/한눈에반함.png";
+				System.out.println("emojiButton if 문 : " +styleMsg );
+				sendMsg("320|" + nickName + "|" + emojiImagePath);
+				client.emoticon.setVisible(true);
+				client.bt_perChat.setVisible(true);
+				client.bt_sendFile.setVisible(true);
+				client.bt_changeFont.setVisible(true); 
+				client.emoticon1.setVisible(false);
+				client.emoticon2.setVisible(false);
+				client.emoticon3.setVisible(false);
+				client.emoticon4.setVisible(false);							
 				} catch (Exception ex) {
 					ex.printStackTrace();
-				
 			}
 		}
 	});
-    
-    client.emoticon4.addActionListener(new ActionListener() {
+  
+  client.emoticon4.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			
-				try {
-					Document doc = client.ta.getDocument();
-					
-
-					// Check if text is an emoji code
-				
-						Style styleMsg= client.ta.addStyle("emojiStyle", null);
-						 String emojiImagePath = "image/emoji/야유.png";
-						System.out.println("emojiButton if 문 : " +styleMsg );
-						sendMsg("320|" + nickName + "|" + emojiImagePath);
-											
+			try {
+				Document doc = client.ta.getDocument();
+				Style styleMsg= client.ta.addStyle("emojiStyle", null);
+				 String emojiImagePath = "image/emoji/야유.png";
+				sendMsg("320|" + nickName + "|" + emojiImagePath);
+				client.emoticon.setVisible(true);
+				client.bt_perChat.setVisible(true);
+				client.bt_sendFile.setVisible(true);
+				client.bt_changeFont.setVisible(true); 
+				client.emoticon1.setVisible(false);
+				client.emoticon2.setVisible(false);
+				client.emoticon3.setVisible(false);
+				client.emoticon4.setVisible(false);
 				} catch (Exception ex) {
 					ex.printStackTrace();
-				
 			}
 		}
 	});
@@ -1015,11 +1014,12 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
                }
                break;
          }
+         }
       } catch (IOException e) {
          e.printStackTrace();
       }
    }// End of run
-
+   
    private void createChatLog(String roomTitle) {
       // 날짜와 시간을 포맷에 맞게 생성
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
