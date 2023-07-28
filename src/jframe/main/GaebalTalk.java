@@ -757,7 +757,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
     client.emoticon4.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			`try {
+			try {
 				Document doc = client.ta.getDocument();
 				Style styleMsg= client.ta.addStyle("emojiStyle", null);
 				 String emojiImagePath = "image/emoji/야유.png";
@@ -884,10 +884,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                }
                break;
 
-            case "200": // 대화 입장
-               client.ta.append("[" + msgs[1] + "]님이 입장하셨습니다.\n");
-               client.ta.setCaretPosition(client.ta.getText().length());
-               break;
+           
            case "400": // 대화방 퇴장
                   for (int i = 0; i < client.defaultListModel.getSize(); i++) {
                      String exitUser = client.defaultListModel.getElementAt(i);
@@ -988,7 +985,8 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                }
                break;
          }
-      } catch (IOException e) {
+      }
+         } catch (IOException e) {
          e.printStackTrace();
       }
    }// End of run
