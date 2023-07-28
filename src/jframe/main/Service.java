@@ -144,6 +144,15 @@ public class Service extends Thread {
 						}
 						break;
 
+					case "320": // 이모티콘 전송
+						String name = msgs[1];
+						String emojipath = msgs[2];
+						System.out.println("service : " + emojipath);
+						
+						messageRoom("302|" + name + "|" +emojipath);
+						break;
+		
+
 					case "600": // 강퇴
 
 						String target = msgs[1];
