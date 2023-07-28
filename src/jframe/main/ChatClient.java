@@ -44,6 +44,11 @@ public class ChatClient extends JFrame {
 	JButton bt_sendFile;
 	JButton bt_vanWord;
 	JButton bt_changeFont;
+
+	JButton emoticon1;
+   	JButton emoticon3; 
+   	JButton emoticon2;
+   	JButton emoticon4;
 	JPanel p;
 
 	OutputStream out;
@@ -167,6 +172,22 @@ public class ChatClient extends JFrame {
 		bt_sendFile.setBounds(210, 400, 20, 20);
 		bt_sendFile.setBorderPainted(false);
 		p.add(bt_sendFile);
+
+
+		emoticon1.setBounds(232, 279, 57, 30);
+     		p.add(emoticon1);
+      
+      		emoticon2 = new JButton("울음");
+     	 	emoticon2.setBounds(232, 357, 60, 23);
+     		 p.add(emoticon2);
+      
+      		emoticon3 = new JButton("하트");
+     		 emoticon3.setBounds(232, 319, 60, 23);
+     		 p.add(emoticon3);
+      
+      		emoticon4 = new JButton("야유");
+     		 emoticon4.setBounds(235, 392, 60, 23);
+      		p.add(emoticon4);
 		
 		setBounds(300, 200, 360, 500);
 		sendTF.requestFocus();
