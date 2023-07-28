@@ -26,7 +26,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -704,6 +707,96 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
          }
 
       });
+	client.emoticon1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+					try {
+						Document doc = client.ta.getDocument();
+						
+
+						// Check if text is an emoji code
+					
+							Style styleMsg= client.ta.addStyle("emojiStyle", null);
+							 String emojiImagePath = "image/emoji/따봉.png";
+							System.out.println("emojiButton if 문 : " +styleMsg );
+							sendMsg("320|" + nickName + "|" + emojiImagePath);
+												
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					
+				}
+			}
+		});
+    client.emoticon2.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			
+				try {
+					Document doc = client.ta.getDocument();
+					
+
+					// Check if text is an emoji code
+				
+						Style styleMsg= client.ta.addStyle("emojiStyle", null);
+						 String emojiImagePath = "image/emoji/오열.png";
+						System.out.println("emojiButton if 문 : " +styleMsg );
+						sendMsg("320|" + nickName + "|" + emojiImagePath);
+											
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				
+			}
+		}
+	});
+    client.emoticon3.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			
+				try {
+					Document doc = client.ta.getDocument();
+					
+
+					// Check if text is an emoji code
+				
+						Style styleMsg= client.ta.addStyle("emojiStyle", null);
+						 String emojiImagePath = "image/emoji/한눈에반함.png";
+						System.out.println("emojiButton if 문 : " +styleMsg );
+						sendMsg("320|" + nickName + "|" + emojiImagePath);
+											
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				
+			}
+		}
+	});
+    
+    client.emoticon4.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			
+				try {
+					Document doc = client.ta.getDocument();
+					
+
+					// Check if text is an emoji code
+				
+						Style styleMsg= client.ta.addStyle("emojiStyle", null);
+						 String emojiImagePath = "image/emoji/야유.png";
+						System.out.println("emojiButton if 문 : " +styleMsg );
+						sendMsg("320|" + nickName + "|" + emojiImagePath);
+											
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				
+			}
+		}
+	});
+      
 
    }
 
@@ -756,17 +849,20 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
             String msgs[] = msg.split("\\|");
             String protocol = msgs[0];
             switch (protocol) {
-            case "300": // 대화
+            case "300": //대화
+                  try {
+                     Document doc = client.ta.getDocument();
+                     if (nickName != null && nickName.equals(msgs[1])) {
+                        doc.insertString(doc.getLength(), "[ME]  " + msgs[2] + "\n", null);
+                     } else {
+                        doc.insertString(doc.getLength(), "[" + msgs[1] + "]" + msgs[2] + "\n", null);
+                     }
 
-               if (nickName.equals(msgs[1])) {
-                  client.ta.append("[ME]" + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               } else {
-                  client.ta.append("[" + msgs[1] + "]" + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               }
-
-               break;
+                     client.ta.setCaretPosition(client.ta.getDocument().getLength());
+                  }catch (BadLocationException e){
+                     e.printStackTrace();
+                  }
+                  break;
 
             case "160": // 방만들기
                // 방정보를 List에 뿌리기
@@ -816,42 +912,80 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
                }
                break;
 
-            case "200": // 대화 입장
-               client.ta.append("[" + msgs[1] + "]"+ "has entered\n");
-               client.ta.setCaretPosition(client.ta.getText().length());
+             case "200": // 대화 입장
+               try {
+                  Document doc = client.ta.getDocument();
+
+                  doc.insertString(doc.getLength(), "[" + msgs[1] + "]님이 입장. \n" ,null);
+                  client.ta.setCaretPosition(client.ta.getDocument().getLength());
+               }catch (BadLocationException e){
+                  e.printStackTrace();
+               }
                break;
-            case "400": // 대화방 퇴장
-               for (int i = 0; i < client.defaultListModel.getSize(); i++) {
-                  String exitUser = client.defaultListModel.getElementAt(i);
+               case "400": // 대화방 퇴장
+                  for (int i = 0; i < client.defaultListModel.getSize(); i++) {
+                     String exitUser = client.defaultListModel.getElementAt(i);
 
-                  if (exitUser.equals(msgs[1])) {
-                     client.defaultListModel.remove(i);
-
+                     if (exitUser.equals(msgs[1])) {
+                        client.defaultListModel.remove(i);
+                     }
                   }
-               }
-               if (nickName.equals(msgs[1])) {
-                  client.ta.setText("");
-               } else {
-                  client.ta.append("[" + msgs[1] + "]"+ "has exited\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               }
-               break;
+                  try {
+                     Document doc = client.ta.getDocument();
+                     if (nickName.equals(msgs[1])) {
+                        doc.remove(0, doc.getLength());
+                     } else {
+                        doc.insertString(doc.getLength(), "[" + msgs[1] + "]님이 퇴장하셨습니다.\n", null);
+                        client.ta.setCaretPosition(client.ta.getDocument().getLength());
+                     }
+                  } catch (BadLocationException e) {
+                     e.printStackTrace();
+                  }
+                  break;
 
             case "320": // 귓속말 대화
 
-               if (nickName.equals(msgs[1])) {
-                  client.ta.append("<" + msgs[3] + "whisper sent to> " + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               } else {
-                  client.ta.append("<whisper> [" + msgs[1] + "] " + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
+               try {
+                  Document doc = client.ta.getDocument();
+                  if (nickName.equals(msgs[1])){
+                     doc.insertString(doc.getLength(),"<" + msgs[3] + "에게 보낸 귓속말>" + msgs[2] + "\n" ,null);
+                  }else {
+                     doc.insertString(doc.getLength(),"<귓속말> [" + msgs[1] + "]" + msgs[2] + "\n" ,null);
+                  }
+                  client.ta.setCaretPosition(client.ta.getDocument().getLength());
+               }catch (BadLocationException e){
+                  e.printStackTrace();
                }
-
-               // client.ta.setForeground(Color.green);
-               client.ta.setCaretPosition(client.ta.getText().length());
-
                break;
+             case "302":
+                try {
+                    Document doc = client.ta.getDocument();
+                    String nickNameReceived = msgs[1];
+                    String emojiImagePath = msgs[2];
 
+                   
+
+                    // Add the nickname and emotion before the emoji
+                    if (nickName != null && nickName.equals(nickNameReceived)) {
+                        doc.insertString(doc.getLength(), "[ME]", null);
+                    } else {
+                        doc.insertString(doc.getLength(), "[" + nickNameReceived + "]", null);
+                    }
+                   
+
+                    
+                    Style style = client.ta.addStyle("emojiStyle", null);
+                    StyleConstants.setIcon(style, new ImageIcon(emojiImagePath));
+                    doc.insertString(doc.getLength(), "invisible text", style);
+
+                    doc.insertString(doc.getLength(), "\n", null);
+                    client.ta.setCaretPosition(client.ta.getDocument().getLength());
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+			    
             case "202": // 개설된 방의 타이틀 제목 얻기
                client.setTitle("Chating Room-[" + msgs[1] + "]");
                break;
@@ -872,11 +1006,14 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
                break;
 
             case "701": // 강퇴 알림
-
-               client.ta.append("[manager] " + msgs[1] + "has been kicked out.\n");
-               client.ta.setCaretPosition(client.ta.getText().length());
-
-            } // End of switch-case
+               try {
+                  Document doc =  client.ta.getDocument();
+                  doc.insertString(doc.getLength(), "[관리자]" + msgs[1] + "님이 강퇴되었습니다. \n" ,null);
+                  client.ta.setCaretPosition(client.ta.getDocument().getLength());
+               }catch (BadLocationException e){
+                  e.printStackTrace();
+               }
+               break;
          }
       } catch (IOException e) {
          e.printStackTrace();
