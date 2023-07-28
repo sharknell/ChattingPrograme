@@ -41,7 +41,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 import chatdb.MemberDTO;
 import jframe.menu.EngVerFirstSwing;
 import jframe.menu.FindIdScreen;
@@ -818,17 +821,20 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
             String msgs[] = msg.split("\\|");
             String protocol = msgs[0];
             switch (protocol) {
-            case "300": // 대화
+             case "300": //대화
+                  try {
+                     Document doc = client.ta.getDocument();
+                     if (nickName != null && nickName.equals(msgs[1])) {
+                        doc.insertString(doc.getLength(), "[ME]  " + msgs[2] + "\n", null);
+                     } else {
+                        doc.insertString(doc.getLength(), "[" + msgs[1] + "]" + msgs[2] + "\n", null);
+                     }
 
-               if (nickName.equals(msgs[1])) {
-                  client.ta.append("[ME]" + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               } else {
-                  client.ta.append("[" + msgs[1] + "]" + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               }
-
-               break;
+                     client.ta.setCaretPosition(client.ta.getDocument().getLength());
+                  }catch (BadLocationException e){
+                     e.printStackTrace();
+                  }
+                  break;
 
             case "160": // 방만들기
                // 방정보를 List에 뿌리기
@@ -882,36 +888,40 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                client.ta.append("[" + msgs[1] + "]님이 입장하셨습니다.\n");
                client.ta.setCaretPosition(client.ta.getText().length());
                break;
-            case "400": // 대화방 퇴장
-               for (int i = 0; i < client.defaultListModel.getSize(); i++) {
-                  String exitUser = client.defaultListModel.getElementAt(i);
+           case "400": // 대화방 퇴장
+                  for (int i = 0; i < client.defaultListModel.getSize(); i++) {
+                     String exitUser = client.defaultListModel.getElementAt(i);
 
-                  if (exitUser.equals(msgs[1])) {
-                     client.defaultListModel.remove(i);
-
+                     if (exitUser.equals(msgs[1])) {
+                        client.defaultListModel.remove(i);
+                     }
                   }
+                  try {
+                     Document doc = client.ta.getDocument();
+                     if (nickName.equals(msgs[1])) {
+                        doc.remove(0, doc.getLength());
+                     } else {
+                        doc.insertString(doc.getLength(), "[" + msgs[1] + "]님이 퇴장하셨습니다.\n", null);
+                        client.ta.setCaretPosition(client.ta.getDocument().getLength());
+                     }
+                  } catch (BadLocationException e) {
+                     e.printStackTrace();
+                  }
+                  break;
+
+             case "320": // 귓속말 대화
+
+               try {
+                  Document doc = client.ta.getDocument();
+                  if (nickName.equals(msgs[1])){
+                     doc.insertString(doc.getLength(),"<" + msgs[3] + "에게 보낸 귓속말>" + msgs[2] + "\n" ,null);
+                  }else {
+                     doc.insertString(doc.getLength(),"<귓속말> [" + msgs[1] + "]" + msgs[2] + "\n" ,null);
+                  }
+                  client.ta.setCaretPosition(client.ta.getDocument().getLength());
+               }catch (BadLocationException e){
+                  e.printStackTrace();
                }
-               if (nickName.equals(msgs[1])) {
-                  client.ta.setText("");
-               } else {
-                  client.ta.append("[" + msgs[1] + "]님이 퇴장하셨습니다.\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               }
-               break;
-
-            case "320": // 귓속말 대화
-
-               if (nickName.equals(msgs[1])) {
-                  client.ta.append("<" + msgs[3] + "에게 보낸 귓속말> " + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               } else {
-                  client.ta.append("<귓속말> [" + msgs[1] + "] " + msgs[2] + "\n");
-                  client.ta.setCaretPosition(client.ta.getText().length());
-               }
-
-               // client.ta.setForeground(Color.green);
-               client.ta.setCaretPosition(client.ta.getText().length());
-
                break;
 
 	   case "302":
@@ -938,6 +948,16 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                     e.printStackTrace();
                 }
                 break;
+	    case "200": // 대화 입장
+               try {
+                  Document doc = client.ta.getDocument();
+
+                  doc.insertString(doc.getLength(), "[" + msgs[1] + "]님이 입장. \n" ,null);
+                  client.ta.setCaretPosition(client.ta.getDocument().getLength());
+               }catch (BadLocationException e){
+                  e.printStackTrace();
+               }
+               break;
 
             case "202": // 개설된 방의 타이틀 제목 얻기
                client.setTitle("채팅방-[" + msgs[1] + "]");
@@ -959,11 +979,14 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
                break;
 
             case "701": // 강퇴 알림
-
-               client.ta.append("[관리자] " + msgs[1] + "님이 강퇴되었습니다.\n");
-               client.ta.setCaretPosition(client.ta.getText().length());
-
-            } // End of switch-case
+               try {
+                  Document doc =  client.ta.getDocument();
+                  doc.insertString(doc.getLength(), "[관리자]" + msgs[1] + "님이 강퇴되었습니다. \n" ,null);
+                  client.ta.setCaretPosition(client.ta.getDocument().getLength());
+               }catch (BadLocationException e){
+                  e.printStackTrace();
+               }
+               break;
          }
       } catch (IOException e) {
          e.printStackTrace();
