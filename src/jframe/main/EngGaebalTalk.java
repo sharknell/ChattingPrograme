@@ -915,7 +915,7 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
                try {
                   Document doc = client.ta.getDocument();
 
-                  doc.insertString(doc.getLength(), "[" + msgs[1] + "]님이 입장. \n" ,null);
+                  doc.insertString(doc.getLength(), "[" + msgs[1] + "]Join the chatroom. \n" ,null);
                   client.ta.setCaretPosition(client.ta.getDocument().getLength());
                }catch (BadLocationException e){
                   e.printStackTrace();
@@ -934,7 +934,7 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
                      if (nickName.equals(msgs[1])) {
                         doc.remove(0, doc.getLength());
                      } else {
-                        doc.insertString(doc.getLength(), "[" + msgs[1] + "]님이 퇴장하셨습니다.\n", null);
+                        doc.insertString(doc.getLength(), "[" + msgs[1] + "]Out the chatroom.\n", null);
                         client.ta.setCaretPosition(client.ta.getDocument().getLength());
                      }
                   } catch (BadLocationException e) {
@@ -947,9 +947,9 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
                try {
                   Document doc = client.ta.getDocument();
                   if (nickName.equals(msgs[1])){
-                     doc.insertString(doc.getLength(),"<" + msgs[3] + "에게 보낸 귓속말>" + msgs[2] + "\n" ,null);
+                     doc.insertString(doc.getLength(),"<" + msgs[3] + "whisper>" + msgs[2] + "\n" ,null);
                   }else {
-                     doc.insertString(doc.getLength(),"<귓속말> [" + msgs[1] + "]" + msgs[2] + "\n" ,null);
+                     doc.insertString(doc.getLength(),"<whisper> [" + msgs[1] + "]" + msgs[2] + "\n" ,null);
                   }
                   client.ta.setCaretPosition(client.ta.getDocument().getLength());
                }catch (BadLocationException e){
@@ -1007,7 +1007,7 @@ public class EngGaebalTalk extends JFrame implements ActionListener, Runnable {
             case "701": // 강퇴 알림
                try {
                   Document doc =  client.ta.getDocument();
-                  doc.insertString(doc.getLength(), "[관리자]" + msgs[1] + "님이 강퇴되었습니다. \n" ,null);
+                  doc.insertString(doc.getLength(), "[boss]" + msgs[1] + " kick out. \n" ,null);
                   client.ta.setCaretPosition(client.ta.getDocument().getLength());
                }catch (BadLocationException e){
                   e.printStackTrace();
