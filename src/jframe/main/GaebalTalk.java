@@ -52,7 +52,7 @@ import jframe.menu.ProfliePasswordChangeScreen;
 import jframe.menu.SettingCustomerServiceGUI;
 
 public class GaebalTalk extends JFrame implements ActionListener, Runnable {
-   private final String FILE_SAVE_PATH = "E:/개발톡에서 받은 파일/";
+   private final String FILE_SAVE_PATH = "D:/개발톡에서 받은 파일/";
    List<String> vanWord = new ArrayList<>();
    Room room;
    String title;
