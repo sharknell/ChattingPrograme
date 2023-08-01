@@ -24,6 +24,8 @@ public class Service extends Thread {
 	List<Room> roomSer;
 	Socket socket;
 	String nickName;
+	//게임필드
+	int gamenum = -1;
 
 	private static final String PNG = "png";
 	private static final String JPG = "jpg";
@@ -57,6 +59,13 @@ public class Service extends Thread {
 					String protocol = msgs[0];
 
 					switch (protocol) {
+					case "101":
+					int a = Integer.parseInt(msgs[1]);
+					gamenum = a;
+					//랜덤 숫자 생성하여 클라이언트에게 보내기
+					messageRoom("800|" + gamenum);
+					break;
+					
 					case "100":
 						all.add(this);
 						wait.add(this);
@@ -83,6 +92,10 @@ public class Service extends Thread {
 						messageWait("180|" + getWaitInwon());
 						break;
 
+					case "900": //게임 종료 메시지
+						messageRoom("900|Game Over"); //모든 클라이언트에게 게임 종료를 알림
+						break;
+						
 					case "170":
 						messageTo("170|" + getRoomInwon(msgs[1]));
 						break;

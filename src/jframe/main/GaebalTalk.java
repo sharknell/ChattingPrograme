@@ -323,6 +323,21 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       JLabel gaeGameIcon = new JLabel(gaeGame);
       gaeGameIcon.setBackground(new Color(245, 245, 245));
       game.add(gaeGameIcon);
+      
+      game.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+             GameGaebalTalk gameGa;
+			try {
+				gameGa = new GameGaebalTalk(userDTO);
+				gameGa.setVisible(true);
+				GaebalTalk.this.dispose();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+          }
+       });
 
       panel_chat = new JPanel();
       panel_chat.setLayout(new BorderLayout());
