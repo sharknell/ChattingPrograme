@@ -171,19 +171,19 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       weather.setLayout(new FlowLayout(FlowLayout.CENTER));
       contentPane.add(weather, BorderLayout.NORTH);
 
-      // Weather c = new Weather();
-      // c.weatherAPI();
+      Weather c = new Weather();
+      c.weatherAPI();
 
       // 온도
 
-      // temperatureLabel.setText(c.temperature + "C");
-      // weatherIcon.setBounds(25, 0, 50, 50);
-      // temperatureLabel.setBounds(75, 0, 50, 50);
+      temperatureLabel.setText(c.temperature + "C");
+      weatherIcon.setBounds(25, 0, 50, 50);
+      temperatureLabel.setBounds(75, 0, 50, 50);
 
-      // weather.add(weatherIcon);
-      // weather.add(temperatureLabel);
+      weather.add(weatherIcon);
+      weather.add(temperatureLabel);
 
-      // temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
+      temperatureLabel.setHorizontalAlignment(JLabel.CENTER);
 
       menuBar = new JPanel();
       menuBar.setBorder(new LineBorder(new Color(0, 0, 0), 2));
@@ -208,7 +208,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
       inRoom.setBounds(10, 90, 40, 45);
       menuBar.add(inRoom);
 
-      ImageIcon inRoomImage = new ImageIcon("image/speech.png");
+      ImageIcon inRoomImage = new ImageIcon("image/방들어가기.png");
       inRoomLb = new JLabel(inRoomImage);
       inRoomLb.setBounds(106, 270, 38, 20);
       inRoom.add(inRoomLb);
@@ -820,7 +820,7 @@ public class GaebalTalk extends JFrame implements ActionListener, Runnable {
    public void connect() { // (소켓)서버연결 요청
       try {
          // Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
-         Socket s = new Socket("localHost", 5509); // 연결시도
+         Socket s = new Socket("14.42.124.93", 5509); // 연결시도
          in = new BufferedReader(new InputStreamReader(s.getInputStream()));
          // in: 서버메시지 읽기객체 서버-----msg------>클라이언트
          out = s.getOutputStream();

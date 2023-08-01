@@ -56,21 +56,21 @@ public class Weather  {
     public void weatherAPI(){
         if (weatherDescription.equals("Clear sky")) {
 
-           weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/clearsky.png"));
+           weatherIcon.setIcon(new ImageIcon("image/weatherAPI/clearsky.png"));
         } else if (weatherDescription.equals("Mist") || weatherDescription.equals("Fog") ||
                 weatherDescription.equals("Haze") || weatherDescription.equals("Smoke")) {
-            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/mist.png"));
+            weatherIcon.setIcon(new ImageIcon("image/weatherAPI/mist.png"));
         } else if (weatherDescription.equals("Cloudy") || weatherDescription.equals("Overcast clouds")) {
-            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/cloudy.png"));
+            weatherIcon.setIcon(new ImageIcon("image/weatherAPI/cloudy.png"));
         } else if (weatherDescription.equals("Few clouds") || weatherDescription.equals("Scattered clouds") ||
                 weatherDescription.equals("Broken clouds")) {
-            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/fewcl.png"));
+            weatherIcon.setIcon(new ImageIcon("image/weatherAPI/fewcl.png"));
         } else if (weatherDescription.equals("Shower rain") || weatherDescription.equals("Rain") ||
                 weatherDescription.equals("Thunderstorm")) {
-            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/sgiw.png"));
+            weatherIcon.setIcon(new ImageIcon("image/weatherAPI/sgiw.png"));
         } else if (weatherDescription.equals("Snow") || weatherDescription.equals("Sleet") ||
                 weatherDescription.equals("Freezing rain")) {
-            weatherIcon.setIcon(new ImageIcon("/Applications/fian/real/image/weatherAPI/sbow.png"));
+            weatherIcon.setIcon(new ImageIcon("image/weatherAPI/sbow.png"));
         }
     }
 }
