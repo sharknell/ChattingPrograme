@@ -1,3 +1,4 @@
+<div>
 <body>
     <h1> Chatting Program Used Java GUI </h1>
     <p> 자바 GUI(Swing)을 활용한 채팅 프로그램 입니다. (1차 프로젝트 )</p>
@@ -8,6 +9,13 @@
         <li><strong>이도형</strong> - Chatting Log </li>
         <li><strong>김규호</strong> - DataBase(Maria DB) , X-mail </li>
     </ul>
+
+- **프로그래밍 언어**: <img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=Java&logoColor=white">
+- **데이터베이스**: <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white">
+- **개발환경**:
+  - IDE : <img src="https://img.shields.io/badge/IntelliJ-2C2255?style=for-the-badge&logo=IntelliJ%20IDEA&logoColor=white"> <img src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=Eclipse%20IDE&logoColor=white">
+  - 형상관리 :<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
+
 </body>
 
 # 채팅 프로그램 업데이트 내역
@@ -74,3 +82,4 @@
 - 영어 버전을 위한 이미지 추가
 - 오타 수정
 - JoinScreen, FindID 등에서 텍스트 필드 내 글자 색상을 흰색에서 가독성이 좋은 색상으로 수정
+</div>
